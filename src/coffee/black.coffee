@@ -1,4 +1,4 @@
-import content from '../pug/index.pug'
+import content from '../pug/document.pug'
 require("expose-loader?$!jquery");
 
 
