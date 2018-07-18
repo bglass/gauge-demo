@@ -1,4 +1,4 @@
-svg = require '../pug/svg.pug'
+svg = require '../svg/backdrop.svg'
 
 exports.Gauge = class Gauge
   constructor: ->

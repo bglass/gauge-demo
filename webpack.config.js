@@ -26,6 +26,9 @@ module.exports = {
           loader: 'expose-loader',
           options: '$'
         }]
+      },
+      { test: /\.svg$/,
+        loader: 'svg-inline-loader?classPrefix'
       }
     ]
   }
