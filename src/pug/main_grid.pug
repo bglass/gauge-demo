@@ -1,0 +1,14 @@
+mixin item(content)
+  .square
+    .content
+      .table
+        .table-cell
+          p= content
+
+
+.grid
+  +item('Hi! #[strong pug] is cool ?')
+  +item("T2")
+  +item("T3")
+  +item("T4")
+  
