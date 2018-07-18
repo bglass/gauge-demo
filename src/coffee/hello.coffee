@@ -3,4 +3,4 @@ require("expose-loader?$!jquery");
 
 
 $ ->
-  $('body').append content()
+  $('html').append content()
