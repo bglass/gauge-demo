@@ -11,10 +11,11 @@ $ ->
   $('html').append static_content()  # < pug/document.pug
 
   gauge = new Gauge
-
-
-  gauges = gauge.setup
+  gauge.setup
     "#T1": "Eins",
     "#T2": "Zwei",
     "#T3": "Drei",
     "#T4": "Vier"
+
+
+  # gauge.update "#T1": 42
