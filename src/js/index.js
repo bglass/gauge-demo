@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import style from '../css/index.css'
+import '../css/index.css'
 
 
 function component() {
