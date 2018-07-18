@@ -1,13 +1,13 @@
-mixin item(content)
+mixin item(id)
   .square
     .content
       .table
-        .table-cell
-          p= content
+        .table-cell(id=id)
+          p +
 
 
 .grid
-  +item('Hi! #[strong pug] is cool ?')
+  +item("T1")
   +item("T2")
   +item("T3")
   +item("T4")
