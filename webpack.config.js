@@ -13,6 +13,11 @@ module.exports = {
       },
       { test: /\.coffee$/,
         use: [ 'coffee-loader' ]
+      },
+      { test: /.pug$/,
+        use: { loader: 'pug-loader',
+                query: {} // Can be empty
+        }
       }
     ]
   }
