@@ -1,11 +1,6 @@
 import content from '../pug/index.pug'
+require("expose-loader?$!jquery");
 
 
-
-component = ->
-  element = document.createElement('div')
-
-  element.innerHTML = content()
-  return element
-
-document.body.appendChild component()
+$ ->
+  $('body').append content()
