@@ -11,11 +11,9 @@ $ ->
   $('html').append static_content()  # < pug/document.pug
 
   gauge = new Gauge
-  gauge.setup
-    "#T1": "Eins",
-    "#T2": "Zwei",
-    "#T3": "Drei",
-    "#T4": "Vier"
-
-
-  # gauge.update "#T1": 42
+    "T1": {title: "Eins"}
+    "T2": {title: "Zwei"}
+    "T3": {title: "Drei"}
+    "T4": {title: "Vier"}
+  
+  gauge.value "T1": 88

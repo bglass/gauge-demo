@@ -7,11 +7,11 @@
   max-width: 100%;
 }
 
-.gauge path {
+/* .gauge path {
   stroke-width: 75;
   stroke: #ecf0f1;
   fill: none;
-}
+} */
 
 .gauge text {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;

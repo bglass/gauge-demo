@@ -1,0 +1,51 @@
+  
+svg(viewBox=`0 0 ${width} ${height}` id=`${id}`)
+  
+  //- backdrop
+  path( class="backdrop"
+        stroke-width=`${barwidth}` stroke="#bbbbbb" fill="none"
+        d=`M ${x0} ${height/2} L ${x1} ${height/2}`)
+    
+  //- bar
+  path( class="bar"
+        stroke-width=`${barwidth}` stroke="#0000ff" fill="none"
+        d=`M ${x0} ${height/2} L ${x} ${height/2}`)
+        
+
+  
+  //- needle
+  
+  //- trend
+  
+  //- marker
+  
+  //- ticks
+  
+  //- out of range
+  
+  - if (r > 1.0)
+    polygon( fill="#0000ff"
+             points=`${width} ${height/2} 
+                    ${width-barwidth/2} ${height/2-barwidth/2}
+                    ${width-barwidth/2} ${height/2+barwidth/2}` )
+  - if (r < 0.0)
+    polygon( fill="#0000ff"
+             points=`0 ${height/2} 
+                    ${barwidth/2} ${height/2-barwidth/2}
+                    ${barwidth/2} ${height/2+barwidth/2}` )
+    
+  //- value as text
+  text( class='value'
+        text-anchor="end"
+        alignment-baseline="middle"
+        x=`${width}` y=`${height*.8}`
+        font-size="100"
+        font-weight="bold" ) #{value} #{unit}
+  
+  //- label
+  text( class='title'
+        text-anchor="start"
+        alignment-baseline="middle"
+        x=`${0}` y=`${height*.8}`
+        font-size="100"
+        font-weight="normal" )= title
