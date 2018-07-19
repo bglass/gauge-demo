@@ -2,17 +2,15 @@
 svg(viewBox=`0 0 ${width} ${height}` id=`${id}`)
   
   //- backdrop
-  path( class="backdrop"
+  path( class="backdrop" d= path_backdrop
         stroke-width=`${barwidth}` stroke="#bbbbbb" fill="none"
-        d=`M ${x0} ${height/2} L ${x1} ${height/2}`)
+      )
     
   //- bar
-  path( class="bar"
+  path( class="bar" d= path_bar
         stroke-width=`${barwidth}` stroke="#0000ff" fill="none"
-        d=`M ${x0} ${height/2} L ${x} ${height/2}`)
+      )
         
-
-  
   //- needle
   
   //- trend
@@ -22,20 +20,17 @@ svg(viewBox=`0 0 ${width} ${height}` id=`${id}`)
   //- ticks
   
   //- out of range
+  polygon(  class='underflow'
+            points= poly_triangle_left  
+            fill="#0000ff" visibility="hidden"
+          )
+  polygon(  class='overflow'
+            points= poly_triangle_right 
+            fill="#0000ff" visibility="hidden"
+          )
   
-  - if (r > 1.0)
-    polygon( fill="#0000ff"
-             points=`${width} ${height/2} 
-                    ${width-barwidth/2} ${height/2-barwidth/2}
-                    ${width-barwidth/2} ${height/2+barwidth/2}` )
-  - if (r < 0.0)
-    polygon( fill="#0000ff"
-             points=`0 ${height/2} 
-                    ${barwidth/2} ${height/2-barwidth/2}
-                    ${barwidth/2} ${height/2+barwidth/2}` )
-    
-  //- value as text
-  text( class='value'
+  //- digital display
+  text( class='digital'
         text-anchor="end"
         alignment-baseline="middle"
         x=`${width}` y=`${height*.8}`
