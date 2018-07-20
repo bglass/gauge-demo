@@ -11,29 +11,40 @@ exports.Quantity = class Quantity
     v1:  100
 
   @create: (config) ->
-    quantities = []
+    quantity = {}
     for qty_id, cfg of config
-      quantities.push (new Quantity(qty_id, cfg))
-    return quantities
+      quantity[qty_id] = new Quantity(qty_id, cfg)
+    return quantity
 
   constructor: (@id, config) ->
     @config = merge @defaults, config
-    @pointers = Pointer.create @config.pointers
+    @pointers = Pointer.create @config.pointer
     @value = @config.value
 
-  relative_value = (cfg, quantity)->
+  relative_value: (cfg, quantity)->
     (@value - @config.v0) / (@config.v1 - @config.v0)
 
-  value: (update) ->
-    for id, data of update
-      bar = $("svg#"+id).find(".bar")[0];
-      bar.setAttribute("stroke", "#00ff00")
+  # setValue: (update) ->
+  #   for id, data of update
+  #     bar = $("svg#"+id).find(".bar")[0];
+  #     bar.setAttribute("stroke", "#00ff00")
+  #
 
 
-      for qty, value of data
+  data: ->  
+    a:    @value
+    r:    @relative_value()
+    v0:   @config.v0
+    v1:   @config.v1
+    unit: @config.unit
 
-        quantity = @config[id].quantity[qty]
-        quantity.value = value
+  view: (data) ->
+    for pointer in @pointers
+      pointer.view(merge data, @data())
 
-        for pointer in quantity.pointer
-          @update_pointer(id, quantity, pointer)
+  setValue: (data, @value) ->
+    for pointer in @pointers
+      pointer.update(merge data, @data())
+
+
+  #

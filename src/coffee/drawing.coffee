@@ -23,6 +23,12 @@ exports.Drawing = class Drawing
   text: (str, attributes) ->
     @content = @content + xml("text", str, attributes)
 
+  path: (attributes) ->
+    @content = @content + xml("path", "", attributes)
+
+  polygon: (attributes) ->
+    @content = @content + xml("polygon", "", attributes)
+
   attr_str = (attributes) ->
     attr = []
     for key, value of attributes

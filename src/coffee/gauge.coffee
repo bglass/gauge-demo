@@ -4,6 +4,8 @@
 
 exports.Gauge = class Gauge
 
+  @store = {}
+
   defaults:
     title: ""
     pointer: {}
@@ -17,6 +19,7 @@ exports.Gauge = class Gauge
     return gauges
 
   constructor: (@id, config) ->
+    Gauge.store[@id] = @
     @config = merge @defaults, config
     @quantities = Quantity.create @config.quantity
     @attach()
@@ -28,12 +31,13 @@ exports.Gauge = class Gauge
 
   view: ->
     @draw = new Drawing(@id, @config.width, @config.height)
-
     @view_title()
-
+    @view_quantities()
     return @draw.get()
 
-
+  view_quantities: ->
+    for id, quantity of @quantities
+      quantity.view @data()
 
   view_title: ->
     @draw.text @config.title,
@@ -44,3 +48,18 @@ exports.Gauge = class Gauge
       "font-weight":        "normal"
       x:                    0
       y:                    @config.height * .8
+
+  data: ->
+    title:      @config.title
+    w:          @config.width
+    h:          @config.height
+    draw:       @draw
+    svg:        $("svg#" + @id)
+
+  @setValue: (update) ->
+    for id, data of update
+      @store[id].setValue data
+
+  setValue: (update) ->
+    for qty, value of update
+      @quantities[qty].setValue @data(), value
