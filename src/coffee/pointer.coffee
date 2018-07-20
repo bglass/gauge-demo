@@ -3,38 +3,42 @@
 
 exports.Pointer = class Pointer
 
-  defaults:
-    barwidth:   100
+  defaults = {}
 
   @create: (config) ->
     pointers = []
     for cfg in config
-      pointers.push (new Pointer(cfg))
+      switch cfg.type
+        when "bar"
+          pointers.push (new Bar(cfg))
+        when "digital"
+          pointers.push (new Digital(cfg))
+        else
+          console.log "pointer type #{cfg.type} isn't implemented, yet."
+
     return pointers
 
   constructor: (config) ->
     @config = merge @defaults, config
 
-  update: (data) ->
-    switch @config.type
-      when "digital"
-        @update_digital(data)
-      when "bar"
-        @update_bar(data)
-      when "marker"
-      else
+# ============================================================
 
-  update_digital:  (data) ->
-    text = data.svg.find(".digital")[0];
-    text.textContent = number_unit(data)
+class Bar extends Pointer
 
-  update_bar:  (data) ->
+  defaults:
+    barwidth:   100
+
+  path_bar = (data) ->
+    "M #{data.x0} #{data.h/2} " +
+    "L #{data.x}  #{data.h/2}"
+
+  update:  (data) ->
     data  = @data_bar(data)
     bar   = data.svg.find(".bar")[0];
     bar.setAttribute "d", path_bar data
-    update_bar_overflow(data)
+    update_overflow(data)
 
-  update_bar_overflow = (data) ->
+  update_overflow = (data) ->
 
     if data.r < 0.0
       vu = "visible"
@@ -49,48 +53,7 @@ exports.Pointer = class Pointer
     data.svg.find(".underflow")[0].setAttribute "visibility", vu
     data.svg.find(".overflow" )[0].setAttribute "visibility", vo
 
-
-  view: (data) ->
-    switch @config.type
-      when "digital"
-        @view_digital(data)
-      when "bar"
-        @view_bar(data)
-      when "marker"
-        console.log "marker to be implemented."
-      else
-        console.log "pointer type isn't implemented, yet."
-
-  number_unit = (data) ->
-    "#{data.a} #{data.unit}"
-
-  view_digital: (data) ->
-    data.draw.text number_unit(data),
-      class:                "digital"
-      "alignment-baseline": "middle"
-      "text-anchor":        "end"
-      "font-size":          100
-      "font-weight":        "bold"
-      x:                    data.w
-      y:                    data.h * .8
-
-  data_bar: (data) ->
-    x0 = data.w * .1
-    x1 = data.w * .9
-
-    if data.r < 0.0
-      x = x0
-    else if data.r > 1.0
-      x = x1
-    else
-      x = x0 + (x1 - x0) * data.r
-
-    merge data, { x: x, x0: x0, x1: x1, bw: @config.barwidth}
-
-
-
-
-  view_bar: (data) ->
+  view: (data) ->
 
     data        = @data_bar(data)
     data_track  = merge data, {x: data.x1}
@@ -139,10 +102,37 @@ exports.Pointer = class Pointer
     "#{w - dx} #{y + dy}"
 
 
+  data_bar: (data) ->
+    x0 = data.w * .1
+    x1 = data.w * .9
+
+    if data.r < 0.0
+      x = x0
+    else if data.r > 1.0
+      x = x1
+    else
+      x = x0 + (x1 - x0) * data.r
+
+    merge data, { x: x, x0: x0, x1: x1, bw: @config.barwidth}
 
 
+## ============================================================
 
+class Digital extends Pointer
 
-  path_bar = (data) ->
-    "M #{data.x0} #{data.h/2} " +
-    "L #{data.x}  #{data.h/2}"
+  update:  (data) ->
+    text = data.svg.find(".digital")[0];
+    text.textContent = number_unit(data)
+
+  number_unit = (data) ->
+    "#{data.a} #{data.unit}"
+
+  view: (data) ->
+    data.draw.text number_unit(data),
+      class:                "digital"
+      "alignment-baseline": "middle"
+      "text-anchor":        "end"
+      "font-size":          100
+      "font-weight":        "bold"
+      x:                    data.w
+      y:                    data.h * .8
