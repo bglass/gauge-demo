@@ -24,13 +24,6 @@ exports.Quantity = class Quantity
   relative_value: (cfg, quantity)->
     (@value - @config.v0) / (@config.v1 - @config.v0)
 
-  # setValue: (update) ->
-  #   for id, data of update
-  #     bar = $("svg#"+id).find(".bar")[0];
-  #     bar.setAttribute("stroke", "#00ff00")
-  #
-
-
   data: ->  
     a:    @value
     r:    @relative_value()
@@ -45,6 +38,3 @@ exports.Quantity = class Quantity
   setValue: (data, @value) ->
     for pointer in @pointers
       pointer.update(merge data, @data())
-
-
-  #

@@ -8,7 +8,6 @@ exports.Gauge = class Gauge
 
   defaults:
     title: ""
-    pointer: {}
     width: 1000
     height: 500
 

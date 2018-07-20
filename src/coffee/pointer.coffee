@@ -58,10 +58,10 @@ class Bar extends Pointer
     data_track  = merge data, {x: data.x1}
 
     data.draw.path
-      class:            "bar_track"
+      class:            "track"
       d:                "#{path data_track}"
       "stroke-width":   "#{data.bw}"
-      stroke:           "#aaaaaa"
+      stroke:           "#dddddd"
       fill:             "none"
 
     data.draw.path
