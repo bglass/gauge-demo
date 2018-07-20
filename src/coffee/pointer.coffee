@@ -28,18 +28,17 @@ class Bar extends Pointer
   defaults:
     barwidth:   100
 
-  path_bar = (data) ->
+  path = (data) ->
     "M #{data.x0} #{data.h/2} " +
     "L #{data.x}  #{data.h/2}"
 
   update:  (data) ->
     data  = @data_bar(data)
     bar   = data.svg.find(".bar")[0];
-    bar.setAttribute "d", path_bar data
+    bar.setAttribute "d", path data
     update_overflow(data)
 
   update_overflow = (data) ->
-
     if data.r < 0.0
       vu = "visible"
       vo  = "hidden"
@@ -60,14 +59,14 @@ class Bar extends Pointer
 
     data.draw.path
       class:            "bar_track"
-      d:                "#{path_bar data_track}"
+      d:                "#{path data_track}"
       "stroke-width":   "#{data.bw}"
       stroke:           "#aaaaaa"
       fill:             "none"
 
     data.draw.path
       class:            "bar"
-      d:                "#{path_bar data}"
+      d:                "#{path data}"
       "stroke-width":   "#{data.bw}"
       stroke:           "#0000ff"
       fill:             "none"
@@ -75,25 +74,23 @@ class Bar extends Pointer
     data.draw.polygon
       visibility:   "hidden"
       class:        'underflow'
-      points:       poly_triangle_left(data)
+      points:       triangle_left(data)
       fill:         "#0000ff"
 
     data.draw.polygon
       visibility:   "hidden"
       class:        'overflow'
-      points:       poly_triangle_right(data)
+      points:       triangle_right(data)
       fill:         "#0000ff"
 
-
-
-  poly_triangle_left = (data) ->
+  triangle_left = (data) ->
     y  = data.h/2
     dx = dy = data.bw/2
     "0 #{y} " +
     "#{dx} #{y - dy} " +
     "#{dx} #{y + dy}"
 
-  poly_triangle_right = (data) ->
+  triangle_right = (data) ->
     y  = data.h/2
     dx = dy = data.bw/2
     w  = data.w
