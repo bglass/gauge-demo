@@ -13,13 +13,14 @@ $ ->
   gauge = new Gauge
     "T1": {
       title: "Eins"
-      pointer:
-        main:   type: "bar"
-        preset: type: "marker"
+      quantity:
+        "main":   pointer: [{type: "bar"}, {type: "digital"}]
+        "preset": pointer: [{type: "marker"}]
+
     }
-    # "T2": {title: "Zwei"}
-    # "T3": {title: "Drei"}
-    # "T4": {title: "Vier"}
+    "T2": {title: "Zwei", quantity: "main": {} }
+    "T3": {title: "Drei", quantity: "main": {} }
+    "T4": {title: "Vier", quantity: "main": {} }
 
   # gauge.value "T1": {main: -22}
   # gauge.value "T2": {main: 44}

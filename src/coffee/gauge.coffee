@@ -1,5 +1,3 @@
-drawing = require '../pug/gauge.svg.pug'
-
 tap = (o, fn) -> fn(o); o
 merge = (xs...) ->
   if xs?.length > 0
@@ -8,57 +6,78 @@ merge = (xs...) ->
 
 exports.Gauge = class Gauge
 
-  constructor: (@config)->
-    for id, config of @config
-      @config[id] = merge @default, config
-      for name, ptr_cfg of config.pointer
-        @config[id].pointer[name] = merge @pointer_default, ptr_cfg
-    @draw()
-
   default:
     title: ""
     pointer: {}
-    unit: ""
     width: 1000
     height: 500
-    barwidth: 100
     v0:  0
     v1:  100
 
-  pointer_default:
-    value: 0.0
+  quantity_default:
+    barwidth: 100
+    value: 77.0
+    unit: "K"
+    pointer: [{type: "bar"}, {type: "digital"}]
 
-  geometry: (cfg) ->
-    cfg.x0 = cfg.width * .1
-    cfg.x1 = cfg.width * .9
-    cfg.path_backdrop = @path_backdrop(cfg)
-    cfg.poly_triangle_left  = @poly_triangle_left(cfg)
-    cfg.poly_triangle_right = @poly_triangle_right(cfg)
+  constructor: (config)->
+    @config = @setup(config)
+    @draw_gauges(@config)
 
-  pointer: (cfg, pointer)->
-    r  = (cfg.pointer[pointer].value - cfg.v0) / (cfg.v1 - cfg.v0)
-    x  = cfg.x0 + r * (cfg.x1 - cfg.x0)
+  setup: (user_config) ->
+    setup = {}
 
-    if r < 0.0
-      x = cfg.x0
-    else if r > 1.0
-      x = cfg.x1
+    # merge user config into defaults
+    for gauge_id, cfg of user_config
+      setup[gauge_id] = merge @default, cfg
+      for quantity_id, quantity_cfg of setup[gauge_id].quantity
+        setup[gauge_id].quantity[quantity_id] = merge @quantity_default, quantity_cfg
 
-    data = {}
-    data.r = r
-    data.x = x
-    data.path_bar      = @path_bar((merge cfg, data), pointer)
-    return data
+    # calculate static geometry
+      # cfg.path_backdrop = @path_backdrop(cfg)
+      # cfg.poly_triangle_left  = @poly_triangle_left(cfg)
+      # cfg.poly_triangle_right = @poly_triangle_right(cfg)
+
+    return setup
 
 
-  draw: ->
 
-    for id, cfg of @config
-      @geometry @config[id]
+  draw_gauges: (config) ->
+    for gauge_id, gauge_config of config
+      # console.log  @drawing(gauge_id, gauge_config)
+      $("div#"+gauge_id).append @drawing(gauge_id, gauge_config)
 
-      for pointer, pcfg of cfg.pointer
-        data        = @pointer  @config[id], pointer
-        $("#"+id).append drawing(merge cfg, data)
+
+  drawing: (id, data) ->
+
+    elements = [
+      svg_label(data)
+    ]
+
+    for quantity_id, quantity_config of data.quantity
+      for pointer in quantity_config.pointer
+        elements.push svg_pointer(data, quantity_config, pointer)
+    # console.log elements
+
+    return svg_viewbox id, data, elements.join("")
+
+
+
+
+      # @geometry @config[id]
+      # $("#"+id).append    (require '../pug/gauge.svg.pug')(cfg)
+      #
+
+
+
+  relative_value = (cfg, quantity)->
+    (quantity.value - cfg.v0) / (cfg.v1 - cfg.v0)
+
+
+
+      # console.log svg
+      # for quantity, pcfg of cfg.quantity
+      #   data        = @quantity  @config[id], quantity
 
   # label_digital: (cfg) ->
   #   "#{cfg.value} #{cfg.unit}"
@@ -91,9 +110,9 @@ exports.Gauge = class Gauge
 
 # drawing elements
 
-  path_bar: (cfg) ->
-    "M #{cfg.x0} #{cfg.height/2} " +
-    "L #{cfg.x} #{cfg.height/2}"
+  # path_bar: (cfg) ->
+  #   "M #{cfg.x0} #{cfg.height/2} " +
+  #   "L #{cfg.x} #{cfg.height/2}"
 
   path_backdrop: (cfg) ->
     "M #{cfg.x0} #{cfg.height/2} " +
@@ -117,15 +136,7 @@ exports.Gauge = class Gauge
     "#{w - dx} #{y + dy}"
 
 
-  # svg: (id) ->
-  #   w = @config[id].width
-  #   h = @config[id].height
-  #   """
-  #   <svg viewBox='0 0 #{w} #{h}' id='##{id}')>
-  #   """
-  #
-  # svg_: "</svg>"
-  #
+
   # backdrop: (cfg) ->
   #   """
   #   <path class='backdrop' d= #{cfg.path_backdrop}
@@ -133,12 +144,7 @@ exports.Gauge = class Gauge
   #   </path>
   #   """
   #
-  # bar: (data)
-  #   """
-  #   <path class="bar" d= #{cfg.path_bar}
-  #       stroke-width=`${barwidth}` stroke="#0000ff" fill="none"
-  #   </path>
-  #   """
+
 
   # //- needle
   #
@@ -158,20 +164,98 @@ exports.Gauge = class Gauge
   #           fill="#0000ff" visibility="hidden"
   #         )
   #
-  # //- digital display
-  # text( class='digital'
-  #       text-anchor="end"
-  #       alignment-baseline="middle"
-  #       x=`${width}` y=`${height*.8}`
-  #       font-size="100"
-  #       font-weight="bold" ) #{value} #{unit}
-  #
-  # //- label
-  # text( class='title'
-  #       text-anchor="start"
-  #       alignment-baseline="middle"
-  #       x=`${0}` y=`${height*.8}`
-  #       font-size="100"
-  #       font-weight="normal" )= title
-  #
-  #
+
+  svg_pointer = (config, quantity, pointer) ->
+    switch pointer.type
+      when "bar"
+        pointer_bar(config, quantity, pointer)
+      when "digital"
+        svg_digital_display(config, quantity, pointer)
+      else
+        console.log "ERROR: pointer type #{pointer.type} is undefined."
+        return ""
+
+  pointer_bar = (cfg, quantity, pointer) ->
+
+    defaults = barwidth: cfg.width/10
+
+    pointer = merge defaults, pointer
+
+
+    x0 = cfg.width * .1
+    x1 = cfg.width * .9
+
+    r = relative_value(cfg, quantity)
+    x = x0 + (x1 - x0) * r
+
+    if r < 0.0
+      x = x0
+    else if r > 1.0
+      x = x1
+
+    quantity.x  = x
+    quantity.x0 = x0
+    quantity.x1 = x1
+
+
+    bar = xml "path", "",
+      class:            "bar"
+      d:                "#{path_bar(cfg, quantity, pointer)}"
+      "stroke-width":   "#{pointer.barwidth}"
+      stroke:           "#0000ff"
+      fill:             "none"
+
+
+    data_track = merge quantity, {x: x1}
+
+    track = xml "path", "",
+      class:            "bar_track"
+      d:                "#{path_bar(cfg, data_track, "track")}"
+      "stroke-width":   "#{pointer.barwidth}"
+      stroke:           "#aaaaaa"
+      fill:             "none"
+
+    return track + bar
+
+
+  path_bar = (cfg, quantity, pointer) ->
+    # console.log quantity
+    "M #{quantity.x0} #{cfg.height/2} " +
+    "L #{quantity.x}  #{cfg.height/2}"
+
+
+  svg_viewbox = (id, data, content) ->
+    xml "svg", content,
+      viewBox:    "0 0 #{data.width} #{data.height}"
+      id:         id
+
+  svg_digital_display = (data, quantity, pointer) ->
+    xml "text",
+      quantity.value + " " + quantity.unit,
+      class:                "digital"
+      "text-anchor":        "end"
+      "alignment-baseline": "middle"
+      x:                    "#{data.width}"
+      y:                    "#{data.height*.8}"
+      "font-size":          100
+      "font-weight":        "bold"
+
+  svg_label = (data) ->
+    xml("text", data.title, {
+      class:                "title"
+      "text-anchor":        "start"
+      "alignment-baseline": "middle"
+      x:                    0
+      y:                    "#{data.height*.8}"
+      "font-size":          100
+      "font-weight":        "normal"
+    })
+
+  attr_str = (attributes) ->
+    attr = []
+    for key, value of attributes
+      attr.push "#{key}='#{value}'"
+    return attr.join(" ")
+
+  xml = (tag, content, attributes) ->
+    return "<#{tag} #{attr_str attributes}>#{content}</#{tag}>"

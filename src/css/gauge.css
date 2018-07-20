@@ -16,27 +16,3 @@
 .gauge text {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-
-.gauge.participation path.data-arc {
-  stroke: #3498db;
-}
-
-.gauge.participation text {
-  fill: #3498db;
-}
-
-.gauge.completion path.data-arc {
-  stroke: #27ae60;
-}
-
-.gauge.completion text {
-  fill: #27ae60;
-}
-
-.gauge.blocked path.data-arc {
-  stroke: #e74c3c;
-}
-
-.gauge.blocked text {
-  fill: #e74c3c;
-}
