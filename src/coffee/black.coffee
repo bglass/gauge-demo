@@ -10,7 +10,7 @@ require("expose-loader?$!jquery")
 $ ->
   $('html').append static_content()  # < pug/document.pug
 
-  gauge = new Gauge
+  gauges = Gauge.create
     "T1": {
       title: "Eins"
       quantity:
@@ -22,6 +22,6 @@ $ ->
     "T3": {title: "Drei", quantity: "main": {} }
     "T4": {title: "Vier", quantity: "main": {} }
 
-  gauge.value "T1": {main: -22}
-  gauge.value "T2": {main: 44}
-  gauge.value "T3": {main: 66}, "T4": {main: 188}
+  # gauges.value "T1": {main: -22}
+  # gauges.value "T2": {main: 44}
+  # gauges.value "T3": {main: 66}, "T4": {main: 188}
