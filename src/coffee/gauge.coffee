@@ -15,7 +15,6 @@ exports.Gauge = class Gauge
     v1:  100
 
   quantity_default:
-    barwidth: 100
     value: 77.0
     unit: "K"
     pointer: [{type: "bar"}, {type: "digital"}]
@@ -75,48 +74,46 @@ exports.Gauge = class Gauge
 
 
 
-      # console.log svg
-      # for quantity, pcfg of cfg.quantity
-      #   data        = @quantity  @config[id], quantity
-
-  # label_digital: (cfg) ->
-  #   "#{cfg.value} #{cfg.unit}"
-
-  # value: (update) ->
-  #   for id, value of update
-  #     bar = $("#"+id).find(".bar")[0];
-  #     bar.setAttribute("stroke", "#00ff00")
-  #
-  #     @config[id].value = value
-  #     data = @dynamic @config[id]
-  #     bar.setAttribute "d", data.path_bar
-  #
-  #     text = $("#"+id).find(".digital")[0];
-  #     text.textContent = @label_digital(data)
-  #
-  #     if data.r < 0.0
-  #       vu = "visible"
-  #       vo  = "hidden"
-  #     else if data.r > 1.0
-  #       vu  = "hidden"
-  #       vo = "visible"
-  #     else
-  #       vo = "hidden"
-  #       vu  = "hidden"
-  #
-  #     $("#"+id).find(".underflow")[0].setAttribute "visibility", vu
-  #     $("#"+id).find(".overflow" )[0].setAttribute "visibility", vo
+  value: (update) ->
+    for id, data of update
+      bar = $("svg#"+id).find(".bar")[0];
+      bar.setAttribute("stroke", "#00ff00")
 
 
-# drawing elements
+      for qty, value of data
 
-  # path_bar: (cfg) ->
-  #   "M #{cfg.x0} #{cfg.height/2} " +
-  #   "L #{cfg.x} #{cfg.height/2}"
+        quantity = @config[id].quantity[qty]
+        quantity.value = value
 
-  path_backdrop: (cfg) ->
-    "M #{cfg.x0} #{cfg.height/2} " +
-    "L #{cfg.x1} #{cfg.height/2}"
+        for pointer in quantity.pointer
+          @update_pointer(id, quantity, pointer)
+
+
+      #
+      #
+      #
+      # @config[id][qty] = value
+      #
+      #
+      # data = @dynamic @config[id]
+      # bar.setAttribute "d", data.path_bar
+      #
+      # text = $("#"+id).find(".digital")[0];
+      # text.textContent = @label_digital(data)
+      #
+      # if data.r < 0.0
+      #   vu = "visible"
+      #   vo  = "hidden"
+      # else if data.r > 1.0
+      #   vu  = "hidden"
+      #   vo = "visible"
+      # else
+      #   vo = "hidden"
+      #   vu  = "hidden"
+      #
+      # $("#"+id).find(".underflow")[0].setAttribute "visibility", vu
+      # $("#"+id).find(".overflow" )[0].setAttribute "visibility", vo
+
 
   poly_triangle_left: (cfg) ->
     y  = cfg.height/2
@@ -137,13 +134,6 @@ exports.Gauge = class Gauge
 
 
 
-  # backdrop: (cfg) ->
-  #   """
-  #   <path class='backdrop' d= #{cfg.path_backdrop}
-  #         stroke-width='#{barwidth}' stroke='#bbbbbb' fill='none'
-  #   </path>
-  #   """
-  #
 
 
   # //- needle
@@ -174,6 +164,23 @@ exports.Gauge = class Gauge
       else
         console.log "ERROR: pointer type #{pointer.type} is undefined."
         return ""
+
+  update_pointer: (gauge_id, quantity, pointer) ->
+    switch pointer.type
+      when "bar"
+        $("svg#"+)
+        path_bar(@config, quantity, pointer)
+        pointer_bar(config, quantity, pointer)
+      when "digital"
+        svg_digital_display(config, quantity, pointer)
+        else
+          console.log "ERROR: pointer type #{pointer.type} is undefined."
+
+
+
+
+    console.log quantity
+    console.log pointer
 
   pointer_bar = (cfg, quantity, pointer) ->
 
