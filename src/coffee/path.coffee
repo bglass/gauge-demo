@@ -2,7 +2,7 @@
 
 # ============================================================
 
-exports.Path = class Path
+class Path
 
   constructor: (@shape) ->
 
@@ -25,7 +25,7 @@ exports.Path = class Path
 
 # ============================================================
 
-exports.PathBar = class PathBar extends Path
+exports.PathH = class PathH extends Path
 
   constructor: (data) ->
     c = transform data

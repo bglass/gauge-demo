@@ -1,5 +1,4 @@
 {merge}           = require './helpers.coffee'
-{Path, PathBar}   = require './path.coffee'
 
 # ============================================================
 
@@ -30,19 +29,18 @@ exports.Pointer = class Pointer
 class Bar extends Pointer
 
   defaults:
-    barwidth:   100
+    {}
 
   constructor: (config, data0) ->
     super config
-    @path = new PathBar data0
 
   init: (data) ->
     @update (merge @defaults, data)
 
   update:  (data) ->
-    data  = @path.transform(data)
+    data  = data.path.transform(data)
     bar   = data.svg.find(".bar")[0];
-    @path.update(bar, data)
+    data.path.update(bar, data)
     update_overflow(data)
 
   update_overflow = (data) ->
@@ -62,13 +60,9 @@ class Bar extends Pointer
 
   view: (data) ->
 
-    data        = merge @defaults, @path.transform(data)
+    data        = merge @defaults, data.path.transform(data)
 
-    @path.view data,
-      class:            "track"
-      stroke:           "#dddddd"
-
-    @path.view data,
+    data.path.view data,
       class:                "bar"
       stroke:               "#0000ff"
 
