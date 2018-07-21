@@ -12,12 +12,12 @@ exports.Path = class Path
   init: (e, data) ->
     @length = e.getTotalLength()
     e.setAttribute "stroke-dasharray", @length
+    @initialized = true
 
   update: (e, data) ->
     if (typeof @initialized == 'undefined')
       @init e, data
 
-    console.log data.rl
     e.setAttribute "stroke-dashoffset", @length * (1.0 - data.rl)
 
 
