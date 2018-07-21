@@ -1,6 +1,7 @@
-{merge}  = require './helpers.coffee'
+{merge}           = require './helpers.coffee'
 {Path, PathBar}   = require './path.coffee'
 
+# ============================================================
 
 exports.Pointer = class Pointer
 
@@ -78,21 +79,18 @@ class Bar extends Pointer
 
   triangle_left = (data) ->
     y  = data.h/2
-    dx = dy = data.bw/2
+    dx = dy = data.barwidth/2
     "0 #{y} " +
     "#{dx} #{y - dy} " +
     "#{dx} #{y + dy}"
 
   triangle_right = (data) ->
     y  = data.h/2
-    dx = dy = data.bw/2
+    dx = dy = data.barwidth/2
     w  = data.w
     "#{w     } #{y} " +
     "#{w - dx} #{y - dy} " +
     "#{w - dx} #{y + dy}"
-
-
-
 
 ## ============================================================
 
@@ -114,3 +112,5 @@ class Digital extends Pointer
       "font-weight":        "bold"
       x:                    data.w
       y:                    data.h * .8
+
+## ============================================================
