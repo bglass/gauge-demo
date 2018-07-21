@@ -1,21 +1,21 @@
-{merge}    = require './helpers.coffee'
+{merge}  = require './helpers.coffee'
+{Path, PathBar}   = require './path.coffee'
 
 
 exports.Pointer = class Pointer
 
   defaults = {}
 
-  @create: (config) ->
+  @create: (config, init) ->
     pointers = []
     for cfg in config
       switch cfg.type
         when "bar"
-          pointers.push (new Bar(cfg))
+          pointers.push (new Bar(cfg, init))
         when "digital"
           pointers.push (new Digital(cfg))
         else
-          console.log "pointer type #{cfg.type} isn't implemented, yet."
-
+          console.log "pointer type '#{cfg.type}' isn't implemented, yet."
     return pointers
 
   constructor: (config) ->
@@ -28,14 +28,14 @@ class Bar extends Pointer
   defaults:
     barwidth:   100
 
-  path = (data) ->
-    "M #{data.x0} #{data.h/2} " +
-    "L #{data.x}  #{data.h/2}"
+  constructor: (config, init) ->
+    super config
+    @path = new PathBar init
 
   update:  (data) ->
-    data  = @data_bar(data)
+    data  = @path.transform(data)
     bar   = data.svg.find(".bar")[0];
-    bar.setAttribute "d", path data
+    bar.setAttribute "stroke-dashoffset", - data.r *(data.w*.8)
     update_overflow(data)
 
   update_overflow = (data) ->
@@ -54,22 +54,15 @@ class Bar extends Pointer
 
   view: (data) ->
 
-    data        = @data_bar(data)
-    data_track  = merge data, {x: data.x1}
+    data        = merge @defaults, @path.transform(data)
 
-    data.draw.path
+    @path.view data,
       class:            "track"
-      d:                "#{path data_track}"
-      "stroke-width":   "#{data.bw}"
       stroke:           "#dddddd"
-      fill:             "none"
 
-    data.draw.path
-      class:            "bar"
-      d:                "#{path data}"
-      "stroke-width":   "#{data.bw}"
-      stroke:           "#0000ff"
-      fill:             "none"
+    @path.view data,
+      class:                "bar"
+      stroke:               "#0000ff"
 
     data.draw.polygon
       visibility:   "hidden"
@@ -99,18 +92,6 @@ class Bar extends Pointer
     "#{w - dx} #{y + dy}"
 
 
-  data_bar: (data) ->
-    x0 = data.w * .1
-    x1 = data.w * .9
-
-    if data.r < 0.0
-      x = x0
-    else if data.r > 1.0
-      x = x1
-    else
-      x = x0 + (x1 - x0) * data.r
-
-    merge data, { x: x, x0: x0, x1: x1, bw: @config.barwidth}
 
 
 ## ============================================================

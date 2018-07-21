@@ -9,17 +9,6 @@ exports.Drawing = class Drawing
       viewBox:    "0 0 #{@width} #{@height}"
       id:         @id
 
-  svg_digital_display = (data, quantity, pointer) ->
-    xml "text",
-      quantity.value + " " + quantity.unit,
-      class:                "digital"
-      "text-anchor":        "end"
-      "alignment-baseline": "middle"
-      x:                    "#{data.width}"
-      y:                    "#{data.height*.8}"
-      "font-size":          100
-      "font-weight":        "bold"
-
   text: (str, attributes) ->
     @content = @content + xml("text", str, attributes)
 

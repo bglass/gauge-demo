@@ -10,23 +10,20 @@ exports.Quantity = class Quantity
     v0:  0
     v1:  100
 
-  @create: (config) ->
+  @create: (config, init) ->
     quantity = {}
     for qty_id, cfg of config
-      quantity[qty_id] = new Quantity(qty_id, cfg)
+      quantity[qty_id] = new Quantity(qty_id, cfg, init)
     return quantity
 
-  constructor: (@id, config) ->
+  constructor: (@id, config, init) ->
     @config = merge @defaults, config
-    @pointers = Pointer.create @config.pointer
     @value = @config.value
-
-  relative_value: (cfg, quantity)->
-    (@value - @config.v0) / (@config.v1 - @config.v0)
+    @pointers = Pointer.create @config.pointer, (merge init, @data())
 
   data: ->  
     a:    @value
-    r:    @relative_value()
+    r:    (@value - @config.v0) / (@config.v1 - @config.v0)
     v0:   @config.v0
     v1:   @config.v1
     unit: @config.unit
