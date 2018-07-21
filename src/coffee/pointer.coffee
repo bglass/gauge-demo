@@ -1,4 +1,5 @@
 {merge}           = require './helpers.coffee'
+{Circle}          = require './shape.coffee'
 
 # ============================================================
 
@@ -14,6 +15,8 @@ exports.Pointer = class Pointer
           pointers.push (new Bar(cfg, data0))
         when "digital"
           pointers.push (new Digital(cfg))
+        when "marker"
+          pointers.push (new Marker(cfg, data0))
         else
           console.log "pointer type '#{cfg.type}' isn't implemented, yet."
     return pointers
@@ -28,11 +31,6 @@ exports.Pointer = class Pointer
 
 class Bar extends Pointer
 
-  defaults:
-    {}
-
-  constructor: (config, data0) ->
-    super config
 
   init: (data) ->
     @update (merge @defaults, data)
@@ -92,6 +90,24 @@ class Bar extends Pointer
     "#{w     } #{y} " +
     "#{w - dx} #{y - dy} " +
     "#{w - dx} #{y + dy}"
+
+## ============================================================
+
+class Marker extends Pointer
+
+  view: (data) ->
+
+  defaults:
+    size:   50
+    type:  "circle"
+    color:  "green"
+
+  constructor: (config, data0) ->
+    super config
+    switch config.type
+      when "circle"
+        @shape = new Circle @config
+
 
 ## ============================================================
 
