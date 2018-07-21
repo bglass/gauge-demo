@@ -20,13 +20,19 @@ exports.Gauge = class Gauge
   constructor: (@id, config) ->
     Gauge.store[@id] = @
     @config = merge @defaults, config
-    @quantities = Quantity.create @config.quantity, @init()
+    @quantities = Quantity.create @config.quantity, @data0()
     @attach()
+    @init()
 
   attach: ->
     v = @view()
     $("div#"+@id).append @view()
     @svg = $("svg#"+@id)
+
+  init: ->
+    for id, quantity of @quantities
+      quantity.init @data()
+
 
   view: ->
     @draw = new Drawing(@id, @config.width, @config.height)
@@ -48,13 +54,13 @@ exports.Gauge = class Gauge
       x:                    0
       y:                    @config.height * .8
 
-  init: ->
+  data0: ->
     title:      @config.title
     w:          @config.width
     h:          @config.height
 
   data: ->
-    merge @init(),
+    merge @data0(),
       draw:       @draw
       svg:        $("svg#" + @id)
 

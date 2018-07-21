@@ -7,12 +7,12 @@ exports.Pointer = class Pointer
 
   defaults = {}
 
-  @create: (config, init) ->
+  @create: (config, data0) ->
     pointers = []
     for cfg in config
       switch cfg.type
         when "bar"
-          pointers.push (new Bar(cfg, init))
+          pointers.push (new Bar(cfg, data0))
         when "digital"
           pointers.push (new Digital(cfg))
         else
@@ -22,6 +22,9 @@ exports.Pointer = class Pointer
   constructor: (config) ->
     @config = merge @defaults, config
 
+  init: (data) ->
+    # by default do nothing
+
 # ============================================================
 
 class Bar extends Pointer
@@ -29,14 +32,17 @@ class Bar extends Pointer
   defaults:
     barwidth:   100
 
-  constructor: (config, init) ->
+  constructor: (config, data0) ->
     super config
-    @path = new PathBar init
+    @path = new PathBar data0
+
+  init: (data) ->
+    @update (merge @defaults, data)
 
   update:  (data) ->
     data  = @path.transform(data)
     bar   = data.svg.find(".bar")[0];
-    bar.setAttribute "stroke-dashoffset", - data.r *(data.w*.8)
+    @path.update(bar, data)
     update_overflow(data)
 
   update_overflow = (data) ->
@@ -52,6 +58,7 @@ class Bar extends Pointer
 
     data.svg.find(".underflow")[0].setAttribute "visibility", vu
     data.svg.find(".overflow" )[0].setAttribute "visibility", vo
+
 
   view: (data) ->
 
