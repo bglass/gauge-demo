@@ -9,7 +9,7 @@ exports.Pointer = class Pointer
 
   @create: (config, data0) ->
     pointers = []
-    for cfg in config
+    for pointer_id, cfg of config
       switch cfg.type
         when "bar"
           pointers.push (new Bar(cfg, data0))

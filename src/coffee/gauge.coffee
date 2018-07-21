@@ -1,5 +1,5 @@
 {merge}    = require './helpers.coffee'
-{Quantity} = require './quantity.coffee'
+{Scale}    = require './scale.coffee'
 {Drawing}  = require './drawing.coffee'
 
 exports.Gauge = class Gauge
@@ -20,29 +20,27 @@ exports.Gauge = class Gauge
   constructor: (@id, config) ->
     Gauge.store[@id] = @
     @config = merge @defaults, config
-    @quantities = Quantity.create @config.quantity, @data0()
+    @scales = Scale.create @config.scale, @data0()
     @attach()
     @init()
 
   attach: ->
-    v = @view()
-    $("div#"+@id).append @view()
+    @view()
+    $("div#"+@id).append @draw.get()
     @svg = $("svg#"+@id)
 
   init: ->
-    for id, quantity of @quantities
-      quantity.init @data()
-
+    for id, scale of @scales
+      scale.init @data()
 
   view: ->
     @draw = new Drawing(@id, @config.width, @config.height)
     @view_title()
-    @view_quantities()
-    return @draw.get()
+    @view_scales()
 
-  view_quantities: ->
-    for id, quantity of @quantities
-      quantity.view @data()
+  view_scales: ->
+    for id, scale of @scales
+      scale.view @data()
 
   view_title: ->
     @draw.text @config.title,
@@ -52,7 +50,7 @@ exports.Gauge = class Gauge
       "font-size":          100
       "font-weight":        "normal"
       x:                    0
-      y:                    @config.height * .8
+      y:                    @config.height * .1
 
   data0: ->
     title:      @config.title
@@ -69,5 +67,5 @@ exports.Gauge = class Gauge
       @store[id].setValue data
 
   setValue: (update) ->
-    for qty, value of update
-      @quantities[qty].setValue @data(), value
+    for scale in @scales
+      scale.setValue update
