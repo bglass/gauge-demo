@@ -67,5 +67,5 @@ exports.Gauge = class Gauge
       @store[id].setValue data
 
   setValue: (update) ->
-    for scale in @scales
+    for scale_id, scale of @scales
       scale.setValue update

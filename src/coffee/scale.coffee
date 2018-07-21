@@ -3,6 +3,11 @@
 
 exports.Scale = class Scale
 
+  defaults:
+    unit: "K"
+    v0:  0
+    v1:  100
+
   @create: (config, data0) ->
     scale = {}
     for scale_id, cfg of config
@@ -26,6 +31,7 @@ exports.Scale = class Scale
     for qty_id, quantity of @quantities
       quantity.init(merge data, @data())
 
-
   data: ->
-    {}
+    unit: @config.unit
+    v0:   @config.v0
+    v1:   @config.v1
