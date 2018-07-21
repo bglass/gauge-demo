@@ -17,6 +17,7 @@ $ ->
         "S1":
           label: "Temperature"
           type:  "horizontal"
+          ticks: 11
           quantity:
             "main":
               pointer: 
@@ -30,5 +31,5 @@ $ ->
     "T4": {title: "Vier", scale: "S4": {quantity: "main": {} }}
 
   Gauge.setValue "T1": {main: -22}
-  Gauge.setValue "T2": {main: 44}
-  Gauge.setValue "T3": {main: 66}, "T4": {main: 188}
+  Gauge.setValue "T2": {main: 15}
+  Gauge.setValue "T3": {main: 25}, "T4": {main: 188}
