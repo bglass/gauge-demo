@@ -62,10 +62,10 @@ exports.Gauge = class Gauge
       draw:       @draw
       svg:        $("svg#" + @id)
 
-  @setValue: (update) ->
-    for id, data of update
-      @store[id].setValue data
+  @setValue: (updates) ->
+    for id, update of updates
+      @store[id].setValue update
 
   setValue: (update) ->
     for scale_id, scale of @scales
-      scale.setValue update
+      scale.setValue @data(), update

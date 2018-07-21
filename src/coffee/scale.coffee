@@ -29,9 +29,9 @@ exports.Scale = class Scale
     @config = merge @defaults, config
     @quantities = Quantity.create @config.quantity, (merge data0, @data())
 
-  setValue: (update) ->
+  setValue: (data, update) ->
     for qty, value of update
-      @quantities[qty].setValue @data(), value
+      @quantities[qty].setValue (merge data, @data()), value
 
   view: (data) ->
     @view_label(data)
