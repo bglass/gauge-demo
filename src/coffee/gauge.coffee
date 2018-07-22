@@ -1,6 +1,6 @@
 {merge}    = require './helpers.coffee'
 {Scale}    = require './scale.coffee'
-{Drawing}  = require './drawing.coffee'
+{SVG}      = require './svg.coffee'
 
 exports.Gauge = class Gauge
 
@@ -20,30 +20,20 @@ exports.Gauge = class Gauge
   constructor: (@id, config) ->
     Gauge.store[@id] = @
     @config = merge @defaults, config
-    @scales = Scale.create @config.scale, @data0()
-    @attach()
-    @init()
 
-  attach: ->
-    @view()
-    $("div#"+@id).append @draw.get()
-    @svg = $("svg#"+@id)
+    @svg = SVG.add_viewbox @id, [0, 0, @config.width, @config.height]
+    @draw_elements()
+    @create_subelements()
 
-  init: ->
-    for id, scale of @scales
-      scale.init @data()
 
-  view: ->
-    @draw = new Drawing(@id, @config.width, @config.height)
-    @view_title()
-    @view_scales()
+  create_subelements: ->
+    @scales = Scale.create @config.scale, @data()
 
-  view_scales: ->
-    for id, scale of @scales
-      scale.view @data()
+  draw_elements: ->
+    @texts =  [  @create_title()      ]
 
-  view_title: ->
-    @draw.text @config.title,
+  create_title: ->
+    @svg.add_text @id, @config.title,
       class:                "title"
       "alignment-baseline": "middle"
       "text-anchor":        "start"
@@ -52,15 +42,11 @@ exports.Gauge = class Gauge
       x:                    0
       y:                    @config.height * .1
 
-  data0: ->
+  data: ->
     title:      @config.title
     w:          @config.width
     h:          @config.height
-
-  data: ->
-    merge @data0(),
-      draw:       @draw
-      svg:        $("svg#" + @id)
+    svg:        @svg
 
   @setValue: (updates) ->
     for id, update of updates
