@@ -11,7 +11,7 @@ exports.Scale = class Scale
     unit:             "dC"
     v0:               10
     v1:               30
-    barwidth:         100
+    barWidth:         100
     tickWidth:        150
     tickThickness:    4
     tickDivisions:    4
@@ -33,20 +33,36 @@ exports.Scale = class Scale
   constructor: (@id, @path, config, data) ->
     @config = merge @defaults, config
 
-    @draw_elements(@id, data)
-    @create_subelements(@id, data)
+    @draw_elements(data)
+    @create_subelements(data)
 
 
-  create_subelements: (@id, data) ->
+  create_subelements: (data) ->
 
-  draw_elements: (@id, data) ->
-    data.svg.add_path @id, @path.shape, 
-      class:            "track"
-      "stroke-width":   @config.barwidth
-      stroke:           @config.trackColor
+  draw_elements: (data) ->
+    ticks:  @draw_ticks data
+    track:  @draw_track data
 
+  draw_track: (data) ->
+    data.svg.add_path "track"+@id, @path,
+      class:                "track"
+      "stroke-width":       @config.barWidth
+      stroke:               @config.trackColor
 
+  draw_ticks: (data) ->
+    ticks = data.svg.add_path "ticks"+@id, @path,
+      class:                "ticks"
+      "stroke-width":       @config.tickWidth
+      stroke:               @config.tickColor
+    ticks.node.setAttribute "stroke-dasharray",
+                            tick_definition(ticks, @config)
 
+  tick_definition = (tag, cfg) ->
+    l = tag.node.getTotalLength()
+    a = cfg.tickThickness
+    n = cfg.tickDivisions
+    b = (l-a*(n+1))/n
+    return "#{a} #{b}"
 
 
 
@@ -58,10 +74,6 @@ exports.Scale = class Scale
   #   # label
   #   @view_label(data)
   #
-  #   # ticks
-  #   @path.view_ticks (merge @config, data),
-  #     class:            "ticks"
-  #     stroke:           @config.tickColor
   #
   #   # track
   #   @path.view (merge @config, data),

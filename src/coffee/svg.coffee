@@ -25,9 +25,10 @@ exports.SVG = class SVG
     svg.node.textContent = content
     return svg
 
-  add_path: (id, d, attributes) ->
+  add_path: (id, path, attributes) ->
     svg = @add_element id, "path", attributes
-    svg.node.setAttribute "d", d
+    svg.node.setAttribute "d", path.shape
+    return svg
 
   attr_str = (attributes) ->
     attr = []
