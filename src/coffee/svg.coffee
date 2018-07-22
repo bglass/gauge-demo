@@ -30,6 +30,11 @@ exports.SVG = class SVG
     svg.node.setAttribute "d", path.shape
     return svg
 
+  add_polygon: (id, attributes) ->
+    @add_element id, "polygon", attributes
+
+
+
   attr_str = (attributes) ->
     attr = []
     for key, value of attributes

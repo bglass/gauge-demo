@@ -38,9 +38,14 @@ class Bar extends Pointer
     @setup_bar()
     @update(data)
 
+  update: (data) ->
+    @update_bar(data)
+    @update_out_of_range(data)
 
   draw_elements: (data) ->
-    bar:  @draw_bar(data)
+    bar:    @draw_bar(data)
+    under:  @draw_underflow(data)
+    over:   @draw_overflow(data)
 
   draw_bar: (data) ->
     data = merge @defaults, data.path.transform(data)
@@ -53,7 +58,7 @@ class Bar extends Pointer
     @path_length = @elements.bar.path_length()
     @elements.bar.node.setAttribute "stroke-dasharray", @path_length
 
-  update:  (data) ->
+  update_bar:  (data) ->
     data  = data.path.transform(data)
     @elements.bar.node.setAttribute(
       "stroke-dashoffset"
@@ -61,20 +66,18 @@ class Bar extends Pointer
     )
 
   draw_underflow: (data) ->
-
-    # data.draw.polygon
-    #   visibility:   "hidden"
-    #   class:        'underflow'
-    #   points:       triangle_left(data)
-    #   fill:         "#0000ff"
+    data.svg.add_polygon "under"+@id,
+      visibility:   "hidden"
+      class:        'underflow'
+      points:       triangle_left(data)
+      fill:         @config.barColor
 
   draw_overflow: (data) ->
-
-    # data.draw.polygon
-    #   visibility:   "hidden"
-    #   class:        'overflow'
-    #   points:       triangle_right(data)
-    #   fill:         "#0000ff"
+    data.svg.add_polygon "over"+@id,
+      visibility:   "hidden"
+      class:        'overflow'
+      points:       triangle_right(data)
+      fill:         @config.barColor
 
   triangle_left = (data) ->
     y  = data.h/2
@@ -92,25 +95,19 @@ class Bar extends Pointer
     "#{w - dx} #{y + dy}"
 
 
-
-
-
-
-
-
-  update_overflow = (data) ->
+  update_out_of_range: (data) ->
     if data.r < 0.0
       vu = "visible"
-      vo  = "hidden"
-    else if data.r > 1.0
-      vu  = "hidden"
+    else
+      vu = "hidden"
+
+    if data.r > 1.0
       vo = "visible"
     else
       vo = "hidden"
-      vu  = "hidden"
 
-    data.svg.find(".underflow")[0].setAttribute "visibility", vu
-    data.svg.find(".overflow" )[0].setAttribute "visibility", vo
+    @elements.under.node.setAttribute "visibility", vu
+    @elements.over.node.setAttribute "visibility", vo
 
 ## ============================================================
 
