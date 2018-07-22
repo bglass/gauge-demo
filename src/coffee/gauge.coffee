@@ -22,8 +22,11 @@ exports.Gauge = class Gauge
     @config = merge @defaults, config
 
     @svg = SVG.add_viewbox @id, [0, 0, @config.width, @config.height]
-    @draw_elements()
-    @create_subelements()
+
+    @elements = merge(
+      @draw_elements()
+      @create_subelements()
+    )
 
 
   create_subelements: ->
@@ -53,5 +56,5 @@ exports.Gauge = class Gauge
       @store[id].setValue update
 
   setValue: (update) ->
-    for scale_id, scale of @scales
+    for scale_id, scale of @elements.scales
       scale.setValue @data(), update

@@ -33,20 +33,24 @@ exports.Scale = class Scale
   constructor: (@id, @path, config, data) ->
     @config = merge @defaults, config
 
-    @draw_elements(data)
-    @create_subelements(data)
+    @elements = merge(
+      @draw_elements(data)
+      @create_subelements(data)
+    )
 
 
   create_subelements: (data) ->
-    quantities:   Quantity.create @config.quantity,
-      barWidth:         @config.barWidth
-      unit:             @config.unit
-      v0:               @config.v0
-      v1:               @config.v1
-      path:             @path
-      svg:              data.svg
-      w:                data.w
-      h:                data.h
+    quantities:   Quantity.create @config.quantity, @refine(data)
+
+  refine: (data) ->
+    barWidth:         @config.barWidth
+    unit:             @config.unit
+    v0:               @config.v0
+    v1:               @config.v1
+    path:             @path
+    svg:              data.svg
+    w:                data.w
+    h:                data.h
 
   draw_elements: (data) ->
     ticks:  @draw_ticks data
@@ -85,12 +89,12 @@ exports.Scale = class Scale
       y:                    data.h * .8
 
 
-  # setValue: (data, update) ->
-  #   for qty, value of update
-  #     @quantities[qty].setValue (merge data, @data()), value
-  #
-  #
-  #
+  setValue: (data, update) ->
+    for qty, value of update
+      @elements.quantities[qty].setValue @refine(data), value
+
+
+
 # ============================================================
 
 exports.Horizontal = class Horizontal extends Scale

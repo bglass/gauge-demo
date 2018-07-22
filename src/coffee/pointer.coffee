@@ -30,10 +30,10 @@ class Bar extends Pointer
 
 
   update:  (data) ->
-    data  = data.path.transform(data)
-    bar   = data.svg.find(".bar")[0];
-    data.path.update(bar, data)
-    update_overflow(data)
+    # data  = data.path.transform(data)
+    # bar   = data.svg.find(".bar")[0];
+    # data.path.update(bar, data)
+    # update_overflow(data)
 
   update_overflow = (data) ->
     if data.r < 0.0

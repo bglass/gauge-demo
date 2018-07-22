@@ -16,7 +16,11 @@ exports.Quantity = class Quantity
   constructor: (@id, config, data) ->
     @config = merge @defaults, config
     @value = @config.value
-    @pointers = Pointer.create @config.pointer, merge data,
+    @pointers = Pointer.create @config.pointer, @refine data,
+
+
+  refine: (data) ->
+    merge data,
       a:      @value
       r:      @relative_value(data)
       rl:     @limited_value(data)
@@ -34,6 +38,6 @@ exports.Quantity = class Quantity
       return r
 
 
-  # setValue: (data, @value) ->
-  #   for pointer in @pointers
-  #     pointer.update(@data_fill data)
+  setValue: (data, @value) ->
+    for pointer in @pointers
+      pointer.update(@refine data)

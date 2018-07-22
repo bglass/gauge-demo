@@ -16,8 +16,9 @@ $ ->
       scale:
         "S1":
           label: "Temperature"
+          unit:  "K"
           type:  "horizontal"
-          ticks: 11
+          tickDivisions: 2
           quantity:
             "main":
               pointer: 
@@ -27,12 +28,12 @@ $ ->
               pointer:
                 "X": type: "marker"
     "T2":
-      title: "Eins"
+      title: "Zwei"
       scale:
         "S2":
-          label: "Temperature"
+          label: "Criticality"
           type:  "horizontal"
-          ticks: 11
+          tickDivisions: 3
           quantity:
             "main":
               pointer: 
@@ -42,12 +43,12 @@ $ ->
               pointer:
                 "X2": type: "marker"
     "T3":
-      title: "Eins"
+      title: "Drei"
       scale:
         "S3":
           label: "Temperature"
           type:  "horizontal"
-          ticks: 11
+          tickDivisions: 5
           quantity:
             "main":
               pointer: 
@@ -57,12 +58,12 @@ $ ->
               pointer:
                 "X3": type: "marker"
     "T4":
-      title: "Eins"
+      title: "Vier"
       scale:
         "S4":
           label: "Temperature"
           type:  "horizontal"
-          ticks: 11
+          tickDivisions: 10
           quantity:
             "main":
               pointer: 
@@ -76,7 +77,7 @@ $ ->
 
 
 
-  #
-  # Gauge.setValue "T1": {main: -22}
-  # Gauge.setValue "T2": {main: 15}
-  # Gauge.setValue "T3": {main: 25}, "T4": {main: 188}
+
+  Gauge.setValue "T1": {main: -22}
+  Gauge.setValue "T2": {main: 15}
+  Gauge.setValue "T3": {main: 25}, "T4": {main: 188}
