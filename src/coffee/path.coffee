@@ -37,19 +37,19 @@ exports.PathH = class PathH extends Path
     super "M #{c.x0} #{c.h/2} " +
           "L #{c.x1} #{c.h/2}"
 
-  view: (data, attributes) ->
-    data.draw.path( merge attributes,
-        "stroke-width":       data.barwidth
-        fill:                 "none"
-        d:                    @shape
-      )
-
-  view_ticks: (data, attributes) ->
-    data.draw.path( merge attributes,
-        "stroke-width":       data.tickWidth
-        fill:                 "none"
-        d:                    @shape
-      )
+  # view: (data, attributes) ->
+  #   data.draw.path( merge attributes,
+  #       "stroke-width":       data.barWidth
+  #       fill:                 "none"
+  #       d:                    @shape
+  #     )
+  #
+  # view_ticks: (data, attributes) ->
+  #   data.draw.path( merge attributes,
+  #       "stroke-width":       data.tickWidth
+  #       fill:                 "none"
+  #       d:                    @shape
+  #     )
 
   transform: (data) ->
     transform data

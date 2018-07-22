@@ -27,7 +27,7 @@ exports.Gauge = class Gauge
 
 
   create_subelements: ->
-    @scales = Scale.create @config.scale, @data()
+    scales: Scale.create @config.scale, @data()
 
   draw_elements: ->
     title:  @draw_title()

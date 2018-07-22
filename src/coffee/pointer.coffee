@@ -7,33 +7,27 @@ exports.Pointer = class Pointer
 
   defaults = {}
 
-  @create: (config, data0) ->
+  @create: (config, data) ->
     pointers = []
-    for pointer_id, cfg of config
+    for ptr_id, cfg of config
       switch cfg.type
         when "bar"
-          pointers.push (new Bar(cfg, data0))
+          pointers.push (new Bar(     ptr_id, cfg, data))
         when "digital"
-          pointers.push (new Digital(cfg))
+          pointers.push (new Digital( ptr_id, cfg, data))
         when "marker"
-          pointers.push (new Marker(cfg, data0))
+          pointers.push (new Marker(  ptr_id, cfg, data))
         else
           console.log "pointer type '#{cfg.type}' isn't implemented, yet."
     return pointers
 
-  constructor: (config) ->
+  constructor: (@id, config) ->
     @config = merge @defaults, config
-
-  init: (data) ->
-    # by default do nothing
 
 # ============================================================
 
 class Bar extends Pointer
 
-
-  init: (data) ->
-    @update (merge @defaults, data)
 
   update:  (data) ->
     data  = data.path.transform(data)
@@ -78,14 +72,14 @@ class Bar extends Pointer
 
   triangle_left = (data) ->
     y  = data.h/2
-    dx = dy = data.barwidth/2
+    dx = dy = data.barWidth/2
     "0 #{y} " +
     "#{dx} #{y - dy} " +
     "#{dx} #{y + dy}"
 
   triangle_right = (data) ->
     y  = data.h/2
-    dx = dy = data.barwidth/2
+    dx = dy = data.barWidth/2
     w  = data.w
     "#{w     } #{y} " +
     "#{w - dx} #{y - dy} " +
@@ -113,15 +107,12 @@ class Marker extends Pointer
 
 class Digital extends Pointer
 
-  update:  (data) ->
-    text = data.svg.find(".digital")[0];
-    text.textContent = number_unit(data)
+  constructor: (id, config, data) ->
+    super id, config
+    @draw_display data
 
-  number_unit = (data) ->
-    "#{data.a} #{data.unit}"
-
-  view: (data) ->
-    data.draw.text number_unit(data),
+  draw_display: (data) ->
+    @display = data.svg.add_text @id, "",
       class:                "digital"
       "alignment-baseline": "middle"
       "text-anchor":        "end"
@@ -129,5 +120,13 @@ class Digital extends Pointer
       "font-weight":        "bold"
       x:                    data.w
       y:                    data.h * .8
+    @update data
+
+  update:  (data) ->
+    @display.node.textContent = number_unit(data)
+
+  number_unit = (data) ->
+    "#{data.a} #{data.unit}"
+
 
 ## ============================================================

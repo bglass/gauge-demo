@@ -26,9 +26,56 @@ $ ->
             "preset":
               pointer:
                 "X": type: "marker"
-    "T2": {title: "Zwei", scale: "S2": {quantity: "main": {} }}
-    "T3": {title: "Drei", scale: "S3": {quantity: "main": {} }}
-    "T4": {title: "Vier", scale: "S4": {quantity: "main": {} }}
+    "T2":
+      title: "Eins"
+      scale:
+        "S2":
+          label: "Temperature"
+          type:  "horizontal"
+          ticks: 11
+          quantity:
+            "main":
+              pointer: 
+                "Bar2":      type: "bar"
+                "Digital2":  type: "digital"
+            "preset":
+              pointer:
+                "X2": type: "marker"
+    "T3":
+      title: "Eins"
+      scale:
+        "S3":
+          label: "Temperature"
+          type:  "horizontal"
+          ticks: 11
+          quantity:
+            "main":
+              pointer: 
+                "Bar3":      type: "bar"
+                "Digital3":  type: "digital"
+            "preset":
+              pointer:
+                "X3": type: "marker"
+    "T4":
+      title: "Eins"
+      scale:
+        "S4":
+          label: "Temperature"
+          type:  "horizontal"
+          ticks: 11
+          quantity:
+            "main":
+              pointer: 
+                "Bar4":      type: "bar"
+                "Digital4":  type: "digital"
+            "preset":
+              pointer:
+                "X4": type: "marker"
+
+
+
+
+
   #
   # Gauge.setValue "T1": {main: -22}
   # Gauge.setValue "T2": {main: 15}

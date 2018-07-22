@@ -7,23 +7,19 @@ exports.Quantity = class Quantity
     value: 77.0
     pointer: [{type: "bar"}, {type: "digital"}]
 
-  @create: (config, data0) ->
+  @create: (config, data) ->
     quantity = {}
     for qty_id, cfg of config
-      quantity[qty_id] = new Quantity(qty_id, cfg, data0)
+      quantity[qty_id] = new Quantity(qty_id, cfg, data)
     return quantity
 
-  constructor: (@id, config, data0) ->
+  constructor: (@id, config, data) ->
     @config = merge @defaults, config
     @value = @config.value
-    @pointers = Pointer.create @config.pointer, (@data_fill data0)
-
-
-  data_fill: (data) ->
-    data.a  = @value
-    data.r  = @relative_value(data)
-    data.rl = @limited_value(data)
-    return data
+    @pointers = Pointer.create @config.pointer, merge data,
+      a:      @value
+      r:      @relative_value(data)
+      rl:     @limited_value(data)
 
   relative_value: (data) ->
     (@value - data.v0) / (data.v1 - data.v0)
@@ -38,14 +34,6 @@ exports.Quantity = class Quantity
       return r
 
 
-  init: (data) ->
-    for pointer in @pointers
-      pointer.init(@data_fill data)
-
-  view: (data) ->
-    for pointer in @pointers
-      pointer.view(@data_fill data)
-
-  setValue: (data, @value) ->
-    for pointer in @pointers
-      pointer.update(@data_fill data)
+  # setValue: (data, @value) ->
+  #   for pointer in @pointers
+  #     pointer.update(@data_fill data)
