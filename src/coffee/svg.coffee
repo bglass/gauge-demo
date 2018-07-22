@@ -38,3 +38,6 @@ exports.SVG = class SVG
 
   xml = (tag, content, attributes) ->
     return "<#{tag} #{attr_str attributes}>#{content}</#{tag}>"
+
+  path_length: ->
+    @node.getTotalLength()

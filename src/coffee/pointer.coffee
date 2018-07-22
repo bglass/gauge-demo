@@ -5,7 +5,7 @@
 
 exports.Pointer = class Pointer
 
-  defaults = {}
+  defaults: {}
 
   @create: (config, data) ->
     pointers = []
@@ -28,47 +28,53 @@ exports.Pointer = class Pointer
 
 class Bar extends Pointer
 
+  defaults:
+    barColor:       "#0000ff"
+
+  constructor: (id, config, data) ->
+    super id, config
+
+    @elements = @draw_elements(data)
+    @setup_bar()
+    @update(data)
+
+
+  draw_elements: (data) ->
+    bar:  @draw_bar(data)
+
+  draw_bar: (data) ->
+    data = merge @defaults, data.path.transform(data)
+    data.svg.add_path "bar"+@id, data.path,
+      class:                "bar"
+      "stroke-width":       data.barWidth
+      stroke:               @config.barColor
+
+  setup_bar: ->
+    @path_length = @elements.bar.path_length()
+    @elements.bar.node.setAttribute "stroke-dasharray", @path_length
 
   update:  (data) ->
-    # data  = data.path.transform(data)
-    # bar   = data.svg.find(".bar")[0];
-    # data.path.update(bar, data)
-    # update_overflow(data)
+    data  = data.path.transform(data)
+    @elements.bar.node.setAttribute(
+      "stroke-dashoffset"
+      @path_length * (1.0 - data.rl)
+    )
 
-  update_overflow = (data) ->
-    if data.r < 0.0
-      vu = "visible"
-      vo  = "hidden"
-    else if data.r > 1.0
-      vu  = "hidden"
-      vo = "visible"
-    else
-      vo = "hidden"
-      vu  = "hidden"
+  draw_underflow: (data) ->
 
-    data.svg.find(".underflow")[0].setAttribute "visibility", vu
-    data.svg.find(".overflow" )[0].setAttribute "visibility", vo
+    # data.draw.polygon
+    #   visibility:   "hidden"
+    #   class:        'underflow'
+    #   points:       triangle_left(data)
+    #   fill:         "#0000ff"
 
+  draw_overflow: (data) ->
 
-  view: (data) ->
-
-    data        = merge @defaults, data.path.transform(data)
-
-    data.path.view data,
-      class:                "bar"
-      stroke:               "#0000ff"
-
-    data.draw.polygon
-      visibility:   "hidden"
-      class:        'underflow'
-      points:       triangle_left(data)
-      fill:         "#0000ff"
-
-    data.draw.polygon
-      visibility:   "hidden"
-      class:        'overflow'
-      points:       triangle_right(data)
-      fill:         "#0000ff"
+    # data.draw.polygon
+    #   visibility:   "hidden"
+    #   class:        'overflow'
+    #   points:       triangle_right(data)
+    #   fill:         "#0000ff"
 
   triangle_left = (data) ->
     y  = data.h/2
@@ -84,6 +90,27 @@ class Bar extends Pointer
     "#{w     } #{y} " +
     "#{w - dx} #{y - dy} " +
     "#{w - dx} #{y + dy}"
+
+
+
+
+
+
+
+
+  update_overflow = (data) ->
+    if data.r < 0.0
+      vu = "visible"
+      vo  = "hidden"
+    else if data.r > 1.0
+      vu  = "hidden"
+      vo = "visible"
+    else
+      vo = "hidden"
+      vu  = "hidden"
+
+    data.svg.find(".underflow")[0].setAttribute "visibility", vu
+    data.svg.find(".overflow" )[0].setAttribute "visibility", vo
 
 ## ============================================================
 
