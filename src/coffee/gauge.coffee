@@ -30,9 +30,9 @@ exports.Gauge = class Gauge
     @scales = Scale.create @config.scale, @data()
 
   draw_elements: ->
-    @texts =  [  @create_title()      ]
+    title:  @draw_title()
 
-  create_title: ->
+  draw_title: ->
     @svg.add_text @id, @config.title,
       class:                "title"
       "alignment-baseline": "middle"

@@ -42,6 +42,7 @@ exports.Scale = class Scale
   draw_elements: (data) ->
     ticks:  @draw_ticks data
     track:  @draw_track data
+    label:  @draw_label data
 
   draw_track: (data) ->
     data.svg.add_path "track"+@id, @path,
@@ -64,6 +65,15 @@ exports.Scale = class Scale
     b = (l-a*(n+1))/n
     return "#{a} #{b}"
 
+  draw_label: (data) ->
+    data.svg.add_text @id, @config.label,
+      class:                "label"
+      "alignment-baseline": "middle"
+      "text-anchor":        "start"
+      "font-size":          100
+      "font-weight":        "normal"
+      x:                    0
+      y:                    data.h * .8
 
 
   # setValue: (data, update) ->
