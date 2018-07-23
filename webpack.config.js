@@ -11,12 +11,15 @@ module.exports = {
   module: {
     rules: [
       { test: /\.css$/,
+        include: path.resolve(__dirname, 'src/css'),
         use:['style-loader','css-loader']
       },
       { test: /\.coffee$/,
+        include: path.resolve(__dirname, 'src/coffee'),
         use: [ 'coffee-loader' ]
       },
       { test: /.pug$/,
+        include: path.resolve(__dirname, 'src/pug'),
         use: { loader: 'pug-loader',
                 query: {} // Can be empty
         }
@@ -28,6 +31,7 @@ module.exports = {
         }]
       },
       { test: /\.svg$/,
+        include: path.resolve(__dirname, 'src/svg'),
         loader: 'svg-inline-loader?classPrefix'
       }
     ]
