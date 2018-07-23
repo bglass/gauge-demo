@@ -65,4 +65,4 @@ class Path extends SVG
     @node.getTotalLength()
 
   position: (distance) ->
-    @node.getPointAtLength(distance)
+    @node.getPointAtLength distance * @length()

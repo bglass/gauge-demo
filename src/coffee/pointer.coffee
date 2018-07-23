@@ -38,16 +38,19 @@ class Bar extends Pointer
     @update(data)
 
   update: (data) ->
+    data = merge @defaults, data.path.transform(data)
     @update_bar(data)
     @update_out_of_range(data)
 
   draw_elements: (data) ->
-    bar:    @draw_bar(data)
-    under:  @draw_underflow(data)
-    over:   @draw_overflow(data)
+    data = merge @defaults, data.path.transform(data)
+    {
+      bar:    @draw_bar(data)
+      under:  @draw_underflow(data)
+      over:   @draw_overflow(data)
+    }
 
   draw_bar: (data) ->
-    data = merge @defaults, data.path.transform(data)
     data.svg.add_path "bar"+@id, data.path,
       class:                "bar"
       "stroke-width":       data.barWidth
@@ -55,7 +58,6 @@ class Bar extends Pointer
       "stroke-dasharray":   data.path.length()
 
   update_bar:  (data) ->
-    data  = data.path.transform(data)
     @elements.bar.node.setAttribute(
       "stroke-dashoffset"
       @elements.bar.length() * (1.0 - data.rl)
@@ -119,17 +121,26 @@ class Marker extends Pointer
     @draw data
 
   draw: (data) ->
-    # @marker = data.svg.add_shape @id, @config.shape,
-    #   fill: @config.color
-    #   r:    @config.radius
-    # @update data
+    @marker = data.svg.add_shape @id, @config.shape,
+      "stroke-width": @config.radius/2
+      fill:           @config.color
+      r:              @config.radius
+    @update data
 
   update: (data) ->
-    console.log data
+    coord = data.path.position data.rl
     @marker.update
-      cx:   500
-      cy:    50
+      cx:   coord.x
+      cy:   coord.y
 
+    if 0.0 < data.r < 1.0
+      @marker.update
+        fill:   @config.color
+        stroke: "none"
+    else
+      @marker.update
+        fill:   "none"
+        stroke: @config.color
 
 
 ## ============================================================
