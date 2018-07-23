@@ -1,6 +1,6 @@
 {merge, filter} = require './helpers.coffee'
 {Quantity}      = require './quantity.coffee'
-{PathH}         = require './path.coffee'
+{Horizontal}    = require './path.coffee'
 
 # ============================================================
 
@@ -22,22 +22,22 @@ exports.Scale = class Scale
   @create: (config, data) ->
     scale = {}
     for scale_id, cfg of config
-      switch cfg.type
-        when "horizontal"
-          scale[scale_id] = new Horizontal(scale_id, cfg, data)
-        else
-          scale[scale_id] = new Horizontal(scale_id, cfg, data)
-          # console.log "path type '#{cfg.type}' isn't implemented, yet."
+      scale[scale_id] = new Scale(scale_id, cfg, data)
     return scale
 
-  constructor: (@id, @path, config, data) ->
+  constructor: (@id, config, data) ->
     @config = merge @defaults, config
+
+    switch @config.type
+      when "horizontal"
+        @path = new Horizontal (merge @config, data)
+      else
+        @path = new Horizontal (merge @config, data)
 
     @elements = merge(
       @draw_elements(data)
       @create_subelements(data)
     )
-
 
   create_subelements: (data) ->
     quantities:   Quantity.create @config.quantity, @refine(data)
@@ -96,9 +96,3 @@ exports.Scale = class Scale
 
 
 # ============================================================
-
-exports.Horizontal = class Horizontal extends Scale
-
-  constructor: (id, config, data) ->
-    path = new PathH (merge config, data)
-    super id, path, config, data

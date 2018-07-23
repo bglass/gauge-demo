@@ -13,12 +13,16 @@ exports.SVG = class SVG
   ns = "http://www.w3.org/2000/svg"
 
   add_element: (id, type, attributes) ->
+    @new_tag id, type, attributes
+    new SVG(id, $("svg > #{type}##{id}")[0])
+
+  new_tag: (id, type, attributes) ->
     tag = document.createElementNS(ns, type)
     tag.setAttribute "id", id
     for key, value of attributes
       tag.setAttribute key, value
     @node.appendChild(tag)
-    new SVG(id, $("svg > #{type}##{id}")[0])
+
 
   add_text: (id, content, attributes) ->
     svg = @add_element id, "text", attributes
@@ -26,14 +30,13 @@ exports.SVG = class SVG
     return svg
 
   add_path: (id, path, attributes) ->
-    svg = @add_element id, "path", attributes
+    @new_tag id, "path", attributes
+    svg = new Path(id, $("svg > path##{id}")[0])
     svg.node.setAttribute "d", path.shape
     return svg
 
   add_polygon: (id, attributes) ->
     @add_element id, "polygon", attributes
-
-
 
   attr_str = (attributes) ->
     attr = []
@@ -43,6 +46,8 @@ exports.SVG = class SVG
 
   xml = (tag, content, attributes) ->
     return "<#{tag} #{attr_str attributes}>#{content}</#{tag}>"
+
+class Path extends SVG
 
   path_length: ->
     @node.getTotalLength()
