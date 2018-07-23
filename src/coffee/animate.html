@@ -18,4 +18,22 @@
     to="1"
     />
 </path>
+
+
+<defs>
+    <marker id="markerCircle" orient="auto" fill="orange" markerWidth="100" markerHeight="100" refX="0" refY="0">
+      <polygon id="underBar" class="underflow" points="0 0 50 -50 50 50" fill="orange" markerWidth="100" markerHeight="100" refX="0" refY="0"></polygon>
+    </marker>
+
+    <marker id="markerArrow" markerWidth="100" markerHeight="100" refX="0" refY="0"
+           orient="auto">
+           <circle cx="5" cy="5" r="3" style="stroke: none; fill:#000000;"/>
+        <!-- <path d="M2,2 L2,11 L10,6 L2,2" style="fill: #000000;" /> -->
+    </marker>
+</defs>
+
+<path d="M100,10 L150,10 L150,60"
+      style="stroke: #6666ff; stroke-width: 1px; fill: none;
+                   marker-start: url(#markerCircle);
+                   marker-end: url(#markerArrow);"/>
 </svg>

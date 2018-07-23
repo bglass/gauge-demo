@@ -44,18 +44,55 @@ class Bar extends Pointer
 
   draw_elements: (data) ->
     data = merge @defaults, data
+    bar  = @draw_bar(data)
+    defs = @create_marker_defs(data)
+
     {
-      bar:    @draw_bar(data)
-      under:  @draw_underflow(data)
-      over:   @draw_overflow(data)
+      bar:    bar
+      # under:  @draw_underflow(bar, data)
+      # over:   @draw_overflow(bar, data)
     }
+
+  create_marker_defs: (data) ->
+    defs = data.svg.add_defs "defs"+@id
+    marker_under = defs.add_marker "markerUnder",
+      orient: "auto"
+      fill:         "green"
+      # markerWidth:  100
+      # markerHeight: 100
+      refX:         0
+      refY:         0
+
+    poly_under = marker_under.add_polygon "under"+@id,
+      # visibility:   "hidden"
+      class:        'underflow'
+      points:       triangle_left(data)
+
+
+    marker_over  = defs.add_marker "markerOver",
+      orient: "auto"
+      fill:         "red"
+      markerWidth:  100
+      markerHeight: 100
+      refX:         0
+      refY:         0
+
+
+
+    poly_over = marker_over.add_polygon "over"+@id,
+      # visibility:   "hidden"
+      class:        'overflow'
+      points:       triangle_right(data)
+
 
   draw_bar: (data) ->
     data.svg.derive_path "bar"+@id, data.path,
       class:                "bar"
       "stroke-width":       data.barWidth
       stroke:               @config.barColor
-      "stroke-dasharray":   1.0
+      # "stroke-dasharray":   1.0
+      "marker-start":       "url(#markerUnder)"
+      "marker-end":         "url(#markerOver)"
 
   update_bar:  (data) ->
     @elements.bar.node.setAttribute(
@@ -63,31 +100,31 @@ class Bar extends Pointer
       1.0 - data.rl
     )
 
-  draw_underflow: (data) ->
-    data.svg.add_polygon "under"+@id,
-      visibility:   "hidden"
-      class:        'underflow'
-      points:       triangle_left(data)
-      fill:         @config.barColor
-
-  draw_overflow: (data) ->
-    data.svg.add_polygon "over"+@id,
-      visibility:   "hidden"
-      class:        'overflow'
-      points:       triangle_right(data)
-      fill:         @config.barColor
+  # draw_underflow: (data) ->
+  #   data.svg.add_polygon "under"+@id,
+  #     visibility:   "hidden"
+  #     class:        'underflow'
+  #     points:       triangle_left(data)
+  #     fill:         @config.barColor
+  #
+  # draw_overflow: (data) ->
+  #   data.svg.add_polygon "over"+@id,
+  #     visibility:   "hidden"
+  #     class:        'overflow'
+  #     points:       triangle_right(data)
+  #     fill:         @config.barColor
 
   triangle_left = (data) ->
-    y  = data.h/2
-    dx = dy = data.barWidth/2
-    "0 #{y} " +
-    "#{dx} #{y - dy} " +
-    "#{dx} #{y + dy}"
+    "0 0 50 -50 50 50"
+    #
+    # "0 #{y} " +
+    # "#{dx} #{y - dy} " +
+    # "#{dx} #{y + dy}"
 
   triangle_right = (data) ->
-    y  = data.h/2
+    y  = 0
     dx = dy = data.barWidth/2
-    w  = data.w
+    w  = 0
     "#{w     } #{y} " +
     "#{w - dx} #{y - dy} " +
     "#{w - dx} #{y + dy}"
@@ -104,8 +141,8 @@ class Bar extends Pointer
     else
       vo = "hidden"
 
-    @elements.under.node.setAttribute "visibility", vu
-    @elements.over.node.setAttribute "visibility", vo
+    # @elements.under.node.setAttribute "visibility", vu
+    # @elements.over.node.setAttribute "visibility", vo
 
 ## ============================================================
 
@@ -113,7 +150,7 @@ class Marker extends Pointer
 
   defaults:
     type:  "circle"
-    color:  "green"
+    color:  "yellow"
     radius: 25
 
   constructor: (id, config, data) ->

@@ -1,0 +1,60 @@
+<svg viewBox="0 0 1000 1000" id="T1">
+
+  <text id="T1" class="title" alignment-baseline="middle" text-anchor="start" font-size="100" font-weight="normal" x="0" y="100">
+    Eins
+  </text>
+
+  <path id="ticksS1" class="ticks" stroke-width="150" stroke="black" d="M 100 500 L 900 500" pathLength="1" fill="none" stroke-dasharray="0.01 0.485">
+  </path>
+
+  <path id="trackS1" class="track" stroke-width="100" stroke="#dddddd" d="M 100 500 L 900 500" pathLength="1" fill="none">
+  </path>
+
+  <text id="S1" class="label" alignment-baseline="middle" text-anchor="start" font-size="100" font-weight="normal" x="0" y="800">
+    Temperature
+  </text>
+
+  <path id="barBar" class="bar" stroke-width="100" stroke="#0000ff" stroke-dasharray="1" marker-start="url(#underBar)" marker-end="url(#overBar)" d="M 100 500 L 900 500" pathLength="1" fill="none" stroke-dashoffset="1">
+  </path>
+
+  <defs id="defsBar">
+    <marker id="markerUnder" orient="auto">
+
+      <polygon id="underBar" class="underflow" points="0 0 50 -50 50 50" fill="orange" markerWidth="100" markerHeight="100" refX="0" refY="0">
+      </polygon>
+
+      <polygon id="underBar2" class="underflow" points="0 0 50 -50 50 50" fill="orange" markerWidth="100" markerHeight="100" refX="0" refY="0">
+      </polygon>
+
+      <polygon id="underBar3" class="underflow" points="0 0 50 -50 50 50" fill="orange" markerWidth="100" markerHeight="100" refX="0" refY="0">
+      </polygon>
+
+      <polygon id="underBar4" class="underflow" points="0 0 50 -50 50 50" fill="orange" markerWidth="100" markerHeight="100" refX="0" refY="0">
+      </polygon>
+
+    </marker>
+    <marker id="markerOver" orient="auto">
+
+      <polygon id="overBar" class="overflow" points="0 0 -50 -50 -50 50" fill="orange" markerWidth="100" markerHeight="100" refX="0" refY="0">
+      </polygon>
+
+      <polygon id="overBar2" class="overflow" points="0 0 -50 -50 -50 50" fill="orange" markerWidth="100" markerHeight="100" refX="0" refY="0">
+      </polygon>
+
+      <polygon id="overBar3" class="overflow" points="0 0 -50 -50 -50 50" fill="orange" markerWidth="100" markerHeight="100" refX="0" refY="0">
+      </polygon>
+
+      <polygon id="overBar4" class="overflow" points="0 0 -50 -50 -50 50" fill="orange" markerWidth="100" markerHeight="100" refX="0" refY="0">
+      </polygon>
+
+    </marker>
+  </defs>
+
+  <text id="Digital" class="digital" alignment-baseline="middle" text-anchor="end" font-size="100" font-weight="bold" x="1000" y="800">
+    -22 K
+  </text>
+
+  <circle id="Mark1" stroke-width="12.5" fill="yellow" r="25" cx="500" cy="500" stroke="none">
+  </circle>
+
+</svg>

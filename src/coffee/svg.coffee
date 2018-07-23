@@ -15,9 +15,10 @@ exports.SVG = class SVG
 
   add_element: (id, type, attributes) ->
     @new_tag id, type, attributes
-    new SVG(id, $("svg > #{type}##{id}")[0])
+    new SVG(id, $("svg #{type}##{id}")[0])
 
   new_tag: (id, type, attributes) ->
+    # console.log id, type, attributes
     tag = document.createElementNS(ns, type)
     tag.setAttribute "id", id
     for key, value of attributes
@@ -52,6 +53,12 @@ exports.SVG = class SVG
     switch shape
       when "circle"
         @add_element id, shape, attributes
+
+  add_defs: (id) ->
+    @add_element id, "defs", {}
+
+  add_marker: (id, attributes) ->
+    @add_element id, "marker", attributes
 
   attr_str = (attributes) ->
     attr = []
