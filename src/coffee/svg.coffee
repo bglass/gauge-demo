@@ -70,7 +70,7 @@ exports.SVG = class SVG
 class Path extends SVG
 
   position: (distance) ->
-    @node.getPointAtLength distance
+    @node.getPointAtLength distance * @node.getTotalLength()
 
   @shape: (cfg) ->
     switch cfg.type
