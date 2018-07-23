@@ -2,17 +2,18 @@
 
 # ============================================================
 
-class Path
+class Shape
 
   constructor: (@shape) ->
 
-  shape: ->
+  descriptor: ->
     @shape
+
 
 
 # ============================================================
 
-exports.Horizontal = class Horizontal extends Path
+exports.Horizontal = class Horizontal extends Shape
 
   constructor: (data) ->
     super horizontal(data)

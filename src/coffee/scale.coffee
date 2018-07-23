@@ -30,12 +30,16 @@ exports.Scale = class Scale
 
     switch @config.type
       when "horizontal"
-        @path = new Horizontal (merge @config, data)
+        @path_descriptor = new Horizontal (merge @config, data)
       else
-        @path = new Horizontal (merge @config, data)
+        @path_descriptor = new Horizontal (merge @config, data)
+
+    elements = @draw_elements(data)
+    @track = elements.track
+    @track.transform = @path_descriptor.transform
 
     @elements = merge(
-      @draw_elements(data)
+      elements
       @create_subelements(data)
     )
 
@@ -47,7 +51,7 @@ exports.Scale = class Scale
     unit:             @config.unit
     v0:               @config.v0
     v1:               @config.v1
-    path:             @path
+    path:             @track
     svg:              data.svg
     w:                data.w
     h:                data.h
@@ -58,13 +62,13 @@ exports.Scale = class Scale
     label:  @draw_label data
 
   draw_track: (data) ->
-    data.svg.add_path "track"+@id, @path,
+    data.svg.add_path "track"+@id, @path_descriptor,
       class:                "track"
       "stroke-width":       @config.barWidth
       stroke:               @config.trackColor
 
   draw_ticks: (data) ->
-    ticks = data.svg.add_path "ticks"+@id, @path,
+    ticks = data.svg.add_path "ticks"+@id, @path_descriptor,
       class:                "ticks"
       "stroke-width":       @config.tickWidth
       stroke:               @config.tickColor

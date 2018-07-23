@@ -16,6 +16,10 @@ exports.Quantity = class Quantity
   constructor: (@id, config, data) ->
     @config = merge @defaults, config
     @value = @config.value
+
+    # console.log data
+
+
     @pointers = Pointer.create @config.pointer, @refine data,
 
 

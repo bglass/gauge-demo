@@ -1,5 +1,4 @@
 {merge}           = require './helpers.coffee'
-{Circle}          = require './shape.coffee'
 
 # ============================================================
 
@@ -36,7 +35,6 @@ class Bar extends Pointer
     super id, config
 
     @elements = @draw_elements(data)
-    @setup_bar()
     @update(data)
 
   update: (data) ->
@@ -54,16 +52,13 @@ class Bar extends Pointer
       class:                "bar"
       "stroke-width":       data.barWidth
       stroke:               @config.barColor
-
-  setup_bar: ->
-    @path_length = @elements.bar.path_length()
-    @elements.bar.node.setAttribute "stroke-dasharray", @path_length
+      "stroke-dasharray":   data.path.length()
 
   update_bar:  (data) ->
     data  = data.path.transform(data)
     @elements.bar.node.setAttribute(
       "stroke-dashoffset"
-      @path_length * (1.0 - data.rl)
+      @elements.bar.length() * (1.0 - data.rl)
     )
 
   draw_underflow: (data) ->
@@ -124,10 +119,10 @@ class Marker extends Pointer
     @draw data
 
   draw: (data) ->
-    @marker = data.svg.add_shape @id, @config.shape,
-      fill: @config.color
-      r:    @config.radius
-    @update data
+    # @marker = data.svg.add_shape @id, @config.shape,
+    #   fill: @config.color
+    #   r:    @config.radius
+    # @update data
 
   update: (data) ->
     console.log data

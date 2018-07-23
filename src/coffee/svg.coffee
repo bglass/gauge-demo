@@ -1,6 +1,7 @@
 exports.SVG = class SVG
 
   constructor: (@id, @node)->
+    @me = "SVG"
 
   @add_viewbox: (id, xywh) ->
     $("div#" + id).append(
@@ -33,6 +34,7 @@ exports.SVG = class SVG
     @new_tag id, "path", attributes
     svg = new Path(id, $("svg > path##{id}")[0])
     svg.node.setAttribute "d", path.shape
+    svg.shape = path.shape
     return svg
 
   add_polygon: (id, attributes) ->
@@ -59,7 +61,7 @@ exports.SVG = class SVG
 
 class Path extends SVG
 
-  path_length: ->
+  length: ->
     @node.getTotalLength()
 
   position: (distance) ->
