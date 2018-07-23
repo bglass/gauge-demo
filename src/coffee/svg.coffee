@@ -35,6 +35,7 @@ exports.SVG = class SVG
     svg = new Path(id, $("svg > path##{id}")[0])
     svg.node.setAttribute "d", shape
     svg.node.setAttribute "pathLength", 1.0
+    svg.node.setAttribute "fill", "none"
     svg.shape = shape
     return svg
 
@@ -78,6 +79,8 @@ class Path extends SVG
         horizontal cfg
       when "vertical"
         vertical cfg
+      when "circular_arc"
+        circular_arc cfg
 
   horizontal = (data) ->
     x0 = data.w * .1
@@ -90,6 +93,17 @@ class Path extends SVG
     y1 = data.h * .9
     x  = data.w / 2
     "M #{x} #{y1} V #{y0}"
+
+
+  circular_arc = (data) ->
+    r  = data.w*.8
+    mx = data.w*.9;       my = data.h*.9
+    sx = mx-r;            sy = my
+
+    "M #{sx} #{sy} a #{r} #{r} 0 0 1 #{r} #{-r}"
+
+
+
 
 
 # =============================================================================
