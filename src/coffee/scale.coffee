@@ -1,6 +1,6 @@
 {merge, filter} = require './helpers.coffee'
 {Quantity}      = require './quantity.coffee'
-{Horizontal}    = require './path.coffee'
+# {Horizontal}    = require './path.coffee'
 
 # ============================================================
 
@@ -13,7 +13,7 @@ exports.Scale = class Scale
     v1:               30
     barWidth:         100
     tickWidth:        150
-    tickThickness:    4
+    tickThickness:    1/100
     tickDivisions:    4
     type:             "horizontal"
     trackColor:       "#dddddd"
@@ -28,18 +28,9 @@ exports.Scale = class Scale
   constructor: (@id, config, data) ->
     @config = merge @defaults, config
 
-    switch @config.type
-      when "horizontal"
-        @path_descriptor = new Horizontal (merge @config, data)
-      else
-        @path_descriptor = new Horizontal (merge @config, data)
-
-    elements = @draw_elements(data)
-    @track = elements.track
-    @track.transform = @path_descriptor.transform
 
     @elements = merge(
-      elements
+      @draw_elements(data)
       @create_subelements(data)
     )
 
@@ -51,7 +42,7 @@ exports.Scale = class Scale
     unit:             @config.unit
     v0:               @config.v0
     v1:               @config.v1
-    path:             @track
+    path:             @path_template
     svg:              data.svg
     w:                data.w
     h:                data.h
@@ -61,25 +52,26 @@ exports.Scale = class Scale
     track:  @draw_track data
     label:  @draw_label data
 
-  draw_track: (data) ->
-    data.svg.add_path "track"+@id, @path_descriptor,
-      class:                "track"
-      "stroke-width":       @config.barWidth
-      stroke:               @config.trackColor
-
   draw_ticks: (data) ->
-    ticks = data.svg.add_path "ticks"+@id, @path_descriptor,
+    ticks = data.svg.new_path "ticks"+@id, (merge @config, data),
       class:                "ticks"
       "stroke-width":       @config.tickWidth
       stroke:               @config.tickColor
     ticks.node.setAttribute "stroke-dasharray",
                             tick_definition(ticks, @config)
 
+  draw_track: (data) ->
+    @path_template =
+      data.svg.new_path "track"+@id, (merge @config, data),
+        class:                "track"
+        "stroke-width":       @config.barWidth
+        stroke:               @config.trackColor
+
+
   tick_definition = (tag, cfg) ->
-    l = tag.node.getTotalLength()
     a = cfg.tickThickness
     n = cfg.tickDivisions
-    b = (l-a*(n+1))/n
+    b = (1 - a*(n+1) ) / n
     return "#{a} #{b}"
 
   draw_label: (data) ->

@@ -30,12 +30,19 @@ exports.SVG = class SVG
     svg.node.textContent = content
     return svg
 
-  add_path: (id, path, attributes) ->
+  add_path: (id, shape, attributes) ->
     @new_tag id, "path", attributes
     svg = new Path(id, $("svg > path##{id}")[0])
-    svg.node.setAttribute "d", path.shape
-    svg.shape = path.shape
+    svg.node.setAttribute "d", shape
+    svg.node.setAttribute "pathLength", 1.0
+    svg.shape = shape
     return svg
+
+  derive_path: (id, template, attributes) ->
+    @add_path id, template.shape, attributes
+
+  new_path: (id, config, attributes) ->
+    @add_path id, (Path.shape config), attributes
 
   add_polygon: (id, attributes) ->
     @add_element id, "polygon", attributes
@@ -58,11 +65,31 @@ exports.SVG = class SVG
     for key, value of attributes
       @node.setAttribute key, value
 
+# =============================================================================
 
 class Path extends SVG
 
-  length: ->
-    @node.getTotalLength()
-
   position: (distance) ->
-    @node.getPointAtLength distance * @length()
+    @node.getPointAtLength distance
+
+  @shape: (cfg) ->
+    switch cfg.type
+      when "horizontal"
+        horizontal cfg
+      when "vertical"
+        vertical cfg
+
+  horizontal = (data) ->
+    x0 = data.w * .1
+    x1 = data.w * .9
+    y  = data.h / 2
+    "M #{x0} #{y} L #{x1} #{y}"
+
+  vertical = (data) ->
+    y0 = data.h * .1
+    y1 = data.h * .9
+    x  = data.w / 2
+    "M #{x} #{y1} V #{y0}"
+
+
+# =============================================================================

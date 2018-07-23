@@ -34,7 +34,7 @@ $ ->
       scale:
         "S2":
           label: "Criticality"
-          type:  "horizontal"
+          type:  "vertical"
           tickDivisions: 3
           quantity:
             "main":

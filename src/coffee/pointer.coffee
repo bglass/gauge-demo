@@ -38,12 +38,12 @@ class Bar extends Pointer
     @update(data)
 
   update: (data) ->
-    data = merge @defaults, data.path.transform(data)
+    data = merge @defaults, data
     @update_bar(data)
     @update_out_of_range(data)
 
   draw_elements: (data) ->
-    data = merge @defaults, data.path.transform(data)
+    data = merge @defaults, data
     {
       bar:    @draw_bar(data)
       under:  @draw_underflow(data)
@@ -51,16 +51,16 @@ class Bar extends Pointer
     }
 
   draw_bar: (data) ->
-    data.svg.add_path "bar"+@id, data.path,
+    data.svg.derive_path "bar"+@id, data.path,
       class:                "bar"
       "stroke-width":       data.barWidth
       stroke:               @config.barColor
-      "stroke-dasharray":   data.path.length()
+      "stroke-dasharray":   1.0
 
   update_bar:  (data) ->
     @elements.bar.node.setAttribute(
       "stroke-dashoffset"
-      @elements.bar.length() * (1.0 - data.rl)
+      1.0 - data.rl
     )
 
   draw_underflow: (data) ->

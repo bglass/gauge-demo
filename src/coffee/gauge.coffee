@@ -8,8 +8,8 @@ exports.Gauge = class Gauge
 
   defaults:
     title: ""
-    width: 1000
-    height: 500
+    width:  1000
+    height: 1000
 
   @create: (config) ->
     gauges = []
