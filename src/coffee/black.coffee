@@ -26,7 +26,9 @@ $ ->
                 "Digital":  type: "digital"
             "preset":
               pointer:
-                "X": type: "marker"
+                "Mark1":
+                  type:  "marker"
+                  shape: "circle"
     "T2":
       title: "Zwei"
       scale:
@@ -39,9 +41,9 @@ $ ->
               pointer: 
                 "Bar2":      type: "bar"
                 "Digital2":  type: "digital"
-            "preset":
-              pointer:
-                "X2": type: "marker"
+            # "preset":
+            #   pointer:
+            #     "X2": type: "marker"
     "T3":
       title: "Drei"
       scale:
@@ -54,9 +56,9 @@ $ ->
               pointer: 
                 "Bar3":      type: "bar"
                 "Digital3":  type: "digital"
-            "preset":
-              pointer:
-                "X3": type: "marker"
+            # "preset":
+            #   pointer:
+            #     "X3": type: "marker"
     "T4":
       title: "Vier"
       scale:
@@ -69,9 +71,9 @@ $ ->
               pointer: 
                 "Bar4":      type: "bar"
                 "Digital4":  type: "digital"
-            "preset":
-              pointer:
-                "X4": type: "marker"
+            # "preset":
+            #   pointer:
+            #     "X4": type: "marker"
 
 
 

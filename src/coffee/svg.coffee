@@ -38,6 +38,11 @@ exports.SVG = class SVG
   add_polygon: (id, attributes) ->
     @add_element id, "polygon", attributes
 
+  add_shape: (id, shape, attributes) ->
+    switch shape
+      when "circle"
+        @add_element id, shape, attributes
+
   attr_str = (attributes) ->
     attr = []
     for key, value of attributes
@@ -47,7 +52,15 @@ exports.SVG = class SVG
   xml = (tag, content, attributes) ->
     return "<#{tag} #{attr_str attributes}>#{content}</#{tag}>"
 
+  update: (attributes) ->
+    for key, value of attributes
+      @node.setAttribute key, value
+
+
 class Path extends SVG
 
   path_length: ->
     @node.getTotalLength()
+
+  position: (distance) ->
+    @node.getPointAtLength(distance)

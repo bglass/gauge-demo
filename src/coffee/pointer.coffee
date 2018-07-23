@@ -8,6 +8,7 @@ exports.Pointer = class Pointer
   defaults: {}
 
   @create: (config, data) ->
+
     pointers = []
     for ptr_id, cfg of config
       switch cfg.type
@@ -113,18 +114,27 @@ class Bar extends Pointer
 
 class Marker extends Pointer
 
-  view: (data) ->
-
   defaults:
-    size:   50
     type:  "circle"
     color:  "green"
+    radius: 25
 
-  constructor: (config, data0) ->
-    super config
-    switch config.type
-      when "circle"
-        @shape = new Circle @config
+  constructor: (id, config, data) ->
+    super id, config
+    @draw data
+
+  draw: (data) ->
+    @marker = data.svg.add_shape @id, @config.shape,
+      fill: @config.color
+      r:    @config.radius
+    @update data
+
+  update: (data) ->
+    console.log data
+    @marker.update
+      cx:   500
+      cy:    50
+
 
 
 ## ============================================================
@@ -133,9 +143,9 @@ class Digital extends Pointer
 
   constructor: (id, config, data) ->
     super id, config
-    @draw_display data
+    @draw data
 
-  draw_display: (data) ->
+  draw: (data) ->
     @display = data.svg.add_text @id, "",
       class:                "digital"
       "alignment-baseline": "middle"
