@@ -75,20 +75,6 @@ exports.SVG = class SVG
   scale_polygon = (size, data) ->
     data.map (number) -> size*number
 
-  # triangle_right = (size) ->
-  #   s1 = size; s2 = size/2
-  #   [ 0, 0,   s2, s1,   -s2, s1 ].join(" ")
-  #
-  # triangle_left = (size) ->
-  #   s1 = size; s2 = size/2
-  #   [ 0, 0,   s2, -s1,   -s2, -s1 ].join(" ")
-  #
-  # needle1 = (size) ->
-  #
-  #   []
-
-
-
   add_defs: (id) ->
     @add_element id, "defs", {}
 
