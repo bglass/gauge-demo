@@ -46,43 +46,44 @@ class Bar extends Pointer
     data = merge @defaults, data
     bar  = @draw_bar(data)
     defs = @create_marker_defs(data)
-
     {
       bar:    bar
-      # under:  @draw_underflow(bar, data)
-      # over:   @draw_overflow(bar, data)
+      under:  $("svg").find("#underflow"+@id)[0]
+      over:   $("svg").find("#overflow"+@id)[0]
     }
 
   create_marker_defs: (data) ->
+    triangle_left  = ".5,0 1,.5 .5,1"
+    triangle_right = "0,.5 .5,0 .5,1"
     defs = data.svg.add_defs "defs"+@id
-    marker_under = defs.add_marker "markerUnder",
+    marker_under = defs.add_marker "markerUnder"+@id,
       orient: "auto"
-      fill:         "green"
-      # markerWidth:  100
-      # markerHeight: 100
-      refX:         0
-      refY:         0
+      fill:         "skyblue"
+      markerWidth:  1
+      markerHeight: 1
+      refX:         .75
+      refY:         .5
 
-    poly_under = marker_under.add_polygon "under"+@id,
-      # visibility:   "hidden"
+    poly_under = marker_under.add_polygon "underflow"+@id,
+      visibility:   "hidden"
       class:        'underflow'
-      points:       triangle_left(data)
+      points:       triangle_right
 
 
-    marker_over  = defs.add_marker "markerOver",
+    marker_over  = defs.add_marker "markerOver"+@id,
       orient: "auto"
-      fill:         "red"
-      markerWidth:  100
-      markerHeight: 100
-      refX:         0
-      refY:         0
+      fill:         "tomato"
+      markerWidth:  1
+      markerHeight: 1
+      refX:         .25
+      refY:         .5
 
-
-
-    poly_over = marker_over.add_polygon "over"+@id,
-      # visibility:   "hidden"
+    poly_over = marker_over.add_polygon "overflow"+@id,
+      visibility:   "hidden"
       class:        'overflow'
-      points:       triangle_right(data)
+      points:       triangle_left
+
+
 
 
   draw_bar: (data) ->
@@ -90,45 +91,15 @@ class Bar extends Pointer
       class:                "bar"
       "stroke-width":       data.barWidth
       stroke:               @config.barColor
-      # "stroke-dasharray":   1.0
-      "marker-start":       "url(#markerUnder)"
-      "marker-end":         "url(#markerOver)"
+      "stroke-dasharray":   1.0
+      "marker-start":       "url('#markerUnder#{@id}')"
+      "marker-end":         "url('#markerOver#{@id}')"
 
   update_bar:  (data) ->
     @elements.bar.node.setAttribute(
       "stroke-dashoffset"
       1.0 - data.rl
     )
-
-  # draw_underflow: (data) ->
-  #   data.svg.add_polygon "under"+@id,
-  #     visibility:   "hidden"
-  #     class:        'underflow'
-  #     points:       triangle_left(data)
-  #     fill:         @config.barColor
-  #
-  # draw_overflow: (data) ->
-  #   data.svg.add_polygon "over"+@id,
-  #     visibility:   "hidden"
-  #     class:        'overflow'
-  #     points:       triangle_right(data)
-  #     fill:         @config.barColor
-
-  triangle_left = (data) ->
-    "0 0 50 -50 50 50"
-    #
-    # "0 #{y} " +
-    # "#{dx} #{y - dy} " +
-    # "#{dx} #{y + dy}"
-
-  triangle_right = (data) ->
-    y  = 0
-    dx = dy = data.barWidth/2
-    w  = 0
-    "#{w     } #{y} " +
-    "#{w - dx} #{y - dy} " +
-    "#{w - dx} #{y + dy}"
-
 
   update_out_of_range: (data) ->
     if data.r < 0.0
@@ -141,8 +112,8 @@ class Bar extends Pointer
     else
       vo = "hidden"
 
-    # @elements.under.node.setAttribute "visibility", vu
-    # @elements.over.node.setAttribute "visibility", vo
+    @elements.under.setAttribute "visibility", vu
+    @elements.over.setAttribute "visibility", vo
 
 ## ============================================================
 

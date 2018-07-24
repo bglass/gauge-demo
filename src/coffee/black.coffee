@@ -1,4 +1,4 @@
-import static_content from '../pug/document.pug'
+import main_grid      from '../pug/main_grid.pug'
 
 
 require("expose-loader?$!jquery")
@@ -8,7 +8,7 @@ require("expose-loader?$!jquery")
 
 
 $ ->
-  $('html').append static_content()  # < pug/document.pug
+  $('body').append main_grid()  # < pug/document.pug
 
   Gauge.create
     "T1":
@@ -87,4 +87,4 @@ $ ->
   Gauge.setValue "T3": {preset: 20}
 
   Gauge.setValue "T2": {main: 15}
-  Gauge.setValue "T3": {main: 50}, "T4": {main: 188}
+  Gauge.setValue "T3": {main: 25}, "T4": {main: 188}
