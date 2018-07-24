@@ -135,11 +135,6 @@ class Marker extends Pointer
     @update data
 
 
-
-
-
-
-
   update: (data) ->
 
     @motion.update

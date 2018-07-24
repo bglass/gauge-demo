@@ -28,7 +28,7 @@ $ ->
               pointer:
                 "Mark1":
                   type:  "marker"
-                  shape: "circle"
+                  shape: "left"
     "T2":
       title: "Zwei"
       scale:
@@ -56,11 +56,21 @@ $ ->
               pointer: 
                 "Bar3":      type: "bar"
                 "Digital3":  type: "digital"
-            "preset":
+            "prea":
               pointer:
-                "Mark3":
+                "Mark3a":
+                  type:  "marker"
+                  shape: "left"
+            "preb":
+              pointer:
+                "Mark3b":
                   type:  "marker"
                   shape: "circle"
+            "prec":
+              pointer:
+                "Mark3c":
+                  type:  "marker"
+                  shape: "right"
     "T4":
       title: "Vier"
       scale:
@@ -84,7 +94,10 @@ $ ->
 
   Gauge.setValue "T1": {main: -22}
   Gauge.setValue "T1": {preset: 20}
-  Gauge.setValue "T3": {preset: 20}
 
   Gauge.setValue "T2": {main: 15}
   Gauge.setValue "T3": {main: 25}, "T4": {main: 188}
+
+  Gauge.setValue "T3": {prea: 15}
+  Gauge.setValue "T3": {preb: 20}
+  Gauge.setValue "T3": {prec: 25}

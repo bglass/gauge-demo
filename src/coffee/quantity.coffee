@@ -4,7 +4,7 @@
 exports.Quantity = class Quantity
 
   defaults:
-    value: 77.0
+    value: 0
     pointer: [{type: "bar"}, {type: "digital"}]
 
   @create: (config, data) ->

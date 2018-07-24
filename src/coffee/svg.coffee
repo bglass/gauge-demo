@@ -1,3 +1,6 @@
+{merge}    = require './helpers.coffee'
+
+
 exports.SVG = class SVG
 
   constructor: (@id, @node)->
@@ -53,6 +56,23 @@ exports.SVG = class SVG
     switch shape
       when "circle"
         @add_element id, shape, attributes
+      when "left"
+        @add_polygon id, merge
+          points: triangle_left(100),
+          attributes
+      when "right"
+        @add_polygon id, merge
+          points: triangle_right(100),
+          attributes
+
+  triangle_right = (size) ->
+    s1 = size; s2 = size/2
+    [ 0, 0,   s2, s1,   -s2, s1 ].join(" ")
+
+  triangle_left = (size) ->
+    s1 = size; s2 = size/2
+    [ 0, 0,   s2, -s1,   -s2, -s1 ].join(" ")
+
 
   add_defs: (id) ->
     @add_element id, "defs", {}
@@ -64,7 +84,7 @@ exports.SVG = class SVG
   follow_path: (target) ->
     motion = @add_element "motion"+@id, "animateMotion",
       rotate:           "auto"
-      dur:              "2s"
+      dur:              ".5s"
       keyTimes:         "0;1"
       keyPoints:        "0;0"
       calcMode:         "linear"
