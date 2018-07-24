@@ -1,11 +1,11 @@
 {merge}    = require './helpers.coffee'
-{Pointer}  = require './pointer.coffee'
+{Indicator}  = require './indicator.coffee'
 
 exports.Quantity = class Quantity
 
   defaults:
     value: 0
-    pointer: [{type: "bar"}, {type: "digital"}]
+    indicator: [{type: "bar"}, {type: "digital"}]
 
   @create: (config, data) ->
     quantity = {}
@@ -20,7 +20,7 @@ exports.Quantity = class Quantity
     # console.log data
 
 
-    @pointers = Pointer.create @config.pointer, @refine data,
+    @indicators = Indicator.create @config.indicator, @refine data,
 
 
   refine: (data) ->
@@ -43,5 +43,5 @@ exports.Quantity = class Quantity
 
 
   setValue: (data, @value) ->
-    for pointer in @pointers
-      pointer.update(@refine data)
+    for indicator in @indicators
+      indicator.update(@refine data)

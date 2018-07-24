@@ -2,31 +2,31 @@
 
 # ============================================================
 
-exports.Pointer = class Pointer
+exports.Indicator = class Indicator
 
   defaults: {}
 
   @create: (config, data) ->
 
-    pointers = []
+    indicators = []
     for ptr_id, cfg of config
       switch cfg.type
         when "bar"
-          pointers.push (new Bar(     ptr_id, cfg, data))
+          indicators.push (new Bar(     ptr_id, cfg, data))
         when "digital"
-          pointers.push (new Digital( ptr_id, cfg, data))
-        when "marker"
-          pointers.push (new Marker(  ptr_id, cfg, data))
+          indicators.push (new Digital( ptr_id, cfg, data))
+        when "pointer"
+          indicators.push (new Pointer(  ptr_id, cfg, data))
         else
-          console.log "pointer type '#{cfg.type}' isn't implemented, yet."
-    return pointers
+          console.log "indicator type '#{cfg.type}' isn't implemented, yet."
+    return indicators
 
   constructor: (@id, config) ->
     @config = merge @defaults, config
 
 # ============================================================
 
-class Bar extends Pointer
+class Bar extends Indicator
 
   defaults:
     barColor:       "#0000ff"
@@ -114,7 +114,7 @@ class Bar extends Pointer
 
 ## ============================================================
 
-class Marker extends Pointer
+class Pointer extends Indicator
 
   defaults:
     type:  "circle"
@@ -126,11 +126,11 @@ class Marker extends Pointer
     @draw data
 
   draw: (data) ->
-    @marker = data.svg.add_shape @id, @config.shape,
+    @pointer = data.svg.add_shape @id, @config.shape,
       "stroke-width": @config.radius/2
       fill:           @config.color
       r:              @config.radius
-    @motion = @marker.follow_path(data.path)
+    @motion = @pointer.follow_path(data.path)
     @previous = 0
     @update data
 
@@ -142,23 +142,23 @@ class Marker extends Pointer
     @previous = data.rl
 
     # coord = data.path.position data.rl
-    # @marker.update
+    # @pointer.update
     #   cx:   coord.x
     #   cy:   coord.y
 
     # if 0.0 < data.r < 1.0
-    #   @marker.update
+    #   @pointer.update
     #     fill:   @config.color
     #     stroke: "none"
     # else
-    #   @marker.update
+    #   @pointer.update
     #     fill:   "none"
     #     stroke: @config.color
 
 
 ## ============================================================
 
-class Digital extends Pointer
+class Digital extends Indicator
 
   constructor: (id, config, data) ->
     super id, config

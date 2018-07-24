@@ -21,13 +21,13 @@ $ ->
           tickDivisions: 2
           quantity:
             "main":
-              pointer: 
+              indicator: 
                 "Bar":      type: "bar"
                 "Digital":  type: "digital"
             "preset":
-              pointer:
+              indicator:
                 "Mark1":
-                  type:  "marker"
+                  type:  "pointer"
                   shape: "left"
     "T2":
       title: "Zwei"
@@ -38,12 +38,12 @@ $ ->
           tickDivisions: 3
           quantity:
             "main":
-              pointer: 
+              indicator: 
                 "Bar2":      type: "bar"
                 "Digital2":  type: "digital"
             # "preset":
-            #   pointer:
-            #     "X2": type: "marker"
+            #   indicator:
+            #     "X2": type: "pointer"
     "T3":
       title: "Drei"
       scale:
@@ -53,23 +53,23 @@ $ ->
           tickDivisions: 5
           quantity:
             "main":
-              pointer: 
+              indicator: 
                 "Bar3":      type: "bar"
                 "Digital3":  type: "digital"
             "prea":
-              pointer:
+              indicator:
                 "Mark3a":
-                  type:  "marker"
+                  type:  "pointer"
                   shape: "left"
             "preb":
-              pointer:
+              indicator:
                 "Mark3b":
-                  type:  "marker"
+                  type:  "pointer"
                   shape: "circle"
             "prec":
-              pointer:
+              indicator:
                 "Mark3c":
-                  type:  "marker"
+                  type:  "pointer"
                   shape: "right"
     "T4":
       title: "Vier"
@@ -80,12 +80,12 @@ $ ->
           tickDivisions: 10
           quantity:
             "main":
-              pointer: 
+              indicator: 
                 "Bar4":      type: "bar"
                 "Digital4":  type: "digital"
             # "preset":
-            #   pointer:
-            #     "X4": type: "marker"
+            #   indicator:
+            #     "X4": type: "pointer"
 
 
 
