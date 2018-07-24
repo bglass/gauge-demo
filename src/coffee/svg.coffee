@@ -60,6 +60,18 @@ exports.SVG = class SVG
   add_marker: (id, attributes) ->
     @add_element id, "marker", attributes
 
+
+  follow_path: (target) ->
+    motion = @add_element "motion"+@id, "animateMotion",
+      rotate:           "auto"
+      dur:              "2s"
+      keyTimes:         "0;1"
+      keyPoints:        "0;0"
+      calcMode:         "linear"
+      fill:             "freeze"
+      path:             target.shape
+    return motion
+
   attr_str = (attributes) ->
     attr = []
     for key, value of attributes
@@ -72,6 +84,9 @@ exports.SVG = class SVG
   update: (attributes) ->
     for key, value of attributes
       @node.setAttribute key, value
+
+
+
 
 # =============================================================================
 

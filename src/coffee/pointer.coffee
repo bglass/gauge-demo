@@ -83,9 +83,6 @@ class Bar extends Pointer
       class:        'overflow'
       points:       triangle_left
 
-
-
-
   draw_bar: (data) ->
     data.svg.derive_path "bar"+@id, data.path,
       class:                "bar"
@@ -121,8 +118,8 @@ class Marker extends Pointer
 
   defaults:
     type:  "circle"
-    color:  "yellow"
-    radius: 25
+    color:  "orange"
+    radius: 50
 
   constructor: (id, config, data) ->
     super id, config
@@ -133,22 +130,35 @@ class Marker extends Pointer
       "stroke-width": @config.radius/2
       fill:           @config.color
       r:              @config.radius
+    @motion = @marker.follow_path(data.path)
+    @previous = 0
     @update data
 
-  update: (data) ->
-    coord = data.path.position data.rl
-    @marker.update
-      cx:   coord.x
-      cy:   coord.y
 
-    if 0.0 < data.r < 1.0
-      @marker.update
-        fill:   @config.color
-        stroke: "none"
-    else
-      @marker.update
-        fill:   "none"
-        stroke: @config.color
+
+
+
+
+
+  update: (data) ->
+
+    @motion.update
+      keyPoints:        @previous + ";" + data.rl
+    @previous = data.rl
+
+    # coord = data.path.position data.rl
+    # @marker.update
+    #   cx:   coord.x
+    #   cy:   coord.y
+
+    # if 0.0 < data.r < 1.0
+    #   @marker.update
+    #     fill:   @config.color
+    #     stroke: "none"
+    # else
+    #   @marker.update
+    #     fill:   "none"
+    #     stroke: @config.color
 
 
 ## ============================================================

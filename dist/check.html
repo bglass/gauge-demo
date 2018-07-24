@@ -1,5 +1,6 @@
-<html>
-  <head>
+<html><head><script src="main.js" async=""></script>
+
+
     <meta charset="UTF-8">
     <title>pug - coffee - jquery</title>
   <style type="text/css">
@@ -8,8 +9,7 @@
   grid-template-columns: 50% 50%;
   grid-template-rows: 50% 50%;
 }
-</style>
-<style type="text/css">/* https://stackoverflow.com/questions/20456694/grid-of-responsive-squares */
+</style><style type="text/css">/* https://stackoverflow.com/questions/20456694/grid-of-responsive-squares */
 .square {
   float:left;
   position: relative;
@@ -37,8 +37,7 @@
     height:100%;
     width:100%;
 }
-</style>
-<style type="text/css">
+</style><style type="text/css">
 .gauge {
   padding: 10%;
 }
@@ -56,53 +55,13 @@
 .gauge text {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-</style>
-<style type="text/css">
-div {
+</style><style type="text/css">div {
  color: #0000ff;
 }
 
 #T2 {
   color: #00ff00;
 }
-</style>
-</head>
+</style></head>
   <body>
-    <div class="grid">
-      <div class="square">
-        <div class="content">
-          <div class="table">
-            <div class="gauge" id="T1">
-              <svg viewBox="0 0 1000 1000" id="T1">
-
-                <defs id="defsBar">
-                  <marker id="markerUnder" fill="green"
-                          orient="auto"
-                          markerWidth="2" markerHeight="2" refX=".75" refY=".5">
-                    <polygon id="underBar" class="underflow"
-                      points="0,.5 .5,0 .5,1">
-                    </polygon>
-                  </marker>
-
-                  <marker id="markerOver" orient="auto" fill="red"
-                      markerWidth="1" markerHeight="1" refX=".25" refY=".5">
-                    <polygon id="overBar" class="overflow"
-                      points=".5,0 1,.5 .5,1">
-                    </polygon>
-                  </marker>
-                </defs>
-
-                <path id="barBar" class="bar" stroke-width="100" stroke="grey"
-                      d="M 100 500 L 900 500" pathLength="1" fill="none" stroke-dashoffset="1"
-                      marker-start = "url('#markerUnder')"
-                      marker-end   = "url('#markerOver')" >
-                </path>
-
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
-</html>
+<div class="grid"><div class="square"><div class="content"><div class="table"><div class="gauge" id="T1"><svg viewBox="0 0 1000 1000" id="T1"><text id="T1" class="title" alignment-baseline="middle" text-anchor="start" font-size="100" font-weight="normal" x="0" y="100">Eins</text><path id="ticksS1" class="ticks" stroke-width="150" stroke="black" d="M 100 500 L 900 500" pathLength="1" fill="none" stroke-dasharray="0.01 0.485"></path><path id="trackS1" class="track" stroke-width="100" stroke="#dddddd" d="M 100 500 L 900 500" pathLength="1" fill="none"></path><text id="S1" class="label" alignment-baseline="middle" text-anchor="start" font-size="100" font-weight="normal" x="0" y="800">Temperature</text><path id="barBar" class="bar" stroke-width="100" stroke="#0000ff" stroke-dasharray="1" marker-start="url('#markerUnderBar')" marker-end="url('#markerOverBar')" d="M 100 500 L 900 500" pathLength="1" fill="none" stroke-dashoffset="1"></path><defs id="defsBar"><marker id="markerUnderBar" orient="auto" fill="skyblue" markerWidth="1" markerHeight="1" refX="0.75" refY="0.5"><polygon id="underflowBar" visibility="visible" class="underflow" points="0,.5 .5,0 .5,1"></polygon></marker><marker id="markerOverBar" orient="auto" fill="tomato" markerWidth="1" markerHeight="1" refX="0.25" refY="0.5"><polygon id="overflowBar" visibility="hidden" class="overflow" points=".5,0 1,.5 .5,1"></polygon></marker></defs><text id="Digital" class="digital" alignment-baseline="middle" text-anchor="end" font-size="100" font-weight="bold" x="1000" y="800">-22 K</text><circle id="Mark1" stroke-width="25" fill="orange" r="50"><animateMotion id="motionMark1" rotate="auto" dur="2s" keyTimes="0;1" keyPoints="0;1" fill="freeze"><mpath id="mpathMark1" xlink:href="#trackS1"></mpath></animateMotion></circle></svg></div></div></div></div><div class="square"><div class="content"><div class="table"><div class="gauge" id="T2"><svg viewBox="0 0 1000 1000" id="T2"><text id="T2" class="title" alignment-baseline="middle" text-anchor="start" font-size="100" font-weight="normal" x="0" y="100">Zwei</text><path id="ticksS2" class="ticks" stroke-width="150" stroke="black" d="M 500 900 V 100" pathLength="1" fill="none" stroke-dasharray="0.01 0.32"></path><path id="trackS2" class="track" stroke-width="100" stroke="#dddddd" d="M 500 900 V 100" pathLength="1" fill="none"></path><text id="S2" class="label" alignment-baseline="middle" text-anchor="start" font-size="100" font-weight="normal" x="0" y="800">Criticality</text><path id="barBar2" class="bar" stroke-width="100" stroke="#0000ff" stroke-dasharray="1" marker-start="url('#markerUnderBar2')" marker-end="url('#markerOverBar2')" d="M 500 900 V 100" pathLength="1" fill="none" stroke-dashoffset="0.75"></path><defs id="defsBar2"><marker id="markerUnderBar2" orient="auto" fill="skyblue" markerWidth="1" markerHeight="1" refX="0.75" refY="0.5"><polygon id="underflowBar2" visibility="hidden" class="underflow" points="0,.5 .5,0 .5,1"></polygon></marker><marker id="markerOverBar2" orient="auto" fill="tomato" markerWidth="1" markerHeight="1" refX="0.25" refY="0.5"><polygon id="overflowBar2" visibility="hidden" class="overflow" points=".5,0 1,.5 .5,1"></polygon></marker></defs><text id="Digital2" class="digital" alignment-baseline="middle" text-anchor="end" font-size="100" font-weight="bold" x="1000" y="800">15 dC</text></svg></div></div></div></div><div class="square"><div class="content"><div class="table"><div class="gauge" id="T3"><svg viewBox="0 0 1000 1000" id="T3"><text id="T3" class="title" alignment-baseline="middle" text-anchor="start" font-size="100" font-weight="normal" x="0" y="100">Drei</text><path id="ticksS3" class="ticks" stroke-width="150" stroke="black" d="M 100 900 a 800 800 0 0 1 800 -800" pathLength="1" fill="none" stroke-dasharray="0.01 0.188"></path><path id="trackS3" class="track" stroke-width="100" stroke="#dddddd" d="M 100 900 a 800 800 0 0 1 800 -800" pathLength="1" fill="none"></path><text id="S3" class="label" alignment-baseline="middle" text-anchor="start" font-size="100" font-weight="normal" x="0" y="800">Temperature</text><path id="barBar3" class="bar" stroke-width="100" stroke="#0000ff" stroke-dasharray="1" marker-start="url('#markerUnderBar3')" marker-end="url('#markerOverBar3')" d="M 100 900 a 800 800 0 0 1 800 -800" pathLength="1" fill="none" stroke-dashoffset="0.25"></path><defs id="defsBar3"><marker id="markerUnderBar3" orient="auto" fill="skyblue" markerWidth="1" markerHeight="1" refX="0.75" refY="0.5"><polygon id="underflowBar3" visibility="hidden" class="underflow" points="0,.5 .5,0 .5,1"></polygon></marker><marker id="markerOverBar3" orient="auto" fill="tomato" markerWidth="1" markerHeight="1" refX="0.25" refY="0.5"><polygon id="overflowBar3" visibility="hidden" class="overflow" points=".5,0 1,.5 .5,1"></polygon></marker></defs><text id="Digital3" class="digital" alignment-baseline="middle" text-anchor="end" font-size="100" font-weight="bold" x="1000" y="800">25 dC</text><circle id="Mark3" stroke-width="25" fill="orange" r="50"><animateMotion id="motionMark3" rotate="auto" dur="2s" keyTimes="0;1" keyPoints="0;1" fill="freeze"><mpath id="mpathMark3" xlink:href="#trackS3"></mpath></animateMotion></circle></svg></div></div></div></div><div class="square"><div class="content"><div class="table"><div class="gauge" id="T4"><svg viewBox="0 0 1000 1000" id="T4"><text id="T4" class="title" alignment-baseline="middle" text-anchor="start" font-size="100" font-weight="normal" x="0" y="100">Vier</text><path id="ticksS4" class="ticks" stroke-width="150" stroke="black" d="M 100 500 L 900 500" pathLength="1" fill="none" stroke-dasharray="0.01 0.089"></path><path id="trackS4" class="track" stroke-width="100" stroke="#dddddd" d="M 100 500 L 900 500" pathLength="1" fill="none"></path><text id="S4" class="label" alignment-baseline="middle" text-anchor="start" font-size="100" font-weight="normal" x="0" y="800">Temperature</text><path id="barBar4" class="bar" stroke-width="100" stroke="#0000ff" stroke-dasharray="1" marker-start="url('#markerUnderBar4')" marker-end="url('#markerOverBar4')" d="M 100 500 L 900 500" pathLength="1" fill="none" stroke-dashoffset="0"></path><defs id="defsBar4"><marker id="markerUnderBar4" orient="auto" fill="skyblue" markerWidth="1" markerHeight="1" refX="0.75" refY="0.5"><polygon id="underflowBar4" visibility="hidden" class="underflow" points="0,.5 .5,0 .5,1"></polygon></marker><marker id="markerOverBar4" orient="auto" fill="tomato" markerWidth="1" markerHeight="1" refX="0.25" refY="0.5"><polygon id="overflowBar4" visibility="visible" class="overflow" points=".5,0 1,.5 .5,1"></polygon></marker></defs><text id="Digital4" class="digital" alignment-baseline="middle" text-anchor="end" font-size="100" font-weight="bold" x="1000" y="800">188 dC</text></svg></div></div></div></div></div></body></html>
