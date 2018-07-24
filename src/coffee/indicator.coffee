@@ -29,7 +29,7 @@ exports.Indicator = class Indicator
 class Bar extends Indicator
 
   defaults:
-    barColor:       "#0000ff"
+    color:       "#0000ff"
 
   constructor: (id, config, data) ->
     super id, config
@@ -87,7 +87,7 @@ class Bar extends Indicator
     data.svg.derive_path "bar"+@id, data.path,
       class:                "bar"
       "stroke-width":       data.barWidth
-      stroke:               @config.barColor
+      stroke:               @config.color
       "stroke-dasharray":   1.0
       "marker-start":       "url('#markerUnder#{@id}')"
       "marker-end":         "url('#markerOver#{@id}')"
@@ -138,22 +138,8 @@ class Pointer extends Indicator
   update: (data) ->
 
     @motion.update
-      keyPoints:        @previous + ";" + data.rl
+      keyPoints:   @previous+";"+data.rl
     @previous = data.rl
-
-    # coord = data.path.position data.rl
-    # @pointer.update
-    #   cx:   coord.x
-    #   cy:   coord.y
-
-    # if 0.0 < data.r < 1.0
-    #   @pointer.update
-    #     fill:   @config.color
-    #     stroke: "none"
-    # else
-    #   @pointer.update
-    #     fill:   "none"
-    #     stroke: @config.color
 
 
 ## ============================================================

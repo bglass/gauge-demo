@@ -56,22 +56,37 @@ exports.SVG = class SVG
     switch shape
       when "circle"
         @add_element id, shape, attributes
-      when "left"
+      else
         @add_polygon id, merge
-          points: triangle_left(100),
-          attributes
-      when "right"
-        @add_polygon id, merge
-          points: triangle_right(100),
+          points: polygon(shape, 100)
           attributes
 
-  triangle_right = (size) ->
-    s1 = size; s2 = size/2
-    [ 0, 0,   s2, s1,   -s2, s1 ].join(" ")
+  polygon = (shape, size) ->
+    scale_polygon size/10.0,
+      switch shape
+        when "right"
+          [ 0,0,  5, 10,  -5, 10]
+        when "left"
+          [ 0,0,  5,-10,  -5,-10]
+        when "needle1"
+          [ 0,-10,  2,0, 5,80, 0,85, -5,80, -2,0 ]
 
-  triangle_left = (size) ->
-    s1 = size; s2 = size/2
-    [ 0, 0,   s2, -s1,   -s2, -s1 ].join(" ")
+
+  scale_polygon = (size, data) ->
+    data.map (number) -> size*number
+
+  # triangle_right = (size) ->
+  #   s1 = size; s2 = size/2
+  #   [ 0, 0,   s2, s1,   -s2, s1 ].join(" ")
+  #
+  # triangle_left = (size) ->
+  #   s1 = size; s2 = size/2
+  #   [ 0, 0,   s2, -s1,   -s2, -s1 ].join(" ")
+  #
+  # needle1 = (size) ->
+  #
+  #   []
+
 
 
   add_defs: (id) ->

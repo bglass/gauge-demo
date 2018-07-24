@@ -54,23 +54,28 @@ $ ->
           quantity:
             "main":
               indicator: 
-                "Bar3":      type: "bar"
+                "Bar3":
+                  type: "bar"
+                  color: "#ffe78d"
                 "Digital3":  type: "digital"
             "prea":
               indicator:
                 "Mark3a":
                   type:  "pointer"
                   shape: "left"
+                  color: "red"
             "preb":
               indicator:
                 "Mark3b":
                   type:  "pointer"
-                  shape: "circle"
+                  shape: "needle1"
+                  color: "green"
             "prec":
               indicator:
                 "Mark3c":
                   type:  "pointer"
                   shape: "right"
+                  color: "blue"
     "T4":
       title: "Vier"
       scale:
