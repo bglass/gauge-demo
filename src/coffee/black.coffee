@@ -97,12 +97,11 @@ $ ->
 
 
 
-  Gauge.setValue "T1": {main: -22}
-  Gauge.setValue "T1": {preset: 20}
-
+  Gauge.setValue "T1": {main: 12}
   Gauge.setValue "T2": {main: 15}
-  Gauge.setValue "T3": {main: 25}, "T4": {main: 188}
+  Gauge.setValue "T3": {main: 25}, "T4": {main: 27}
 
+  Gauge.setValue "T1": {preset: 20}
   Gauge.setValue "T3": {prea: 15}
   Gauge.setValue "T3": {preb: 20}
   Gauge.setValue "T3": {prec: 25}

@@ -45,6 +45,8 @@ class Bar extends Indicator
   draw_elements: (data) ->
     data = merge @defaults, data
     bar  = @draw_bar(data)
+    bar.modulate_color("stroke")
+
     defs = @create_marker_defs(data)
     {
       bar:    bar
@@ -93,10 +95,10 @@ class Bar extends Indicator
       "marker-end":         "url('#markerOver#{@id}')"
 
   update_bar:  (data) ->
-    @elements.bar.node.setAttribute(
-      "stroke-dashoffset"
-      1.0 - data.rl
-    )
+    @elements.bar.update
+      "stroke-dashoffset":    1.0 - data.rl
+      stroke:                 "hsl(#{200*(1-data.rl)}, 80%, 50%)"
+
 
   update_out_of_range: (data) ->
     if data.r < 0.0
