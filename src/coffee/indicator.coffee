@@ -17,6 +17,8 @@ exports.Indicator = class Indicator
           indicators.push (new Digital( ptr_id, cfg, data))
         when "pointer"
           indicators.push (new Pointer(  ptr_id, cfg, data))
+        when "color"
+          indicators.push (new Color(    ptr_id, cfg, data))
         else
           console.log "indicator type '#{cfg.type}' isn't implemented, yet."
     return indicators
@@ -45,7 +47,6 @@ class Bar extends Indicator
   draw_elements: (data) ->
     data = merge @defaults, data
     bar  = @draw_bar(data)
-    bar.modulate_color("stroke")
 
     defs = @create_marker_defs(data)
     {
@@ -85,7 +86,7 @@ class Bar extends Indicator
       points:       triangle_left
 
   draw_bar: (data) ->
-    data.svg.derive_path "bar"+@id, data.path,
+    data.svg.derive_path @id, data.path,
       class:                "bar"
       "stroke-width":       data.barWidth
       stroke:               @config.color
@@ -96,8 +97,6 @@ class Bar extends Indicator
   update_bar:  (data) ->
     @elements.bar.update
       "stroke-dashoffset":    1.0 - data.rl
-      stroke:                 "hsl(#{200*(1-data.rl)}, 80%, 50%)"
-
 
   update_out_of_range: (data) ->
     if data.r < 0.0
@@ -112,6 +111,21 @@ class Bar extends Indicator
 
     @elements.under.setAttribute "visibility", vu
     @elements.over.setAttribute "visibility", vo
+
+## ============================================================
+
+
+class Color extends Indicator
+
+  draw: (data)->
+    # nothing
+
+  update: (data) ->
+    $("#"+@config.target)[0].setAttribute(
+      @config.attribute,
+      "hsl(#{200*(1-data.rl)}, 80%, 50%)"
+    )
+
 
 ## ============================================================
 

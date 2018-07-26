@@ -9,7 +9,7 @@ exports.Scale = class Scale
 
   defaults:
     label:            "no label"
-    unit:             "dC"
+    unit:             "°C"
     type:             "horizontal"
     v0:               10
     v1:               30
@@ -19,7 +19,7 @@ exports.Scale = class Scale
     tick:
       width:        200
       thickness:    1/100
-      divisions:    4
+      divisions:    2
       v0:               10
       v1:               30
       color:          "black"
@@ -30,7 +30,7 @@ exports.Scale = class Scale
     subtick:
       width:        130
       thickness:    1/100
-      divisions:    8
+      divisions:    10
       v0:               10
       v1:               30
       color:          "black"

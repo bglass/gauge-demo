@@ -8,14 +8,18 @@ mixin item(id)
       .table
         .gauge(id=id)
 
+
 .tab
   +button("Basic")
   +button("Clocks")
   
 #Basic.tabcontent
-  .grid2
+  .grid3
     +item("T1")
     +item("T2")
+    .square
+      .content
+        include input.pug
     +item("T3")
     +item("T4")
 

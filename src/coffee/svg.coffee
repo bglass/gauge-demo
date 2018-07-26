@@ -119,12 +119,12 @@ exports.SVG = class SVG
     for key, value of attributes
       @node.setAttribute key, value
 
-  modulate_color: (target_attribute) ->
-    @add_element "acol"+@id, "animate",
-      attributeName:  target_attribute
-      attributeType:  "XML"
-      dur:            ".5s"
-      fill:           "freeze"
+  # modulate_color: (target_attribute) ->
+  #   @add_element "acol"+@id, "animate",
+  #     attributeName:  target_attribute
+  #     attributeType:  "XML"
+  #     dur:            ".5s"
+  #     fill:           "freeze"
 
 
 

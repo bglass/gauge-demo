@@ -79,6 +79,10 @@ $ ->
                   shape: "needle1"
                   digit_dy: 900
                   color: "black"
+                "Color3b":
+                  type:       "color"
+                  target:     "Mark3b"
+                  attribute:  "fill"
             "prec":
               indicator:
                 "Mark3c":
@@ -98,6 +102,11 @@ $ ->
               indicator: 
                 "Bar4":      type: "bar"
                 "Digital4":  type: "digital"
+                "Color4":
+                  type:       "color"
+                  target:     "Bar4"
+                  attribute:  "stroke"
+
             # "preset":
             #   indicator:
             #     "X4": type: "pointer"
@@ -109,7 +118,7 @@ $ ->
 
   Gauge.setValue "T1": {main: 12}
   Gauge.setValue "T2": {main: 55}
-  Gauge.setValue "T3": {main: 25}, "T4": {main: 17}
+  Gauge.setValue "T3": {main: 25}, "T4": {main: 27}
 
   Gauge.setValue "T1": {preset: 20}
   Gauge.setValue "T3": {prea: 15}
