@@ -1,5 +1,6 @@
 {merge, filter} = require './helpers.coffee'
 {Quantity}      = require './quantity.coffee'
+{Generate}      = require './generate.coffee'
 # {Horizontal}    = require './path.coffee'
 
 # ============================================================
@@ -48,9 +49,24 @@ exports.Scale = class Scale
     h:                data.h
 
   draw_elements: (data) ->
-    ticks:  @draw_ticks data
-    track:  @draw_track data
-    label:  @draw_label data
+    ticks:    @draw_ticks   data
+    track:    @draw_track   data
+    label:    @draw_label   data
+    scaling:  @draw_scaling data
+
+  draw_scaling: (data) ->
+    p = @path_template.offset(0.5, -120.0)
+    console.log p
+    data.svg.add_text "scaling"+@id, 88,
+      class:                "scaling"
+      "alignment-baseline": "middle"
+      "text-anchor":        "middle"
+      "font-size":          100
+      "font-weight":        "normal"
+      x:                    p.x
+      y:                    p.y
+
+
 
   draw_ticks: (data) ->
     ticks = data.svg.new_path "ticks"+@id, (merge @config, data),
@@ -59,8 +75,10 @@ exports.Scale = class Scale
       stroke:               @config.tickColor
     ticks.node.setAttribute "stroke-dasharray",
                             tick_definition(ticks, @config)
+    return ticks
 
   draw_track: (data) ->
+    Generate.gradient()
     @path_template =
       data.svg.new_path "track"+@id, (merge @config, data),
         class:                "track"

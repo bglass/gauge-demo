@@ -6,13 +6,16 @@ exports.SVG = class SVG
   constructor: (@id, @node)->
     @me = "SVG"
 
-  @add_viewbox: (id, xywh) ->
+  @add_svg: (id, xywh) ->
     $("div#" + id).append(
       xml "svg", "",
         viewBox:    xywh.join(" ")
         id:         id
     )
     svg = new SVG(id, $("svg#"+id)[0])
+    svg.defs = svg.add_defs()
+    return svg
+
 
   ns = "http://www.w3.org/2000/svg"
 
@@ -43,6 +46,9 @@ exports.SVG = class SVG
     svg.shape = shape
     return svg
 
+  add_group: (id) ->
+    @add_element id, "g", {}
+
   derive_path: (id, template, attributes) ->
     @add_path id, template.shape, attributes
 
@@ -56,10 +62,17 @@ exports.SVG = class SVG
     switch shape
       when "circle"
         @add_element id, shape, attributes
+
       else
         @add_polygon id, merge
           points: polygon(shape, 100)
           attributes
+
+
+
+
+
+
 
   polygon = (shape, size) ->
     scale_polygon size/10.0,
@@ -75,8 +88,8 @@ exports.SVG = class SVG
   scale_polygon = (size, data) ->
     data.map (number) -> size*number
 
-  add_defs: (id) ->
-    @add_element id, "defs", {}
+  add_defs: ->
+    @add_element "defs", "defs", {}
 
   add_marker: (id, attributes) ->
     @add_element id, "marker", attributes
@@ -150,6 +163,40 @@ class Path extends SVG
     sx = mx-r;            sy = my
 
     "M #{sx} #{sy} a #{r} #{r} 0 0 1 #{r} #{-r}"
+
+
+  offset: (distance, crosstrack) ->
+    t  = distance
+    c  = crosstrack
+    dt = 1e-6
+    l  = @node.getTotalLength()
+
+    if t >   dt   then t0 = t-dt else t0 = t
+    if t < (1-dt) then t1 = t+dt else t1 = t
+
+
+
+    p  = @node.getPointAtLength t  * l
+    p0 = @node.getPointAtLength t0 * l
+    p1 = @node.getPointAtLength t1 * l
+
+    dx = p1.x - p0.x
+    dy = p1.y - p0.y
+
+    r   = Math.sqrt( dx*dx + dy*dy )
+    phi = if dy<0 then Math.acos dx/r else Math.acos (-dx/r)
+
+    tx = dx/r
+    ty = dy/r
+
+    nx = -ty
+    ny =  tx
+
+    ox = p.x + c * nx
+    oy = p.y + c * ny
+
+    {x: ox, y: oy, phi: phi}
+
 
 
 

@@ -1,0 +1,33 @@
+mixin button(target)
+  button.tablinks(id= "btn"+target 
+    onclick='tab_select(event, "'+target+'")')= target
+
+mixin item(id)
+  .square
+    .content
+      .table
+        .gauge(id=id)
+
+.tab
+  +button("Basic")
+  +button("Clocks")
+  
+#Basic.tabcontent
+  .grid2
+    +item("T1")
+    +item("T2")
+    +item("T3")
+    +item("T4")
+
+#Clocks.tabcontent
+  h3 Clocks
+    p Paris is the capital of France.
+
+#Tokyo.tabcontent
+  h3 Tokyo
+    p Tokyo is the capital of Japan.
+
+
+
+
+      

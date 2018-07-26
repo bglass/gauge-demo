@@ -1,14 +1,22 @@
 import main_grid      from '../pug/main_grid.pug'
+import main_tabs      from '../pug/main_tabs.pug'
 
 
 require("expose-loader?$!jquery")
 
 {Gauge} = require './gauge.coffee'
 
+{Tabs} = require './tabs.coffee'
 
+window.tab_select = Tabs.tab_select
 
 $ ->
-  $('body').append main_grid()  # < pug/document.pug
+
+  $('body').append main_tabs()  # < pug/document.pug
+  $("#btnBasic").click();
+
+
+
 
   Gauge.create
     "T1":
@@ -69,12 +77,14 @@ $ ->
                 "Mark3b":
                   type:  "pointer"
                   shape: "needle1"
-                  color: "green"
+                  digit_dy: 900
+                  color: "black"
             "prec":
               indicator:
                 "Mark3c":
                   type:  "pointer"
                   shape: "right"
+                  digit_dy: 155
                   color: "blue"
     "T4":
       title: "Vier"
@@ -98,7 +108,7 @@ $ ->
 
 
   Gauge.setValue "T1": {main: 12}
-  Gauge.setValue "T2": {main: 15}
+  Gauge.setValue "T2": {main: 55}
   Gauge.setValue "T3": {main: 25}, "T4": {main: 27}
 
   Gauge.setValue "T1": {preset: 20}

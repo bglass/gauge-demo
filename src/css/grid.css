@@ -1,6 +1,20 @@
 
-.grid {
+.grid2 {
   display: grid;
   grid-template-columns: 50% 50%;
-  grid-template-rows: 50% 50%;
+}
+
+.grid3 {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+}
+
+.grid4 {
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+}
+
+.grid5 {
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
 }

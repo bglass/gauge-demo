@@ -21,7 +21,7 @@ exports.Gauge = class Gauge
     Gauge.store[@id] = @
     @config = merge @defaults, config
 
-    @svg = SVG.add_viewbox @id, [0, 0, @config.width, @config.height]
+    @svg = SVG.add_svg @id, [0, 0, @config.width, @config.height]
 
     @elements = merge(
       @draw_elements()

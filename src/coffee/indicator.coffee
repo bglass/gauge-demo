@@ -57,8 +57,8 @@ class Bar extends Indicator
   create_marker_defs: (data) ->
     triangle_left  = ".5,0 1,.5 .5,1"
     triangle_right = "0,.5 .5,0 .5,1"
-    defs = data.svg.add_defs "defs"+@id
-    marker_under = defs.add_marker "markerUnder"+@id,
+
+    marker_under = data.svg.defs.add_marker "markerUnder"+@id,
       orient: "auto"
       fill:         "skyblue"
       markerWidth:  1
@@ -71,8 +71,7 @@ class Bar extends Indicator
       class:        'underflow'
       points:       triangle_right
 
-
-    marker_over  = defs.add_marker "markerOver"+@id,
+    marker_over  = data.svg.defs.add_marker "markerOver"+@id,
       orient: "auto"
       fill:         "tomato"
       markerWidth:  1
@@ -122,17 +121,29 @@ class Pointer extends Indicator
     type:  "circle"
     color:  "orange"
     radius: 50
+    digits: 1
+    digit_dy:   -120
 
   constructor: (id, config, data) ->
     super id, config
     @draw data
 
   draw: (data) ->
-    @pointer = data.svg.add_shape @id, @config.shape,
+
+    @group = data.svg.add_group @id
+
+    @pointer = @group.add_shape @id, @config.shape,
       "stroke-width": @config.radius/2
       fill:           @config.color
       r:              @config.radius
-    @motion = @pointer.follow_path(data.path)
+    @digital = @group.add_text "digit"+@id, "Moin?",
+      "text-anchor":        "middle"
+      "font-size":          50
+      color:                "black"
+      y:                    @config.digit_dy
+
+    @motion = @group.follow_path(data.path)
+
     @previous = 0
     @update data
 
@@ -141,6 +152,8 @@ class Pointer extends Indicator
 
     @motion.update
       keyPoints:   @previous+";"+data.rl
+    @digital.node.textContent = data.a.toFixed @config.digits
+
     @previous = data.rl
 
 
