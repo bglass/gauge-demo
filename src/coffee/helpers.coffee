@@ -10,3 +10,7 @@ exports.filter = (table, keep) ->
   for key, value of table
     if key in keep then filtered[key] = value
   return filtered
+
+exports.round = (v,n) ->
+  d = Math.pow(10,n)
+  Math.round(v*d)/d

@@ -1,4 +1,4 @@
-{merge, filter} = require './helpers.coffee'
+{merge, filter, round} = require './helpers.coffee'
 {Quantity}      = require './quantity.coffee'
 {Generate}      = require './generate.coffee'
 # {Horizontal}    = require './path.coffee'
@@ -55,18 +55,22 @@ exports.Scale = class Scale
     scaling:  @draw_scaling data
 
   draw_scaling: (data) ->
-    p = @path_template.offset(0.5, -120.0)
-    console.log p
-    data.svg.add_text "scaling"+@id, 88,
-      class:                "scaling"
-      "alignment-baseline": "middle"
-      "text-anchor":        "middle"
-      "font-size":          100
-      "font-weight":        "normal"
-      x:                    p.x
-      y:                    p.y
+    for v,i in tick_values @config
+      r = (v - @config.v0) / (@config.v1 - @config.v0)
+      p = @path_template.offset(r, -180.0)
 
 
+      group = data.svg.add_group @id+"G"+i,
+        transform:               "rotate (#{p.phi} #{p.x} #{p.y})"
+
+      number = group.add_text @id+"S"+i, round(v,1),
+        class:                "scaling"
+        "alignment-baseline": "middle"
+        "text-anchor":        "middle"
+        "font-size":          100
+        "font-weight":        "normal"
+        x:                    p.x
+        y:                    p.y
 
   draw_ticks: (data) ->
     ticks = data.svg.new_path "ticks"+@id, (merge @config, data),
@@ -85,12 +89,18 @@ exports.Scale = class Scale
         "stroke-width":       @config.barWidth
         stroke:               @config.trackColor
 
-
   tick_definition = (tag, cfg) ->
     a = cfg.tickThickness
     n = cfg.tickDivisions
     b = (1 - a*(n+1) ) / n
     return "#{a} #{b}"
+
+  tick_values = (cfg) ->
+    n = cfg.tickDivisions
+    [0..n].map (i) ->
+      cfg.v0 + i/n*(cfg.v1-cfg.v0)
+
+
 
   draw_label: (data) ->
     data.svg.add_text @id, @config.label,

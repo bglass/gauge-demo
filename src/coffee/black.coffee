@@ -91,7 +91,7 @@ $ ->
       scale:
         "S4":
           label: "Temperature"
-          type:  "horizontal"
+          type:  "horseshoe"
           tickDivisions: 10
           quantity:
             "main":
@@ -109,7 +109,7 @@ $ ->
 
   Gauge.setValue "T1": {main: 12}
   Gauge.setValue "T2": {main: 55}
-  Gauge.setValue "T3": {main: 25}, "T4": {main: 27}
+  Gauge.setValue "T3": {main: 25}, "T4": {main: 17}
 
   Gauge.setValue "T1": {preset: 20}
   Gauge.setValue "T3": {prea: 15}

@@ -46,8 +46,8 @@ exports.SVG = class SVG
     svg.shape = shape
     return svg
 
-  add_group: (id) ->
-    @add_element id, "g", {}
+  add_group: (id, attributes = {}) ->
+    @add_element id, "g", attributes
 
   derive_path: (id, template, attributes) ->
     @add_path id, template.shape, attributes
@@ -143,6 +143,8 @@ class Path extends SVG
         vertical cfg
       when "circular_arc"
         circular_arc cfg
+      when "horseshoe"
+        horseshoe cfg
 
   horizontal = (data) ->
     x0 = data.w * .1
@@ -158,23 +160,36 @@ class Path extends SVG
 
 
   circular_arc = (data) ->
-    r  = data.w*.8
+    r  = data.w*.6
     mx = data.w*.9;       my = data.h*.9
     sx = mx-r;            sy = my
 
     "M #{sx} #{sy} a #{r} #{r} 0 0 1 #{r} #{-r}"
 
 
+  horseshoe = (data) ->
+    r  = data.w*.3
+    sx = data.w*.3;            sy = data.h*.7
+    ex = data.w*.7;            ey = data.h*.7
+
+
+    "M #{sx} #{sy} A #{r} #{r} 0 1 1 #{ex} #{ey}"
+
+
+
+
+
   offset: (distance, crosstrack) ->
     t  = distance
     c  = crosstrack
-    dt = 1e-6
+
+    arccos  = Math.acos
+    pi      = Math.PI
     l  = @node.getTotalLength()
+    dt = 1e-2
 
     if t >   dt   then t0 = t-dt else t0 = t
     if t < (1-dt) then t1 = t+dt else t1 = t
-
-
 
     p  = @node.getPointAtLength t  * l
     p0 = @node.getPointAtLength t0 * l
@@ -184,7 +199,11 @@ class Path extends SVG
     dy = p1.y - p0.y
 
     r   = Math.sqrt( dx*dx + dy*dy )
-    phi = if dy<0 then Math.acos dx/r else Math.acos (-dx/r)
+
+    phi = if dy<0
+            -arccos dx/r
+          else
+            arccos dx/r
 
     tx = dx/r
     ty = dy/r
@@ -195,7 +214,7 @@ class Path extends SVG
     ox = p.x + c * nx
     oy = p.y + c * ny
 
-    {x: ox, y: oy, phi: phi}
+    {x: ox, y: oy, phi: 180*phi/pi}
 
 
 
