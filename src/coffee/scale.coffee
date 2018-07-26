@@ -10,15 +10,31 @@ exports.Scale = class Scale
   defaults:
     label:            "no label"
     unit:             "dC"
+    type:             "horizontal"
     v0:               10
     v1:               30
+    track:
+      color:          "lightgrey"
     barWidth:         100
-    tickWidth:        150
-    tickThickness:    1/100
-    tickDivisions:    4
-    type:             "horizontal"
-    trackColor:       "#dddddd"
-    tickColor:        "black"
+    tick:
+      width:        200
+      thickness:    1/100
+      divisions:    4
+      v0:               10
+      v1:               30
+      color:          "black"
+    number:
+      v0:               10
+      v1:               30
+      divisions:        2
+    subtick:
+      width:        130
+      thickness:    1/100
+      divisions:    8
+      v0:               10
+      v1:               30
+      color:          "black"
+
 
   @create: (config, data) ->
     scale = {}
@@ -49,14 +65,16 @@ exports.Scale = class Scale
     h:                data.h
 
   draw_elements: (data) ->
-    ticks:    @draw_ticks   data
-    track:    @draw_track   data
-    label:    @draw_label   data
-    scaling:  @draw_scaling data
+    ticks:    @draw_ticks    data
+    subticks: @draw_subticks data
+    track:    @draw_track    data
+    label:    @draw_label    data
+    scaling:  @draw_scaling  data
 
   draw_scaling: (data) ->
-    for v,i in tick_values @config
-      r = (v - @config.v0) / (@config.v1 - @config.v0)
+    cfg = @config.number
+    for v,i in tick_values cfg
+      r = (v - cfg.v0) / (cfg.v1 - cfg.v0)
       p = @path_template.offset(r, -180.0)
 
 
@@ -75,11 +93,20 @@ exports.Scale = class Scale
   draw_ticks: (data) ->
     ticks = data.svg.new_path "ticks"+@id, (merge @config, data),
       class:                "ticks"
-      "stroke-width":       @config.tickWidth
-      stroke:               @config.tickColor
+      "stroke-width":       @config.tick.width
+      stroke:               @config.tick.color
     ticks.node.setAttribute "stroke-dasharray",
-                            tick_definition(ticks, @config)
+                            tick_definition(@config.tick)
     return ticks
+
+  draw_subticks: (data) ->
+    subticks = data.svg.new_path "subt"+@id, (merge @config, data),
+      class:                "subt"
+      "stroke-width":       @config.subtick.width
+      stroke:               @config.subtick.color
+    subticks.node.setAttribute "stroke-dasharray",
+                            tick_definition(@config.subtick)
+    return subticks
 
   draw_track: (data) ->
     Generate.gradient()
@@ -87,18 +114,18 @@ exports.Scale = class Scale
       data.svg.new_path "track"+@id, (merge @config, data),
         class:                "track"
         "stroke-width":       @config.barWidth
-        stroke:               @config.trackColor
+        stroke:               @config.track.color
 
-  tick_definition = (tag, cfg) ->
-    a = cfg.tickThickness
-    n = cfg.tickDivisions
+  tick_definition = (tick) ->
+    a = tick.thickness
+    n = tick.divisions
     b = (1 - a*(n+1) ) / n
     return "#{a} #{b}"
 
-  tick_values = (cfg) ->
-    n = cfg.tickDivisions
+  tick_values = (tick) ->
+    n = tick.divisions
     [0..n].map (i) ->
-      cfg.v0 + i/n*(cfg.v1-cfg.v0)
+      tick.v0 + i/n*(tick.v1-tick.v0)
 
 
 
