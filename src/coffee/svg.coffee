@@ -99,7 +99,7 @@ exports.SVG = class SVG
     motion = @add_element "motion"+@id, "animateMotion",
       begin:            "indefinite"
       rotate:           "auto"
-      dur:              "0.5s"
+      dur:              "5s"
       keyTimes:         "0;1"
       keyPoints:        "0;0"
       calcMode:         "linear"

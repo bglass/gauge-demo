@@ -150,7 +150,7 @@ class Pointer extends Indicator
       "stroke-width": @config.radius/2
       fill:           @config.color
       r:              @config.radius
-      
+
     @digital = @group.add_text "digit"+@id, "Moin?",
       "text-anchor":        "middle"
       "font-size":          50
@@ -159,18 +159,18 @@ class Pointer extends Indicator
 
     @motion = @group.follow_path(data.path)
 
-    @previous = 0
+    @previous_rl = 0
     @update data
 
 
   update: (data) ->
     @motion.update
-      # keyPoints:   data.rl+";"+data.rl
-      keyPoints:   @previous+";"+data.rl
+      dur:         .5*Math.abs(data.rl-@previous_rl)+"s"
+      keyPoints:   @previous_rl+";"+data.rl
     @motion.node.beginElement()
     @digital.node.textContent = data.a.toFixed @config.digits
 
-    @previous = data.rl
+    @previous_rl = data.rl
 
 
 ## ============================================================
