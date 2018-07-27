@@ -95,9 +95,10 @@ exports.Scale = class Scale
 
     group = data.svg.add_group "ticks"+@id
 
-
     for i in [0..@config.tick.divisions]
-      console.log i
+      group.add_line
+
+
 
 
 
