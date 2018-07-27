@@ -42,6 +42,7 @@ exports.Quantity = class Quantity
       return r
 
 
-  setValue: (data, @value) ->
+  setValue: (data, value) ->
+    @value = parseFloat(value)
     for indicator in @indicators
       indicator.update(@refine data)

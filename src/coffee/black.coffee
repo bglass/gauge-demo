@@ -124,3 +124,17 @@ $ ->
   Gauge.setValue "T3": {prea: 15}
   Gauge.setValue "T3": {preb: 20}
   Gauge.setValue "T3": {prec: 25}
+
+  $("input#main")[0].oninput = (event) ->
+    Gauge.setValue "T1": {main: event.currentTarget.value}
+    Gauge.setValue "T2": {main: event.currentTarget.value}
+    Gauge.setValue "T3": {main: event.currentTarget.value}
+    Gauge.setValue "T3": {preb: event.currentTarget.value}
+    Gauge.setValue "T4": {main: event.currentTarget.value}
+
+  $("input#pre1")[0].oninput = (event) ->
+    Gauge.setValue "T1": {preset: event.currentTarget.value}
+    Gauge.setValue "T3": {prea:   event.currentTarget.value}
+
+  $("input#pre2")[0].oninput = (event) ->
+    Gauge.setValue "T3": {prec:   event.currentTarget.value}

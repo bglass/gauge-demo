@@ -97,8 +97,9 @@ exports.SVG = class SVG
 
   follow_path: (target) ->
     motion = @add_element "motion"+@id, "animateMotion",
+      begin:            "indefinite"
       rotate:           "auto"
-      dur:              ".5s"
+      dur:              "0.5s"
       keyTimes:         "0;1"
       keyPoints:        "0;0"
       calcMode:         "linear"
