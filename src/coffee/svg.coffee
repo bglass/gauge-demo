@@ -109,42 +109,6 @@ exports.SVG = class SVG
 
 
 
-  attach_gradient: (id, definition, cfg) ->
-    arr = definition.split(" ")
-    points = (v for v in arr by 2)
-    colors = (v for v in arr[1..] by 2)
-    points = points.map (v) -> (v-cfg.v0)/(cfg.v1-cfg.v0)
-
-    gradient = cfg.defs.add_element id+"Grad", "linearGradient",
-      x1: 0, x2: 1, y1: 0, y2: 1
-
-
-    points.map (p, i) ->
-      gradient.add_element id+"GradS"+i, "stop",
-        offset:         p
-        "stop-color":   colors[i]
-
-    @node.setAttribute "stroke", "url(##{id+"Grad"})"
-
-
-  attach_segments: (id, definition, cfg) ->
-    arr = definition.split(" ")
-
-    colors = (v for v in arr by 2)
-    points = (v for v in arr[1..] by 2)
-    points = points.map (v) -> (v-cfg.v0)/(cfg.v1-cfg.v0)
-    points.unshift(0.0)
-    points.push(1.0)
-
-    gradient = colors.map (col, i) =>
-      [points[i], col, points[i+1], col]
-
-    gradient = [].concat.apply([], gradient).join(" ")
-
-    @attach_gradient( id, gradient,
-                      (merge cfg, {v0: 0, v1: 1})
-                    )
-
   attr_str = (attributes) ->
     attr = []
     for key, value of attributes

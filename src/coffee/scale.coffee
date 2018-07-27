@@ -15,7 +15,6 @@ exports.Scale = class Scale
     v1:               30
     track:
       color:          "lightgrey"
-      segments:       "blue 15 white 18 green 22 orange 25 red"
     barWidth:         100
     tick:
       width:        200
@@ -72,6 +71,7 @@ exports.Scale = class Scale
     track:    @draw_track    data
     label:    @draw_label    data
     scaling:  @draw_scaling  data
+    segments: @draw_segments data
 
   draw_scaling: (data) ->
     cfg = @config.number
@@ -93,46 +93,46 @@ exports.Scale = class Scale
         y:                    p.y
 
   draw_ticks: (data) ->
-    ticks = data.svg.new_path "ticks"+@id, (merge @config, data),
+    data.svg.new_path "ticks"+@id, (merge @config, data),
       class:                "ticks"
       "stroke-width":       @config.tick.width
       stroke:               @config.tick.color
-    ticks.node.setAttribute "stroke-dasharray",
-                            tick_definition(@config.tick)
-    return ticks
+      "stroke-dasharray":   tick_definition(@config.tick)
 
   draw_subticks: (data) ->
-    subticks = data.svg.new_path "subt"+@id, (merge @config, data),
+    data.svg.new_path "subt"+@id, (merge @config, data),
       class:                "subt"
       "stroke-width":       @config.subtick.width
       stroke:               @config.subtick.color
-    subticks.node.setAttribute "stroke-dasharray",
-                            tick_definition(@config.subtick)
-    return subticks
+      "stroke-dasharray":   tick_definition(@config.subtick)
 
   draw_track: (data) ->
     Generate.gradient()
     @path_template =
-    track = data.svg.new_path "track"+@id, (merge @config, data),
+    data.svg.new_path "track"+@id, (merge @config, data),
         class:                "track"
         "stroke-width":       @config.barWidth
         stroke:               @config.track.color
 
+  relative_value = (data, value) ->
+    (value - data.v0) / (data.v1 - data.v0)
+
+  draw_segments: (data) ->
     if @config.track.segments
-      track.attach_segments @id, @config.track.segments,
-        defs: data.svg.defs
-        v0:   @config.v0
-        v1:   @config.v1
+      @config.track.segments.map (segment, i) =>
+        [color, start, stop] = segment.split(" ")
 
-    else if @config.track.gradient
-      track.attach_gradient @id, @config.track.gradient,
-        defs: data.svg.defs
-        v0:   @config.v0
-        v1:   @config.v1
+        a = relative_value @config, start
+        b = relative_value @config, stop
 
+        if a < 0 then a = 0
+        if b > 1 then b = 1
 
-    return track
-
+        data.svg.derive_path @id+"segment"+i, @path_template,
+          stroke:               color
+          "stroke-width":       @config.barWidth
+          "stroke-dasharray":   "#{b-a} #{1+a-b}"
+          "stroke-dashoffset":  -a
 
   tick_definition = (tick) ->
     a = tick.thickness

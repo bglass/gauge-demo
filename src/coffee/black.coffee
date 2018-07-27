@@ -59,12 +59,17 @@ $ ->
           label: "Temperature"
           type:  "circular_arc"
           tickDivisions: 5
+          track:
+            color:          "lightgrey"
+            segments: ["blue 0 15", "green 18 22", "red 25 30"]
           quantity:
             "main":
               indicator: 
-                "Bar3":
-                  type: "bar"
-                  color: "#ffe78d"
+                "Mark3b":
+                  type:  "pointer"
+                  shape: "needle1"
+                  digit_dy: 900
+                  color: "black"
                 "Digital3":  type: "digital"
             "prea":
               indicator:
@@ -74,11 +79,6 @@ $ ->
                   color: "red"
             "preb":
               indicator:
-                "Mark3b":
-                  type:  "pointer"
-                  shape: "needle1"
-                  digit_dy: 900
-                  color: "black"
                 "Color3b":
                   type:       "color"
                   target:     "Mark3b"
