@@ -15,6 +15,7 @@ exports.Scale = class Scale
     v1:               30
     track:
       color:          "lightgrey"
+      segments:       "blue 15 white 18 green 22 orange 25 red"
     barWidth:         100
     tick:
       width:        200
@@ -50,6 +51,7 @@ exports.Scale = class Scale
       @draw_elements(data)
       @create_subelements(data)
     )
+
 
   create_subelements: (data) ->
     quantities:   Quantity.create @config.quantity, @refine(data)
@@ -111,10 +113,26 @@ exports.Scale = class Scale
   draw_track: (data) ->
     Generate.gradient()
     @path_template =
-      data.svg.new_path "track"+@id, (merge @config, data),
+    track = data.svg.new_path "track"+@id, (merge @config, data),
         class:                "track"
         "stroke-width":       @config.barWidth
         stroke:               @config.track.color
+
+    if @config.track.segments
+      track.attach_segments @id, @config.track.segments,
+        defs: data.svg.defs
+        v0:   @config.v0
+        v1:   @config.v1
+
+    else if @config.track.gradient
+      track.attach_gradient @id, @config.track.gradient,
+        defs: data.svg.defs
+        v0:   @config.v0
+        v1:   @config.v1
+
+
+    return track
+
 
   tick_definition = (tick) ->
     a = tick.thickness
