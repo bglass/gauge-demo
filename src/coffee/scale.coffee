@@ -1,6 +1,5 @@
 {merge, filter, round} = require './helpers.coffee'
 {Quantity}      = require './quantity.coffee'
-{Generate}      = require './generate.coffee'
 # {Horizontal}    = require './path.coffee'
 
 # ============================================================
@@ -93,21 +92,29 @@ exports.Scale = class Scale
         y:                    p.y
 
   draw_ticks: (data) ->
-    data.svg.new_path "ticks"+@id, (merge @config, data),
-      class:                "ticks"
-      "stroke-width":       @config.tick.width
-      stroke:               @config.tick.color
-      "stroke-dasharray":   tick_definition(@config.tick)
 
+    group = data.svg.add_group "ticks"+@id
+
+
+    for i in [0..@config.tick.divisions]
+      console.log i
+
+
+
+  #   data.svg.new_path "ticks"+@id, (merge @config, data),
+  #     class:                "ticks"
+  #     "stroke-width":       @config.tick.width
+  #     stroke:               @config.tick.color
+  #     "stroke-dasharray":   tick_definition(@config.tick)
+  #
   draw_subticks: (data) ->
-    data.svg.new_path "subt"+@id, (merge @config, data),
-      class:                "subt"
-      "stroke-width":       @config.subtick.width
-      stroke:               @config.subtick.color
-      "stroke-dasharray":   tick_definition(@config.subtick)
+  #   data.svg.new_path "subt"+@id, (merge @config, data),
+  #     class:                "subt"
+  #     "stroke-width":       @config.subtick.width
+  #     stroke:               @config.subtick.color
+  #     "stroke-dasharray":   tick_definition(@config.subtick)
 
   draw_track: (data) ->
-    Generate.gradient()
     @path_template =
     data.svg.new_path "track"+@id, (merge @config, data),
         class:                "track"
