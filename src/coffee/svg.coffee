@@ -96,7 +96,7 @@ exports.SVG = class SVG
 
 
   follow_path: (target) ->
-    motion = @add_element "motion"+@id, "animateMotion",
+    @add_element "motion"+@id, "animateMotion",
       begin:            "indefinite"
       rotate:           "auto"
       dur:              "5s"
@@ -105,9 +105,6 @@ exports.SVG = class SVG
       calcMode:         "linear"
       fill:             "freeze"
       path:             target.shape
-    return motion
-
-
 
   attr_str = (attributes) ->
     attr = []
@@ -121,14 +118,6 @@ exports.SVG = class SVG
   update: (attributes) ->
     for key, value of attributes
       @node.setAttribute key, value
-
-  # modulate_color: (target_attribute) ->
-  #   @add_element "acol"+@id, "animate",
-  #     attributeName:  target_attribute
-  #     attributeType:  "XML"
-  #     dur:            ".5s"
-  #     fill:           "freeze"
-
 
 
 # =============================================================================
@@ -148,6 +137,19 @@ class Path extends SVG
         circular_arc cfg
       when "horseshoe"
         horseshoe cfg
+
+  animate_dash: ->
+    @add_element "dashani"+@id, "animate",
+      attributeName:    "stroke-dashoffset"
+      attributeType:    "XML"
+      begin:            "indefinite"
+      dur:              "2s"
+      calcMode:         "linear"
+      fill:             "freeze"
+
+
+
+
 
   horizontal = (data) ->
     x0 = data.w * .1

@@ -86,17 +86,26 @@ class Bar extends Indicator
       points:       triangle_left
 
   draw_bar: (data) ->
-    data.svg.derive_path @id, data.path,
+    bar = data.svg.derive_path @id, data.path,
       class:                "bar"
       "stroke-width":       data.barWidth
       stroke:               @config.color
       "stroke-dasharray":   1.0
       "marker-start":       "url('#markerUnder#{@id}')"
       "marker-end":         "url('#markerOver#{@id}')"
+    @dash = bar.animate_dash()
+    @previous_rl = 0
+    return bar
+
+
 
   update_bar:  (data) ->
-    @elements.bar.update
-      "stroke-dashoffset":    1.0 - data.rl
+    @dash.update
+      dur:         .5*Math.abs(data.rl-@previous_rl)+"s"
+      from:       1 - @previous_rl
+      to:         1 - data.rl
+    @dash.node.beginElement()
+    @previous_rl = data.rl
 
   update_out_of_range: (data) ->
     if data.r < 0.0
