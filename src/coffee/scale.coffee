@@ -17,7 +17,7 @@ exports.Scale = class Scale
     barWidth:         100
     tick:
       thickness:        5
-      divisions:        10
+      divisions:        4
       v0:               10
       v1:               30
       color:            "black"
@@ -35,6 +35,8 @@ exports.Scale = class Scale
       color:            "black"
       offset1:          60
       offset2:          80
+      offset1:          -60
+      offset2:          -70
 
   @create: (config, data) ->
     scale = {}
@@ -76,7 +78,7 @@ exports.Scale = class Scale
   draw_scaling: (data) ->
     cfg = @config.number
     for v,i in tick_values cfg
-      r = (v - cfg.v0) / (cfg.v1 - cfg.v0)
+      r = (v - @config.v0) / (@config.v1 - @config.v0)
       p = @path_template.offset(r, -180.0)
 
 
@@ -97,11 +99,14 @@ exports.Scale = class Scale
     sub:    @draw_tick_flavor data, @config.subtick, "subtick"
 
   draw_tick_flavor: (data, cfg, id_prefix) ->
-    console.log cfg
+
     group = data.svg.add_group id_prefix + @id
-    for i in [0..cfg.divisions]
+
+    for v,i in tick_values cfg
+      r = (v - @config.v0) / (@config.v1 - @config.v0)
+
       group.draw_tick
-        x:          i / cfg.divisions
+        x:          r
         offset1:    cfg.offset1
         offset2:    cfg.offset2
         thickness:  cfg.thickness
