@@ -16,12 +16,13 @@ exports.Scale = class Scale
       color:          "lightgrey"
     barWidth:         100
     tick:
-      width:        200
-      thickness:    1/100
-      divisions:    2
+      thickness:        5
+      divisions:        10
       v0:               10
       v1:               30
       color:          "black"
+      offset1:          -60
+      offset2:          -100
     number:
       v0:               10
       v1:               30
@@ -33,7 +34,6 @@ exports.Scale = class Scale
       v0:               10
       v1:               30
       color:          "black"
-
 
   @create: (config, data) ->
     scale = {}
@@ -65,12 +65,13 @@ exports.Scale = class Scale
     h:                data.h
 
   draw_elements: (data) ->
-    ticks:    @draw_ticks    data
-    subticks: @draw_subticks data
-    track:    @draw_track    data
-    label:    @draw_label    data
-    scaling:  @draw_scaling  data
-    segments: @draw_segments data
+    template:   @draw_template  data
+    ticks:      @draw_ticks    data
+    # subticks: @draw_subticks data
+    track:      @draw_track    data
+    label:      @draw_label    data
+    scaling:    @draw_scaling  data
+    segments:   @draw_segments data
 
   draw_scaling: (data) ->
     cfg = @config.number
@@ -93,12 +94,19 @@ exports.Scale = class Scale
 
   draw_ticks: (data) ->
 
+    cfg = @config.tick
+
     group = data.svg.add_group "ticks"+@id
 
     for i in [0..@config.tick.divisions]
-      group.add_line
 
-
+      group.draw_tick
+        x:          i / @config.tick.divisions
+        offset1:    cfg.offset1
+        offset2:    cfg.offset2
+        thickness:  cfg.thickness
+        color:      cfg.color
+        path:       @path_template
 
 
 
@@ -115,8 +123,13 @@ exports.Scale = class Scale
   #     stroke:               @config.subtick.color
   #     "stroke-dasharray":   tick_definition(@config.subtick)
 
-  draw_track: (data) ->
+  draw_template: (data) ->
     @path_template =
+      data.svg.new_path "template"+@id, (merge @config, data),
+          class:                "template"
+          visibility:           "hidden"
+
+  draw_track: (data) ->
     data.svg.new_path "track"+@id, (merge @config, data),
         class:                "track"
         "stroke-width":       @config.barWidth
