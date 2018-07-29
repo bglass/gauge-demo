@@ -123,13 +123,8 @@ exports.SVG = class SVG
 
 
   draw_tick: (data) ->
-
     p1 = data.path.offset data.x, data.offset1
     p2 = data.path.offset data.x, data.offset2
-
-    console.log data.x, data.offset1, data.offset2
-
-
     @add_element "", "line",
       x1:               p1.x
       y1:               p1.y
@@ -137,15 +132,6 @@ exports.SVG = class SVG
       y2:               p2.y
       stroke:           data.color
       "stroke-width":   data.thickness
-
-    # group.draw_tick
-    #   x:      data.v0 + i * (data.v1 - data.v0)
-    #   w:      data.width
-    #   offset:     data.offset
-    #   thickness:  data.thickness
-    #   color:  data.color
-
-
 
 # =============================================================================
 

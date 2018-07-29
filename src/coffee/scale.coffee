@@ -20,7 +20,7 @@ exports.Scale = class Scale
       divisions:        10
       v0:               10
       v1:               30
-      color:          "black"
+      color:            "black"
       offset1:          -60
       offset2:          -100
     number:
@@ -28,12 +28,13 @@ exports.Scale = class Scale
       v1:               30
       divisions:        2
     subtick:
-      width:        130
-      thickness:    1/100
-      divisions:    10
-      v0:               10
-      v1:               30
-      color:          "black"
+      thickness:        3
+      divisions:        20
+      v0:               15
+      v1:               25
+      color:            "black"
+      offset1:          60
+      offset2:          80
 
   @create: (config, data) ->
     scale = {}
@@ -66,8 +67,7 @@ exports.Scale = class Scale
 
   draw_elements: (data) ->
     template:   @draw_template  data
-    ticks:      @draw_ticks    data
-    # subticks: @draw_subticks data
+    ticks:      @draw_ticks     data
     track:      @draw_track    data
     label:      @draw_label    data
     scaling:    @draw_scaling  data
@@ -93,21 +93,21 @@ exports.Scale = class Scale
         y:                    p.y
 
   draw_ticks: (data) ->
+    main:   @draw_tick_flavor data, @config.tick, "tick"
+    sub:    @draw_tick_flavor data, @config.subtick, "subtick"
 
-    cfg = @config.tick
-
-    group = data.svg.add_group "ticks"+@id
-
-    for i in [0..@config.tick.divisions]
-
+  draw_tick_flavor: (data, cfg, id_prefix) ->
+    console.log cfg
+    group = data.svg.add_group id_prefix + @id
+    for i in [0..cfg.divisions]
       group.draw_tick
-        x:          i / @config.tick.divisions
+        x:          i / cfg.divisions
         offset1:    cfg.offset1
         offset2:    cfg.offset2
         thickness:  cfg.thickness
         color:      cfg.color
         path:       @path_template
-
+    return group
 
 
   #   data.svg.new_path "ticks"+@id, (merge @config, data),
