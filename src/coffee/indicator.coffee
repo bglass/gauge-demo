@@ -1,10 +1,9 @@
 {merge}           = require './helpers.coffee'
+{settings}      = require './presets.coffee'
 
 # ============================================================
 
 exports.Indicator = class Indicator
-
-  defaults: {}
 
   @create: (config, data) ->
 
@@ -24,28 +23,23 @@ exports.Indicator = class Indicator
     return indicators
 
   constructor: (@id, config) ->
-    @config = merge @defaults, config
+    @config = settings("indicator", config)
+
 
 # ============================================================
 
 class Bar extends Indicator
 
-  defaults:
-    color:       "#0000ff"
-
   constructor: (id, config, data) ->
     super id, config
-
     @elements = @draw_elements(data)
     @update(data)
 
   update: (data) ->
-    data = merge @defaults, data
     @update_bar(data)
     @update_out_of_range(data)
 
   draw_elements: (data) ->
-    data = merge @defaults, data
     bar  = @draw_bar(data)
 
     defs = @create_marker_defs(data)
@@ -104,7 +98,7 @@ class Bar extends Indicator
       dur:         .5*Math.abs(data.rl-@previous_rl)+"s"
       from:       1 - @previous_rl
       to:         1 - data.rl
-    @dash.node.beginElement()
+    @dash.beginElement()
     @previous_rl = data.rl
 
   update_out_of_range: (data) ->
@@ -176,8 +170,8 @@ class Pointer extends Indicator
     @motion.update
       dur:         .5*Math.abs(data.rl-@previous_rl)+"s"
       keyPoints:   @previous_rl+";"+data.rl
-    @motion.node.beginElement()
-    @digital.node.textContent = data.a.toFixed @config.digits
+    @motion.beginElement()
+    @digital.setText (data.a.toFixed @config.decimals)
 
     @previous_rl = data.rl
 
@@ -202,10 +196,10 @@ class Digital extends Indicator
     @update data
 
   update:  (data) ->
-    @display.node.textContent = number_unit(data)
+    @display.setText @number_unit(data)
 
-  number_unit = (data) ->
-    "#{data.a} #{data.unit}"
+  number_unit: (data) ->
+    "#{data.a.toFixed(@config.decimals)} #{data.unit}"
 
 
 ## ============================================================

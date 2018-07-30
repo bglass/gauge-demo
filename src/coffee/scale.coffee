@@ -1,42 +1,13 @@
-{merge, filter, round} = require './helpers.coffee'
-{Quantity}      = require './quantity.coffee'
+{merge, filter, round}  = require './helpers.coffee'
+{Quantity}              = require './quantity.coffee'
+{settings}      = require './presets.coffee'
+
 # {Horizontal}    = require './path.coffee'
 
 # ============================================================
 
 exports.Scale = class Scale
 
-  defaults:
-    label:            "no label"
-    unit:             "°C"
-    type:             "horizontal"
-    v0:               10
-    v1:               30
-    track:
-      color:          "lightgrey"
-    barWidth:         100
-    tick:
-      thickness:        5
-      divisions:        4
-      v0:               10
-      v1:               30
-      color:            "black"
-      offset1:          -60
-      offset2:          -100
-    number:
-      v0:               10
-      v1:               30
-      divisions:        2
-    subtick:
-      thickness:        3
-      divisions:        20
-      v0:               15
-      v1:               25
-      color:            "black"
-      offset1:          60
-      offset2:          80
-      offset1:          -60
-      offset2:          -70
 
   @create: (config, data) ->
     scale = {}
@@ -45,8 +16,7 @@ exports.Scale = class Scale
     return scale
 
   constructor: (@id, config, data) ->
-    @config = merge @defaults, config
-
+    @config = settings("scale", config)
 
     @elements = merge(
       @draw_elements(data)
@@ -78,12 +48,15 @@ exports.Scale = class Scale
   draw_scaling: (data) ->
     cfg = @config.number
     for v,i in tick_values cfg
-      r = (v - @config.v0) / (@config.v1 - @config.v0)
-      p = @path_template.offset(r, -180.0)
 
+
+      r = (v - @config.v0) / (@config.v1 - @config.v0)
+      p = @path_template.offset(r, cfg.offset)
+      
+      angle = if cfg.rotate? then cfg.rotate else p.phi
 
       group = data.svg.add_group @id+"G"+i,
-        transform:               "rotate (#{p.phi} #{p.x} #{p.y})"
+        transform:               "rotate (#{angle} #{p.x} #{p.y})"
 
       number = group.add_text @id+"S"+i, round(v,1),
         class:                "scaling"
@@ -113,20 +86,6 @@ exports.Scale = class Scale
         color:      cfg.color
         path:       @path_template
     return group
-
-
-  #   data.svg.new_path "ticks"+@id, (merge @config, data),
-  #     class:                "ticks"
-  #     "stroke-width":       @config.tick.width
-  #     stroke:               @config.tick.color
-  #     "stroke-dasharray":   tick_definition(@config.tick)
-  #
-  draw_subticks: (data) ->
-  #   data.svg.new_path "subt"+@id, (merge @config, data),
-  #     class:                "subt"
-  #     "stroke-width":       @config.subtick.width
-  #     stroke:               @config.subtick.color
-  #     "stroke-dasharray":   tick_definition(@config.subtick)
 
   draw_template: (data) ->
     @path_template =

@@ -1,15 +1,14 @@
-{merge}    = require './helpers.coffee'
-{Scale}    = require './scale.coffee'
-{SVG}      = require './svg.coffee'
+{merge}         = require './helpers.coffee'
+{Scale}         = require './scale.coffee'
+{SVG}           = require './svg.coffee'
+{settings}      = require './presets.coffee'
+
+
+
 
 exports.Gauge = class Gauge
 
   @store = {}
-
-  defaults:
-    title: ""
-    width:  1000
-    height: 1000
 
   @create: (config) ->
     gauges = []
@@ -19,7 +18,10 @@ exports.Gauge = class Gauge
 
   constructor: (@id, config) ->
     Gauge.store[@id] = @
-    @config = merge @defaults, config
+
+    @config = settings("gauge", config)
+
+
 
     @svg = SVG.add_svg @id, [0, 0, @config.width, @config.height]
 

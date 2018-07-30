@@ -7,22 +7,21 @@ exports.SVG = class SVG
     @me = "SVG"
 
   @add_svg: (id, xywh) ->
-    $("div#" + id).append(
-      xml "svg", "",
-        viewBox:    xywh.join(" ")
-        id:         id
-    )
-    svg = new SVG(id, $("svg#"+id)[0])
+    target = document.getElementById(id)
+    tag = document.createElementNS(ns, "svg")
+    node = target.appendChild(tag)
+    node.setAttribute "viewBox", xywh.join(" ")
+    node.setAttribute "id", id
+    svg = new SVG(id, node)
     svg.defs = svg.add_defs()
     return svg
-
 
   ns = "http://www.w3.org/2000/svg"
 
   add_element: (id, type, attributes) ->
-    @new_tag id, type, attributes
+    tag = @new_tag id, type, attributes
     if id?.length
-      new SVG(id, $("svg #{type}##{id}")[0])
+      new SVG(id, tag)
 
   new_tag: (id, type, attributes) ->
     tag = document.createElementNS(ns, type)
@@ -39,8 +38,8 @@ exports.SVG = class SVG
     return svg
 
   add_path: (id, shape, attributes) ->
-    @new_tag id, "path", attributes
-    svg = new Path(id, $("svg > path##{id}")[0])
+    tag = @new_tag id, "path", attributes
+    svg = new Path(id, tag)
     svg.node.setAttribute "d", shape
     svg.node.setAttribute "pathLength", 1.0
     svg.node.setAttribute "fill", "none"
@@ -132,6 +131,14 @@ exports.SVG = class SVG
       y2:               p2.y
       stroke:           data.color
       "stroke-width":   data.thickness
+
+
+  beginElement: ->
+    @node.beginElement()
+
+  setText: (str) ->
+    @node.textContent = str
+
 
 # =============================================================================
 

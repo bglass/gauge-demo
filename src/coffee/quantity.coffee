@@ -1,11 +1,9 @@
-{merge}    = require './helpers.coffee'
-{Indicator}  = require './indicator.coffee'
+{merge}       = require './helpers.coffee'
+{Indicator}   = require './indicator.coffee'
+{settings}      = require './presets.coffee'
 
 exports.Quantity = class Quantity
 
-  defaults:
-    value: 0
-    indicator: [{type: "bar"}, {type: "digital"}]
 
   @create: (config, data) ->
     quantity = {}
@@ -14,11 +12,8 @@ exports.Quantity = class Quantity
     return quantity
 
   constructor: (@id, config, data) ->
-    @config = merge @defaults, config
+    @config = settings("quantity", config)
     @value = @config.value
-
-    # console.log data
-
 
     @indicators = Indicator.create @config.indicator, @refine data,
 
