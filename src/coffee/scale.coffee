@@ -17,7 +17,6 @@ exports.Scale = class Scale
 
   constructor: (@id, config, data) ->
     @config = settings("scale", config)
-
     @elements = merge(
       @draw_elements(data)
       @create_subelements(data)
@@ -52,7 +51,7 @@ exports.Scale = class Scale
 
       r = (v - @config.v0) / (@config.v1 - @config.v0)
       p = @path_template.offset(r, cfg.offset)
-      
+
       angle = if cfg.rotate? then cfg.rotate else p.phi
 
       group = data.svg.add_group @id+"G"+i,

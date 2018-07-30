@@ -12,31 +12,50 @@ window.tab_select = Tabs.tab_select
 $ ->
 
   $('body').append main_tabs()  # < pug/document.pug
-  $("#btnBasic").click();
+  $("#btnClocks").click();
 
 
 
   Gauge.create
-    "T1":
-      title:    "Horizontal"
-      scale:    "S1":
-        type:     "horizontal"
-        presets:   ["room_temperature", "ticks_left"]
-        quantity: "T":
-          indicator:
-            "Bar":      type: "bar"
-            "Digital":  type: "digital"
-    "T2":
-      title:    "Vertical"
-      scale:    "S1":
-        type:     "vertical"
-        presets:   ["room_temperature", "ticks_right"]
-        number:
-          rotate: -30
-        quantity: "T":
-          indicator:
-            "Bar":      type: "bar"
-            "Digital":  type: "digital"
+    # "T1":
+    #   title:    "Horizontal"
+    #   scale:    "S1":
+    #     type:     "horizontal"
+    #     presets:   ["Room_Temperature", "Ticks_Left"]
+    #     quantity: "T":
+    #       indicator:
+    #         "Bar":      type: "bar"
+    #         "Digital":  type: "digital"
+    # "T2":
+    #   title:    "Vertical"
+    #   scale:    "S1":
+    #     type:     "vertical"
+    #     presets:   ["Room_Temperature", "Ticks_Right"]
+    #     number:
+    #       rotate: -30
+    #     quantity: "T":
+    #       indicator:
+    #         "Bar":      type: "bar"
+    #         "Digital":  type: "digital"
+
+
+  Gauge.create
+    "C1":
+      title:    ""
+      scale:    "clk":
+        presets:   ["Ticks_Left", "Clock"]
+        quantity: "hours": indicator: "H":
+          type:       "pointer"
+          shape:      "line"
+          thickness:  10
+        quantity: "minutes": indicator: "M":
+          type:       "pointer"
+          shape:      "line"
+          thickness:  7
+        quantity: "seconds": indicator: "S":
+          type:       "pointer"
+          shape:      "line"
+          thickness:  3
 
 
 
@@ -139,8 +158,8 @@ $ ->
   #
   #
   #
-  Gauge.setValue "T1": {T: 12}
-  Gauge.setValue "T2": {T: 55}
+  # Gauge.setValue "T1": {T: 12}
+  # Gauge.setValue "T2": {T: 55}
   # Gauge.setValue "T3": {main: 25}, "T4": {main: 27}
   #
   # Gauge.setValue "T1": {preset: 20}
@@ -148,9 +167,9 @@ $ ->
   # Gauge.setValue "T3": {preb: 20}
   # Gauge.setValue "T3": {prec: 25}
   #
-  $("input#main")[0].oninput = (event) ->
-    Gauge.setValue "T1": {T: event.currentTarget.value}
-    Gauge.setValue "T2": {T: event.currentTarget.value}
+  # $("input#main")[0].oninput = (event) ->
+  #   Gauge.setValue "T1": {T: event.currentTarget.value}
+  #   Gauge.setValue "T2": {T: event.currentTarget.value}
   #   Gauge.setValue "T3": {main: event.currentTarget.value}
   #   Gauge.setValue "T3": {preb: event.currentTarget.value}
   #   Gauge.setValue "T4": {main: event.currentTarget.value}

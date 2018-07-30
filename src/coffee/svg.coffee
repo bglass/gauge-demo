@@ -53,7 +53,7 @@ exports.SVG = class SVG
     @add_path id, template.shape, attributes
 
   new_path: (id, config, attributes) ->
-    @add_path id, (Path.shape config), attributes
+    @add_path id, ( Path[config.type](config) ), attributes
 
   add_polygon: (id, attributes) ->
     @add_element id, "polygon", attributes
@@ -147,17 +147,6 @@ class Path extends SVG
   position: (distance) ->
     @node.getPointAtLength distance * @node.getTotalLength()
 
-  @shape: (cfg) ->
-    switch cfg.type
-      when "horizontal"
-        horizontal cfg
-      when "vertical"
-        vertical cfg
-      when "circular_arc"
-        circular_arc cfg
-      when "horseshoe"
-        horseshoe cfg
-
   animate_dash: ->
     @add_element "dashani"+@id, "animate",
       attributeName:    "stroke-dashoffset"
@@ -167,42 +156,37 @@ class Path extends SVG
       calcMode:         "linear"
       fill:             "freeze"
 
-
-
-
-
-  horizontal = (data) ->
+  @horizontal: (data) ->
     x0 = data.w * .1
     x1 = data.w * .9
     y  = data.h / 2
     "M #{x0} #{y} L #{x1} #{y}"
 
-  vertical = (data) ->
+  @vertical:  (data) ->
     y0 = data.h * .1
     y1 = data.h * .9
     x  = data.w / 2
     "M #{x} #{y1} V #{y0}"
 
-
-  circular_arc = (data) ->
+  @circular_arc: (data) ->
     r  = data.w*.6
     mx = data.w*.9;       my = data.h*.9
     sx = mx-r;            sy = my
-
     "M #{sx} #{sy} a #{r} #{r} 0 0 1 #{r} #{-r}"
 
-
-  horseshoe = (data) ->
+  @horseshoe: (data) ->
     r  = data.w*.3
     sx = data.w*.3;            sy = data.h*.7
     ex = data.w*.7;            ey = data.h*.7
-
-
     "M #{sx} #{sy} A #{r} #{r} 0 1 1 #{ex} #{ey}"
 
-
-
-
+  @circle:  (data) ->
+    r  = data.w*.3
+    x12 = data.w*.5;         y12 = data.h*.2
+    x06 = data.w*.5;         y06 = data.h*.8
+    "M #{x12} #{y12} " +
+    "A #{r} #{r} 0 1 1 #{x06} #{y06} " +
+    "A #{r} #{r} 0 1 1 #{x12} #{y12} "
 
   offset: (distance, crosstrack) ->
     t  = distance

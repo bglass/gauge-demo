@@ -44,7 +44,7 @@ defaults =
 
 presets =
   scale:
-    room_temperature:
+    "Room_Temperature":
       label:          "T"
       unit:           "°C"
       v0:             10
@@ -62,7 +62,27 @@ presets =
         v1:               30
         divisions:        2
 
-    ticks_left:
+    "Clock":
+      type:         "circle"
+      v0:           0
+      v1:           12
+      tick:
+        v0:         0
+        v1:         12
+        divisions:  12
+      subtick:
+        v0:         0
+        v1:         12
+        divisions:  60
+      number:
+        v0:         2
+        v1:         12
+        divisions:  5
+        offset:     20
+        rotate:      0
+      track:  color: "none"
+
+    "Ticks_Left":
       tick:
         offset1:      -60
         offset2:      -100
@@ -72,7 +92,7 @@ presets =
       number:
         offset:       -180
 
-    ticks_right:
+    "Ticks_Right":
       tick:
         offset1:      60
         offset2:      100
