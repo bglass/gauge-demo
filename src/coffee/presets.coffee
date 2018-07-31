@@ -24,7 +24,6 @@ defaults =
     unit:         ""
     barWidth:     100
     cyclic:       false
-    out_of_range: true
     track:
       color:    "lightgrey"
     tick:
@@ -42,6 +41,8 @@ defaults =
     color:      "black"
     decimals:   1
     invert:  false          # switch opaque/transparent parts of bar
+    out_of_range: true
+
 
 
 
@@ -68,7 +69,6 @@ presets =
     "Clock":
       type:         "circle"
       cyclic:       true
-      out_of_range: false
       v0:           0
       v1:           12
       tick:

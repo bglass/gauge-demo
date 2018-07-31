@@ -166,23 +166,38 @@ class Pointer extends Indicator
           stroke:           @config.color
           "stroke-width":   @config.thickness
 
+      when "circle"
+        @group.add_element @id, "circle",
+          # "stroke-width": @config.radius/2
+          fill:           @config.color
+          r:              @config.radius
 
-    # @pointer = @group.add_shape @id, @config.shape,
-    #   "stroke-width": @config.radius/2
-    #   fill:           @config.color
-    #   r:              @config.radius
+      else
+        if (@config.shape of template)
+          size = 5
 
-    # @digital = @group.add_text "digit"+@id, "Moin?",
-    #   "text-anchor":        "middle"
-    #   "font-size":          50
-    #   color:                "black"
-    #   y:                    @config.digit_dy
+          @group.add_polygon @id,
+            points:   (template[@config.shape].map (x) -> size * x)
+            fill:           @config.color
+          @group.setAttr "transform", "translate(0,#{@config.offset})"
+        else
+          console.log "Missing Pointer Shape", @id, @config
 
     @motion = @group.follow_path(data.path)
 
     @previous_rl = 0
     @update data
 
+  template =
+    right:    [ 0,0,  5, 10,  -5, 10]
+    left:     [ 0,0,  5,-10,  -5,-10]
+    needle1:  [ 0,-10,  2,0, 5,80, 0,85, -5,80, -2,0 ]
+
+    # @digital = @group.add_text "digit"+@id, "Moin?",
+    #   "text-anchor":        "middle"
+    #   "font-size":          50
+    #   color:                "black"
+    #   y:                    @config.digit_dy
 
   update: (data) ->
 
@@ -212,6 +227,11 @@ class Pointer extends Indicator
     # @digital.setText (data.a.toFixed @config.decimals)
 
     @previous_rl = data.rl
+
+
+
+
+
 
 
 ## ============================================================

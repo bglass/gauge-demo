@@ -58,32 +58,6 @@ exports.SVG = class SVG
   add_polygon: (id, attributes) ->
     @add_element id, "polygon", attributes
 
-  add_shape: (id, cfg) ->
-    switch cfg.shape
-      when "circle"
-        @add_element id, shape, attributes
-
-
-
-      else
-        @add_polygon id, merge
-          points: polygon(shape, 100)
-          attributes
-
-  polygon = (shape, size) ->
-    scale_polygon size/10.0,
-      switch shape
-        when "right"
-          [ 0,0,  5, 10,  -5, 10]
-        when "left"
-          [ 0,0,  5,-10,  -5,-10]
-        when "needle1"
-          [ 0,-10,  2,0, 5,80, 0,85, -5,80, -2,0 ]
-
-
-  scale_polygon = (size, data) ->
-    data.map (number) -> size*number
-
   add_defs: ->
     @add_element "defs", "defs", {}
 
@@ -135,6 +109,8 @@ exports.SVG = class SVG
   setText: (str) ->
     @node.textContent = str
 
+  setAttr: (attr, value) ->
+    @node.setAttribute attr, value
 
 # =============================================================================
 

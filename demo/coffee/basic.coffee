@@ -1,8 +1,6 @@
 {Gauge} = require '../../src/coffee/gauge.coffee'
 
 exports.add = ->
-  console.log "basic"
-
 
   Gauge.create
     "T1":

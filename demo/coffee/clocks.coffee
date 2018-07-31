@@ -35,6 +35,12 @@ exports.add = ->
               thickness:  5
               color:      "red"
               speed:      .15
+          "Alarm":
+            indicator:  "alarm":
+              type:  "pointer"
+              shape: "left"
+              color: "blue"
+              offset: -70
 
   Gauge.create
     "C2":
@@ -116,6 +122,9 @@ exports.add = ->
       "C2": {S: s}
 
   setInterval tick, 500
+
+  Gauge.setValue
+    "C1": {Alarm: 7.5}
 
   Gauge.setValue
     "C2": {Dawn: 5}
