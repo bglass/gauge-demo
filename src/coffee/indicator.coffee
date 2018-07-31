@@ -180,6 +180,14 @@ class Pointer extends Indicator
 
 
   update: (data) ->
+
+    if data.cyclic
+      if data.rl-@previous_rl > 0.9
+        @previous_rl = 1
+      else if data.rl-@previous_rl < -0.9
+        @previous_rl = 0
+
+
     @motion.update
       dur:         .5*Math.abs(data.rl-@previous_rl)+"s"
       keyPoints:   @previous_rl+";"+data.rl

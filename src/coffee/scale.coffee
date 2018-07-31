@@ -35,6 +35,7 @@ exports.Scale = class Scale
     svg:              data.svg
     w:                data.w
     h:                data.h
+    cyclic:           @config.cyclic
 
   draw_elements: (data) ->
     template:   @draw_template  data

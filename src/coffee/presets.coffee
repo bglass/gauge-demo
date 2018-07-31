@@ -23,6 +23,7 @@ defaults =
     label:        ""
     unit:         ""
     barWidth:     100
+    cyclic:       false
     track:
       color:    "lightgrey"
     tick:
@@ -64,6 +65,7 @@ presets =
 
     "Clock":
       type:         "circle"
+      cyclic:       true
       v0:           0
       v1:           12
       tick:
