@@ -3,7 +3,7 @@ import main_tabs      from '../pug/main_tabs.pug'
 
 require("expose-loader?$!jquery")
 
-{Gauge} = require './gauge.coffee'
+{Gauge} = require '../../src/coffee/gauge.coffee'
 
 {Tabs} = require './tabs.coffee'
 
@@ -17,26 +17,26 @@ $ ->
 
 
   Gauge.create
-    # "T1":
-    #   title:    "Horizontal"
-    #   scale:    "S1":
-    #     type:     "horizontal"
-    #     presets:   ["Room_Temperature", "Ticks_Left"]
-    #     quantity: "T":
-    #       indicator:
-    #         "Bar":      type: "bar"
-    #         "Digital":  type: "digital"
-    # "T2":
-    #   title:    "Vertical"
-    #   scale:    "S1":
-    #     type:     "vertical"
-    #     presets:   ["Room_Temperature", "Ticks_Right"]
-    #     number:
-    #       rotate: -30
-    #     quantity: "T":
-    #       indicator:
-    #         "Bar":      type: "bar"
-    #         "Digital":  type: "digital"
+    "T1":
+      title:    "Horizontal"
+      scale:    "S1":
+        type:     "horizontal"
+        presets:   ["Room_Temperature", "Ticks_Left"]
+        quantity: "T":
+          indicator:
+            "Bar":      type: "bar"
+            "Digital":  type: "digital"
+    "T2":
+      title:    "Vertical"
+      scale:    "S1":
+        type:     "vertical"
+        presets:   ["Room_Temperature", "Ticks_Right"]
+        number:
+          rotate: -30
+        quantity: "T":
+          indicator:
+            "Bar":      type: "bar"
+            "Digital":  type: "digital"
 
 
   Gauge.create
