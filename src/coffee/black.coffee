@@ -72,6 +72,7 @@ $ ->
               dimension:  [-40, 360]
               thickness:  5
               color:      "red"
+              speed:      .15
 
   Gauge.create
     "C2":
@@ -117,6 +118,7 @@ $ ->
               dimension:  [-40, 360]
               thickness:  5
               color:      "red"
+              speed:      .15
 
 
 

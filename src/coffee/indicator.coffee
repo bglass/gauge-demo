@@ -183,13 +183,25 @@ class Pointer extends Indicator
 
     if data.cyclic
       if data.rl-@previous_rl > 0.9
-        @previous_rl = 1
+        if data.rl > 0.999
+          data.rl = 0
+        else
+          @previous_rl = 1
       else if data.rl-@previous_rl < -0.9
-        @previous_rl = 0
+        if data.rl < 0.001
+          data.rl = 1
+        else
+          @previous_rl = 0
+
+    duration =
+      if @config.speed?
+        @config.speed
+      else
+        .5*Math.abs(data.rl-@previous_rl)
 
 
     @motion.update
-      dur:         .5*Math.abs(data.rl-@previous_rl)+"s"
+      dur:         duration+"s"
       keyPoints:   @previous_rl+";"+data.rl
     @motion.beginElement()
     # @digital.setText (data.a.toFixed @config.decimals)
