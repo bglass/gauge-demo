@@ -44,20 +44,48 @@ $ ->
       title:    ""
       scale:    "clk":
         presets:   ["Ticks_Left", "Clock"]
-        quantity: "hours": indicator: "H":
-          type:       "pointer"
-          shape:      "line"
-          thickness:  10
-        quantity: "minutes": indicator: "M":
-          type:       "pointer"
-          shape:      "line"
-          thickness:  7
-        quantity: "seconds": indicator: "S":
-          type:       "pointer"
-          shape:      "line"
-          thickness:  3
+        quantity:
+          "H":
+            indicator: "hours":
+              type:       "pointer"
+              shape:      "line"
+              dimension:  [120, 320]
+              thickness:  30
+          "M":
+            scale_factor: 5
+            indicator: "minutes":
+              type:       "pointer"
+              shape:      "line"
+              dimension:  [70, 330]
+              thickness:  20
+          "S":
+            scale_factor: 5
+            indicator: "seconds":
+              type:       "pointer"
+              shape:      "line"
+              dimension:  [-40, 360]
+              thickness:  5
+              color:      "red"
 
 
+
+
+
+
+  tick = ->
+    time = new Date
+
+    Gauge.setValue
+      "C1": {H: time.getHours()}
+
+    Gauge.setValue
+      "C1": {M: time.getMinutes()}
+
+    s = time.getSeconds()+time.getMilliseconds()/1000
+    Gauge.setValue
+      "C1": {S: s}
+
+  setInterval tick, 500
 
 
 

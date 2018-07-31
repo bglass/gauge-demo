@@ -37,7 +37,7 @@ defaults =
       color:    "black"
       division:     2
   indicator:
-    color:      "#0000ff"
+    color:      "black"
     decimals:   1
 
 

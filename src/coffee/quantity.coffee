@@ -1,12 +1,13 @@
 {merge}       = require './helpers.coffee'
 {Indicator}   = require './indicator.coffee'
-{settings}      = require './presets.coffee'
+{settings}    = require './presets.coffee'
 
 exports.Quantity = class Quantity
 
 
   @create: (config, data) ->
     quantity = {}
+
     for qty_id, cfg of config
       quantity[qty_id] = new Quantity(qty_id, cfg, data)
     return quantity
@@ -17,7 +18,6 @@ exports.Quantity = class Quantity
 
     @indicators = Indicator.create @config.indicator, @refine data,
 
-
   refine: (data) ->
     merge data,
       a:      @value
@@ -25,7 +25,9 @@ exports.Quantity = class Quantity
       rl:     @limited_value(data)
 
   relative_value: (data) ->
-    (@value - data.v0) / (data.v1 - data.v0)
+    v0 = data.v0 * @config.scale_factor
+    v1 = data.v1 * @config.scale_factor
+    (@value - v0) / (v1 - v0)
 
   limited_value: (data)->
     r = @relative_value(data)

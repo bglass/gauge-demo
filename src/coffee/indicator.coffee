@@ -149,16 +149,29 @@ class Pointer extends Indicator
 
     @group = data.svg.add_group @id
 
-    @pointer = @group.add_shape @id, @config.shape,
-      "stroke-width": @config.radius/2
-      fill:           @config.color
-      r:              @config.radius
+    switch @config.shape
 
-    @digital = @group.add_text "digit"+@id, "Moin?",
-      "text-anchor":        "middle"
-      "font-size":          50
-      color:                "black"
-      y:                    @config.digit_dy
+      when "line"
+        [x1, x2] = @config.dimension
+        @group.add_element "pt"+@id, "line",
+          y1:               x1
+          y2:               x2
+          x1:               0
+          x2:               0
+          stroke:           @config.color
+          "stroke-width":   @config.thickness
+
+
+    # @pointer = @group.add_shape @id, @config.shape,
+    #   "stroke-width": @config.radius/2
+    #   fill:           @config.color
+    #   r:              @config.radius
+
+    # @digital = @group.add_text "digit"+@id, "Moin?",
+    #   "text-anchor":        "middle"
+    #   "font-size":          50
+    #   color:                "black"
+    #   y:                    @config.digit_dy
 
     @motion = @group.follow_path(data.path)
 
@@ -171,7 +184,7 @@ class Pointer extends Indicator
       dur:         .5*Math.abs(data.rl-@previous_rl)+"s"
       keyPoints:   @previous_rl+";"+data.rl
     @motion.beginElement()
-    @digital.setText (data.a.toFixed @config.decimals)
+    # @digital.setText (data.a.toFixed @config.decimals)
 
     @previous_rl = data.rl
 

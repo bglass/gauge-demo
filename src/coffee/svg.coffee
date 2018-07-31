@@ -58,21 +58,17 @@ exports.SVG = class SVG
   add_polygon: (id, attributes) ->
     @add_element id, "polygon", attributes
 
-  add_shape: (id, shape, attributes) ->
-    switch shape
+  add_shape: (id, cfg) ->
+    switch cfg.shape
       when "circle"
         @add_element id, shape, attributes
+
+
 
       else
         @add_polygon id, merge
           points: polygon(shape, 100)
           attributes
-
-
-
-
-
-
 
   polygon = (shape, size) ->
     scale_polygon size/10.0,
