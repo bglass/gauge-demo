@@ -80,9 +80,11 @@ class Bar extends Indicator
       points:       triangle_left
 
   draw_bar: (data) ->
+    width = if @config.width? then @config.width else data.barWidth
+
     bar = data.svg.derive_path @id, data.path,
       class:                "bar"
-      "stroke-width":       data.barWidth
+      "stroke-width":       width
       stroke:               @config.color
       "stroke-dasharray":   1.0
       "marker-start":       "url('#markerUnder#{@id}')"
@@ -94,10 +96,13 @@ class Bar extends Indicator
 
 
   update_bar:  (data) ->
+    rl_from = if @config.invert then @previous_rl-1.5 else 1-@previous_rl
+    rl_to   = if @config.invert then -data.rl else 1-data.rl
+
     @dash.update
       dur:         .5*Math.abs(data.rl-@previous_rl)+"s"
-      from:       1 - @previous_rl
-      to:         1 - data.rl
+      from:       rl_from
+      to:         rl_to
     @dash.beginElement()
     @previous_rl = data.rl
 
