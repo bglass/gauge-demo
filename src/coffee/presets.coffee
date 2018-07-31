@@ -74,12 +74,6 @@ presets =
         v0:         0
         v1:         12
         divisions:  60
-      number:
-        v0:         2
-        v1:         12
-        divisions:  5
-        offset:     20
-        rotate:      0
       track:  color: "none"
 
     "Ticks_Left":
