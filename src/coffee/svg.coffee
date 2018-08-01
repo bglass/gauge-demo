@@ -1,4 +1,4 @@
-{merge}    = require './helpers.coffee'
+{merge, addClass}    = require './helpers.coffee'
 
 
 exports.SVG = class SVG
@@ -119,6 +119,10 @@ exports.SVG = class SVG
     @node.classList.add "draggable"
     @node.dataset.quantity = quantity_id
     @node.dataset.path     = path_id
+
+
+  addClass:    (name) -> addClass    @node, name
+  removeClass: (name) -> removeClass @node, name
 
 
 

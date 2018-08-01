@@ -1,23 +1,26 @@
+{merge}         = require './helpers.coffee'
 {SVG}           = require './svg.coffee'
 
 exports.events = (gauge, svg) ->
 
   node     = svg.node
-  element  = false
+  dragging  = false
   quantity = false
   path     = false
+  selected = false
 
   startDrag = (evt) ->
     if evt.target.classList.contains('draggable')
-      element  = evt.target
-      quantity = element.dataset.quantity
-      path     = SVG.store[element.dataset.path]
+      dragging  = evt.target
+      quantity = dragging.dataset.quantity
+      path     = SVG.store[dragging.dataset.path]
 
   endDrag = (evt) ->
-    element = false
+    selected = dragging
+    dragging = false
 
   drag = (evt) =>
-    if element
+    if dragging
       evt.preventDefault()
       # console.log gauge.id
       rl0     = gauge.getRelativeLimited quantity
@@ -26,14 +29,26 @@ exports.events = (gauge, svg) ->
       gauge.setRelative quantity, t
 
   wheel = (evt) =>
-    if evt.target.classList.contains('draggable')
+    if selected
       if evt.wheelDelta > 0
         gauge.stepValue quantity, "up"
       else
         gauge.stepValue quantity, "down"
 
   click = (evt) =>
-    console.log evt
+    if evt.target.classList.contains('draggable')
+      selected = evt.target
+
+      color = selected.getAttribute "fill"
+
+      selected.setAttribute "stroke", color
+      selected.setAttribute "stroke-width", "10"
+      selected.setAttribute "fill", "white"
+
+      quantity = selected.dataset.quantity
+    else
+      selected = quantity = false
+
 
   getMousePosition = (evt) =>
     CTM = node.getScreenCTM()
