@@ -2,6 +2,7 @@
 {Scale}         = require './scale.coffee'
 {SVG}           = require './svg.coffee'
 {settings}      = require './presets.coffee'
+{events}        = require './event.coffee'
 
 
 
@@ -24,7 +25,7 @@ exports.Gauge = class Gauge
 
 
     @svg = SVG.add_svg @id, [0, 0, @config.width, @config.height]
-    @svg.setup_dragging(@)
+    events(@, @svg)
 
     @elements = merge(
       @draw_elements()
