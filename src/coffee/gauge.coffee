@@ -24,6 +24,7 @@ exports.Gauge = class Gauge
 
 
     @svg = SVG.add_svg @id, [0, 0, @config.width, @config.height]
+    @svg.setup_dragging(@)
 
     @elements = merge(
       @draw_elements()
@@ -60,3 +61,22 @@ exports.Gauge = class Gauge
   setValue: (update) ->
     for scale_id, scale of @elements.scales
       scale.setValue @data(), update
+
+  getRelativeLimited: (qty_id) ->
+    rl = false
+    for scale_id, scale of @elements.scales
+      rlx = scale.getRelativeLimited qty_id
+      rl = rlx if rlx
+    return rl
+
+
+  getRelative: (qty_id) ->
+    r = false
+    for scale_id, scale of @elements.scales
+      rx = scale.getRelative qty_id
+      r = rx if rx
+    return r
+
+  setRelative: (qty_id, r) ->
+    for scale_id, scale of @elements.scales
+      scale.setRelative qty_id, r

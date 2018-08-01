@@ -36,11 +36,12 @@ exports.add = ->
               color:      "red"
               speed:      .15
           "Alarm":
-            indicator:  "alarm":
-              type:  "pointer"
-              shape: "left"
-              color: "blue"
-              offset: -70
+            indicator:    "alarm":
+              type:       "pointer"
+              shape:      "left"
+              color:      "blue"
+              offset:     -70
+              draggable:  true
 
   Gauge.create
     "C2":

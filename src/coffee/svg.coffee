@@ -3,8 +3,9 @@
 
 exports.SVG = class SVG
 
+  @store = {}
+
   constructor: (@id, @node)->
-    @me = "SVG"
 
   @add_svg: (id, xywh) ->
     target = document.getElementById(id)
@@ -53,7 +54,9 @@ exports.SVG = class SVG
     @add_path id, template.shape, attributes
 
   new_path: (id, config, attributes) ->
-    @add_path id, ( Path[config.type](config) ), attributes
+    path = @add_path id, ( Path[config.type](config) ), attributes
+    Path.store[id] = path
+    return path
 
   add_polygon: (id, attributes) ->
     @add_element id, "polygon", attributes
@@ -112,9 +115,113 @@ exports.SVG = class SVG
   setAttr: (attr, value) ->
     @node.setAttribute attr, value
 
+  make_draggable: (path_id, quantity_id) ->
+    @node.classList.add "draggable"
+    @node.dataset.quantity = quantity_id
+    @node.dataset.path     = path_id
+
+  setup_dragging: (@gauge) ->
+    element  = false
+    quantity = false
+    path     = false
+
+    startDrag = (evt) ->
+      if evt.target.classList.contains('draggable')
+        element  = evt.target
+        quantity = element.dataset.quantity
+        path     = Path.store[element.dataset.path]
+
+    endDrag = (evt) ->
+      element = false
+
+    drag = (evt) =>
+      if element
+        evt.preventDefault()
+
+        # update = {}
+        # update[element.dataset.quantity] = 2
+
+        # @gauge.setValue update
+        rl0     = @gauge.getRelativeLimited quantity
+        coords  = getMousePosition evt
+        t       = path.project rl0, coords
+        @gauge.setRelative quantity, t
+
+
+        # console.log "projected", path
+
+
+    getMousePosition = (evt) =>
+      CTM = @node.getScreenCTM()
+      return {
+        x: (evt.clientX - CTM.e) / CTM.a,
+        y: (evt.clientY - CTM.f) / CTM.d
+      }
+
+
+    @node.addEventListener('mousedown',  startDrag)
+    @node.addEventListener('mousemove',  drag)
+    @node.addEventListener('mouseup',    endDrag)
+    @node.addEventListener('mouseleave', endDrag)
+
+
+
+
+
+
+
+
 # =============================================================================
 
 class Path extends SVG
+
+  project: (t0, mouse) ->
+
+    t = t0
+
+    p0  = @position t0
+    d0 = distance p0, mouse
+
+    # console.log "distance", d0
+
+    dt_min = 0.0001
+    dt     = 0.01
+    sign   = if t0 > 0.5 then -1 else 1
+
+    max_it = 100
+
+    while (Math.abs(dt) > dt_min) and (max_it > 0)
+      max_it -=1
+      t  += sign*dt
+
+      if t > 1
+        if @cyclic
+          t -= 1
+        else
+          return 1
+      else if t < 0
+        if @cyclic
+          t += 1
+        else
+          return 0
+
+      p   = @position t
+      d1  = distance p, mouse
+
+      if d0 < d1
+        dt = dt / 2
+        sign = -sign
+      d0 = d1
+    return t
+
+
+
+
+
+  distance = (a, b) ->
+    dx = b.x - a.x
+    dy = b.y - a.y
+    Math.sqrt(dx*dx + dy*dy)
 
   position: (distance) ->
     @node.getPointAtLength distance * @node.getTotalLength()

@@ -92,6 +92,8 @@ exports.Scale = class Scale
       data.svg.new_path "template"+@id, (merge @config, data),
           class:                "template"
           visibility:           "hidden"
+    @path_template.cyclic = @config.cyclic
+    return @path_template
 
   draw_track: (data) ->
     data.svg.new_path "track"+@id, (merge @config, data),
@@ -147,6 +149,13 @@ exports.Scale = class Scale
     for qty, value of update
       @elements.quantities[qty].setValue @refine(data), value
 
+  setRelative: (qty_id, r) ->
+    @elements.quantities[qty_id].setRelative (@refine {}), r
 
+  getRelativeLimited: (qty_id) ->
+    @elements.quantities[qty_id].limited_value(@refine {})
+
+  getRelative: (qty_id) ->
+    @elements.quantities[qty_id].relative_value(@refine {})
 
 # ============================================================

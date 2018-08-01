@@ -176,12 +176,15 @@ class Pointer extends Indicator
         if (@config.shape of template)
           size = 5
 
-          @group.add_polygon @id,
+          @poly = @group.add_polygon @id,
             points:   (template[@config.shape].map (x) -> size * x)
             fill:           @config.color
           @group.setAttr "transform", "translate(0,#{@config.offset})"
+          if @config.draggable
+            @poly.make_draggable data.path.id, data.qId
         else
           console.log "Missing Pointer Shape", @id, @config
+
 
     @motion = @group.follow_path(data.path)
 

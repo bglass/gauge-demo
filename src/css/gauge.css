@@ -16,3 +16,7 @@
 .gauge text {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
+.draggable {
+  cursor: move;
+}

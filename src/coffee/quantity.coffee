@@ -23,6 +23,7 @@ exports.Quantity = class Quantity
       a:      @value
       r:      @relative_value(data)
       rl:     @limited_value(data)
+      qId:    @id
 
   relative_value: (data) ->
     v0 = data.v0 * @config.scale_factor
@@ -43,3 +44,8 @@ exports.Quantity = class Quantity
     @value = parseFloat(value)
     for indicator in @indicators
       indicator.update(@refine data)
+
+  setRelative: (data, r) ->
+    v0 = data.v0 * @config.scale_factor
+    v1 = data.v1 * @config.scale_factor
+    @setValue data, parseFloat(r) * (v1-v0) + v0
