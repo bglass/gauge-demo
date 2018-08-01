@@ -49,3 +49,20 @@ exports.Quantity = class Quantity
     v0 = data.v0 * @config.scale_factor
     v1 = data.v1 * @config.scale_factor
     @setValue data, parseFloat(r) * (v1-v0) + v0
+
+  stepValue: (data, direction) ->
+    va = Math.round( @value/@config.stepIncrement ) * @config.stepIncrement
+    vb =  if direction == "up"
+            va + @config.stepIncrement
+          else
+            va - @config.stepIncrement
+
+    vc = vb
+    
+    if data.cyclic
+      if vb > data.v1
+        vc = vb - (data.v1-data.v0)
+      else if vb < data.v0
+        vc = vb + (data.v1-data.v0)
+
+    @setValue(data, vc)

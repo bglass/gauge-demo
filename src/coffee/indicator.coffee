@@ -222,6 +222,7 @@ class Pointer extends Indicator
       else
         .5*Math.abs(data.rl-@previous_rl)
 
+    if duration < 0.01 then duration = 0.01
 
     @motion.update
       dur:         duration+"s"

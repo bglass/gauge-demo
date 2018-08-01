@@ -152,6 +152,10 @@ exports.Scale = class Scale
   setRelative: (qty_id, r) ->
     @elements.quantities[qty_id].setRelative (@refine {}), r
 
+  stepValue: (qty_id, direction) ->
+    @elements.quantities[qty_id].stepValue (@refine {}), direction
+
+
   getRelativeLimited: (qty_id) ->
     @elements.quantities[qty_id].limited_value(@refine {})
 

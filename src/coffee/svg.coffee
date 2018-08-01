@@ -148,7 +148,13 @@ exports.SVG = class SVG
         @gauge.setRelative quantity, t
 
 
-        # console.log "projected", path
+    wheel = (evt) =>
+      if evt.target.classList.contains('draggable')
+        if evt.wheelDelta > 0
+          @gauge.stepValue quantity, "up"
+        else
+          @gauge.stepValue quantity, "down"
+
 
 
     getMousePosition = (evt) =>
@@ -163,6 +169,7 @@ exports.SVG = class SVG
     @node.addEventListener('mousemove',  drag)
     @node.addEventListener('mouseup',    endDrag)
     @node.addEventListener('mouseleave', endDrag)
+    @node.addEventListener("wheel",      wheel, {passive: true})
 
 
 
@@ -175,6 +182,8 @@ exports.SVG = class SVG
 
 class Path extends SVG
 
+  # project mouse coordinates onto this path.
+  # Use t0 as starting point.
   project: (t0, mouse) ->
 
     t = t0
@@ -182,15 +191,12 @@ class Path extends SVG
     p0  = @position t0
     d0 = distance p0, mouse
 
-    # console.log "distance", d0
-
     dt_min = 0.0001
     dt     = 0.01
     sign   = if t0 > 0.5 then -1 else 1
-
     max_it = 100
 
-    while (Math.abs(dt) > dt_min) and (max_it > 0)
+    while (dt > dt_min) and (max_it > 0)
       max_it -=1
       t  += sign*dt
 
@@ -213,9 +219,6 @@ class Path extends SVG
         sign = -sign
       d0 = d1
     return t
-
-
-
 
 
   distance = (a, b) ->

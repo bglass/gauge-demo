@@ -62,6 +62,10 @@ exports.Gauge = class Gauge
     for scale_id, scale of @elements.scales
       scale.setValue @data(), update
 
+  stepValue: (qty_id, direction) ->
+    for scale_id, scale of @elements.scales
+      scale.stepValue qty_id, direction
+
   getRelativeLimited: (qty_id) ->
     rl = false
     for scale_id, scale of @elements.scales

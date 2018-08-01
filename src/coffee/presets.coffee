@@ -17,6 +17,7 @@ defaults =
   quantity:
     value:        0
     scale_factor: 1
+    stepIncrement: 0.1
   scale:
     v0:           0
     v1:           100
