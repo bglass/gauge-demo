@@ -1,6 +1,6 @@
-{Gauge} = require '../../src/coffee/gauge.coffee'
+import {Gauge} from '../../dist/glass-gauge.js'
 
-exports.add = ->
+export add = ->
   Gauge.create
     "C1":
       title:    ""

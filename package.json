@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node_modules/.bin/webpack"
+    "build": "node_modules/.bin/webpack",
+    "dev": "webpack-dev-server"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +26,7 @@
     "pug-loader": "^2.4.0",
     "style-loader": "^0.21.0",
     "svg-inline-loader": "^0.8.0",
-    "ts-loader": "^4.4.2"
+    "ts-loader": "^4.4.2",
+    "webpack-dev-server": "^3.1.5"
   }
 }

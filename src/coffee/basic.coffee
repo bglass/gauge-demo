@@ -1,6 +1,12 @@
-{Gauge} = require '../../src/coffee/gauge.coffee'
+import {Gauge} from '../../dist/glass-gauge.js'
+# {glass} = require '../../dist/glass-gauge.js'
 
-exports.add = ->
+# console.log "glass", glass
+
+
+export add = ->
+
+  # Gauge = glass.Gauge
 
   Gauge.create
     "T1":
@@ -23,6 +29,7 @@ exports.add = ->
           indicator:
             "Bar":      type: "bar",  color: "green"
             "Digital":  type: "digital"
+
 
 
 
